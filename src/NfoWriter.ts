@@ -127,6 +127,11 @@ export const defaultOptions = {
   ],
 };
 
+export const exportedForTesting = {
+  centerText,
+  leftText,
+}
+
 const defaultExports = { defaultOptions, headers, renderNfo };
 
 export default defaultExports;
