@@ -148,8 +148,10 @@ class App extends React.Component<AppProps, AppState> {
             </div>
           </Col>
           <Col sm="12" xl="6" className="border-start">
-            <Nfo options={this.state} />
-            <CopyNfo />
+            <div className="my-3">
+              <Nfo options={this.state} />
+              <CopyNfo />
+            </div>
           </Col>
         </Row>
       </Container>
