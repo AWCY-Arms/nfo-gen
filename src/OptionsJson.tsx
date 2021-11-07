@@ -59,7 +59,7 @@ class OptionsJson extends React.Component<OptionsJsonProps, OptionsJsonState> {
             </Row>
             <Row>
                 <Col>
-                    <Button id="save_nfo" variant="primary" onClick={this.save}>Save JSON</Button>
+                    <Button id="save_nfo" variant="primary" onClick={this.save}>Download</Button>
                 </Col>
             </Row>
         </div>;

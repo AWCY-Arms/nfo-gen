@@ -24,6 +24,7 @@ interface IObjectKeys {
 
 export interface AppState extends IObjectKeys {
   header: string,
+  header_align: string,
   title: string,
   description: string,
   version: string,
@@ -128,6 +129,7 @@ class App extends React.Component<AppProps, AppState> {
                         addSection={this.addSection}
                         delSection={this.delSection}
                         header={this.state.header}
+                        header_align={this.state.header_align}
                         title={this.state.title}
                         description={this.state.description}
                         version={this.state.version}
@@ -140,7 +142,6 @@ class App extends React.Component<AppProps, AppState> {
                         handleChange={this.handleJsonChange}
                         options={this.state}
                       />
-                      {/* TODO save button for json and nfo*/}
                     </Tab>
                   </Tabs>
                 </Col>

@@ -4,8 +4,8 @@ import { Button, Card, Form } from 'react-bootstrap';
 
 export interface NfoFormSectionData {
     header: string,
-    align: string,
     text: string,
+    text_align: string,
 }
 
 interface NfoFormSectionProps extends NfoFormSectionData {
@@ -17,8 +17,8 @@ interface NfoFormSectionProps extends NfoFormSectionData {
 export class NfoFormSection extends React.Component<NfoFormSectionProps> {
     static defaultProps: NfoFormSectionProps = {
         header: '',
-        align: 'center',
         text: '',
+        text_align: 'center',
         index: 0,
         onChange: () => { },
         delSection: () => { },
@@ -38,7 +38,7 @@ export class NfoFormSection extends React.Component<NfoFormSectionProps> {
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Label>Text Align</Form.Label>
-                    <Form.Select name="align" onChange={this.props.onChange} data-index={this.props.index} value={this.props.align}>
+                    <Form.Select name="align" onChange={this.props.onChange} data-index={this.props.index} value={this.props.text_align}>
                         <option value="left">Left</option>
                         <option value="center">Center</option>
                         <option value="right" disabled>Right</option>
