@@ -1,16 +1,11 @@
-import React, { ChangeEvent, MouseEventHandler } from 'react';
+import React, { ChangeEventHandler, MouseEventHandler } from 'react';
 import { Button, Card, Form } from 'react-bootstrap';
+import { NfoFormSectionData } from './NfoWriter';
 
-
-export interface NfoFormSectionData {
-    header: string,
-    text: string,
-    text_align: string,
-}
 
 interface NfoFormSectionProps extends NfoFormSectionData {
     index: Number,
-    onChange: (e: ChangeEvent) => void,
+    onChange: ChangeEventHandler,
     delSection: MouseEventHandler<HTMLButtonElement>,
 }
 

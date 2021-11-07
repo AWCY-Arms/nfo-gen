@@ -1,18 +1,18 @@
 import React from 'react';
-import { AppState } from './App';
-import { renderNfo } from './NfoWriter';
+import { NfoConfig, renderNfo } from './NfoWriter';
 
 
 type NfoProps = {
-    options: AppState,
+    nfoConfig: NfoConfig,
 }
 
 export class Nfo extends React.Component<NfoProps> {
     render() {
         const style = {
-            lineHeight: 'initial'
+            lineHeight: 'initial',
+            fontFamily: "Liberation Mono, Courier New, Consolas",
         };
-        const text = renderNfo(this.props.options);
+        const text = renderNfo(this.props.nfoConfig);
         return <pre id="content" style={style}>{text}</pre>
     }
 }

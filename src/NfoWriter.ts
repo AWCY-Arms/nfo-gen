@@ -1,6 +1,20 @@
-import { AppState } from './App';
 import headers from './headers';
 
+
+export interface NfoFormSectionData {
+  header: string,
+  text: string,
+  text_align: string,
+}
+
+export interface NfoConfig {
+  header: string,
+  header_align: string,
+  title: string,
+  description: string,
+  version: string,
+  content: Array<NfoFormSectionData>,
+}
 
 export function formatText(text: string, line_length: number): string[] {
   let outputRowIndex = 0;
@@ -72,7 +86,7 @@ const line_sep = "##############################################################
 const post_logo = "                       -*- Are We Cool Yet? Presents -*-                        ";
 
 // TODO make options a sub of AppState instead of using AppState directly
-export function renderNfo(options: AppState) {
+export function renderNfo(options: NfoConfig) {
   let lines: string[] = [
     line_blank,
     ...horizontalAlign((headers)[options.header], options.header_align, 80),
@@ -105,7 +119,7 @@ export function renderNfo(options: AppState) {
   return lines.join('\n');
 }
 
-export const defaultOptions = {
+export const defaultOptions: NfoConfig = {
   header: 'Bloody',
   header_align: 'center',
   title: '',

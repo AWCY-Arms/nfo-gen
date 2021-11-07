@@ -1,12 +1,13 @@
 import FileSaver from 'file-saver';
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEventHandler } from 'react';
 import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
+import { NfoConfig } from './NfoWriter';
 
 
 interface OptionsJsonProps {
-    options: Object,
-    handleUpload: (e: ChangeEvent<HTMLInputElement>) => void,
-    handleChange: (e: ChangeEvent<HTMLInputElement>) => void,
+    nfoConfig: NfoConfig,
+    handleUpload: ChangeEventHandler,
+    handleChange: ChangeEventHandler,
 }
 
 interface OptionsJsonState {
@@ -29,7 +30,7 @@ class OptionsJson extends React.Component<OptionsJsonProps, OptionsJsonState> {
         };
     }
     getText() {
-        const text = JSON.stringify(this.props.options, undefined, 2);
+        const text = JSON.stringify(this.props.nfoConfig, undefined, 2);
         return text;
     }
     save() {
