@@ -1,23 +1,24 @@
 import React, { ChangeEventHandler, MouseEventHandler } from 'react';
 import { Button, Card, Form } from 'react-bootstrap';
-import { NfoFormSectionData } from './NfoWriter';
+import deepClone from './functions';
+import { defaultNfoSectionData, NfoSectionData } from './NfoWriter';
 
 
-interface NfoFormSectionProps extends NfoFormSectionData {
+interface NfoFormSectionProps extends NfoSectionData {
     index: Number,
     onChange: ChangeEventHandler,
     delSection: MouseEventHandler<HTMLButtonElement>,
 }
 
 export class NfoFormSection extends React.Component<NfoFormSectionProps> {
-    static defaultProps: NfoFormSectionProps = {
-        header: '',
-        text: '',
-        text_align: 'center',
-        index: 0,
-        onChange: () => { },
-        delSection: () => { },
-    }
+    static defaultProps: NfoFormSectionProps = Object.assign(
+        deepClone(defaultNfoSectionData),
+        {
+            index: 0,
+            onChange: () => { },
+            delSection: () => { },
+        }
+    );
     render() {
         return <Card className="mb-2">
             <Card.Body>
@@ -47,7 +48,7 @@ export class NfoFormSection extends React.Component<NfoFormSectionProps> {
                         placeholder="Text"
                         data-index={this.props.index}
                         onChange={this.props.onChange}
-                        value={this.props.text}></Form.Control>
+                        value={this.props.text.join('\n')}></Form.Control>
                 </Form.Group>
                 <div className="d-grid mt-2">
                     <Button

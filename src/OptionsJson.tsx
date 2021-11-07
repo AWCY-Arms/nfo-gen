@@ -1,11 +1,11 @@
 import FileSaver from 'file-saver';
 import React, { ChangeEventHandler } from 'react';
 import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
-import { NfoConfig } from './NfoWriter';
+import { NfoData } from './NfoWriter';
 
 
 interface OptionsJsonProps {
-    nfoConfig: NfoConfig,
+    nfoData: NfoData,
     handleUpload: ChangeEventHandler,
     handleChange: ChangeEventHandler,
 }
@@ -15,14 +15,14 @@ interface OptionsJsonState {
 }
 
 class OptionsJson extends React.Component<OptionsJsonProps, OptionsJsonState> {
-    style: Object;
+    jsonTextAreaStyle: Object;
     constructor(props: OptionsJsonProps) {
         super(props)
         this.state = {
             text: null,
         }
         this.save = this.save.bind(this);
-        this.style = {
+        this.jsonTextAreaStyle = {
             whiteSpace: 'pre-wrap',
             fontFamily: 'monospace',
             lineHeight: 'initial',
@@ -30,7 +30,7 @@ class OptionsJson extends React.Component<OptionsJsonProps, OptionsJsonState> {
         };
     }
     getText() {
-        const text = JSON.stringify(this.props.nfoConfig, undefined, 2);
+        const text = JSON.stringify(this.props.nfoData, undefined, 2);
         return text;
     }
     save() {
@@ -38,7 +38,6 @@ class OptionsJson extends React.Component<OptionsJsonProps, OptionsJsonState> {
         FileSaver.saveAs(blob, "readme.json");
     }
     render() {
-        const text = this.getText();
         return <div>
             <Row>
                 <Col>
@@ -55,7 +54,7 @@ class OptionsJson extends React.Component<OptionsJsonProps, OptionsJsonState> {
             </Row>
             <Row className="mb-3">
                 <Col>
-                    <Form.Control as="textarea" style={this.style} value={text} onChange={this.props.handleChange}></Form.Control>
+                    <Form.Control as="textarea" size="sm" style={this.jsonTextAreaStyle} value={this.getText()} onChange={this.props.handleChange}></Form.Control>
                 </Col>
             </Row>
             <Row>

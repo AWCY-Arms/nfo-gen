@@ -5,27 +5,23 @@ import packageJson from '../package.json';
 import CopyNfo from './CopyNfo';
 import Nfo from './Nfo';
 import NfoForm from './NfoForm';
-import { defaultOptions, NfoConfig } from './NfoWriter';
+import { defaultNfoData, defaultNfoSectionData, NfoData } from './NfoWriter';
 import OptionsJson from './OptionsJson';
+import deepClone from './functions';
 
-
-// Soon... https://developer.mozilla.org/en-US/docs/Web/API/structuredClone
-function deepClone(oldObject: Object) {
-  return JSON.parse(JSON.stringify(oldObject));
-}
 
 interface AppProps {
 }
 
 export interface AppState {
-  nfoConfig: NfoConfig,
+  nfoData: NfoData,
 }
 
 class App extends React.Component<AppProps, AppState> {
   constructor(props: AppProps) {
     super(props);
     this.state = {
-      nfoConfig: deepClone(defaultOptions)
+      nfoData: deepClone(defaultNfoData)
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleContentChange = this.handleContentChange.bind(this);
@@ -37,10 +33,10 @@ class App extends React.Component<AppProps, AppState> {
   handleInputChange(e: React.ChangeEvent<Element>) {
     const target = e.target as HTMLInputElement;
     this.setState((state) => {
-      const newConfig = deepClone(state.nfoConfig);
-      newConfig[target.name] = target.value;
+      const newData = deepClone(state.nfoData);
+      newData[target.name] = target.value;
       this.setState({
-        nfoConfig: newConfig as NfoConfig,
+        nfoData: newData as NfoData,
       });
     });
   }
@@ -48,18 +44,18 @@ class App extends React.Component<AppProps, AppState> {
     this.setState((state) => {
       const target = (e.target as HTMLInputElement)
       const index = Number.parseInt(target.dataset['index']!);
-      const newConfig = deepClone(state.nfoConfig);
-      newConfig.content[index][target.name] = target.value;
+      const newData = deepClone(state.nfoData);
+      newData.content[index][target.name] = target.value.split('\n');
       return {
-        nfoConfig: newConfig as NfoConfig,
+        nfoData: newData as NfoData,
       }
     });
   }
   handleJsonChange(e: React.ChangeEvent<HTMLInputElement>) {
     try {
-      const config: NfoConfig = JSON.parse(e.target.value);
+      const config: NfoData = JSON.parse(e.target.value);
       this.setState({
-        nfoConfig: config,
+        nfoData: config,
       });
     } catch {
       // TODO allow invalid json so user can edit it in the textarea input
@@ -71,9 +67,9 @@ class App extends React.Component<AppProps, AppState> {
       const result = event?.target?.result?.toString();
       if (!result) return;
       try {
-        const config: NfoConfig = Object.assign(deepClone(defaultOptions), JSON.parse(result));
+        const config: NfoData = Object.assign(deepClone(defaultNfoData), JSON.parse(result));
         this.setState({
-          nfoConfig: config
+          nfoData: config
         });
       } catch (e) {
         console.error('Invalid JSON');
@@ -89,10 +85,10 @@ class App extends React.Component<AppProps, AppState> {
   addSection(e: React.MouseEvent) {
     e.preventDefault();
     this.setState((state) => {
-      const newConfig = deepClone(state.nfoConfig);
-      newConfig.content.push({ 'header': '', 'text': '' });
+      const newData = deepClone(state.nfoData);
+      newData.content.push(deepClone(defaultNfoSectionData));
       return {
-        nfoConfig: newConfig,
+        nfoData: newData,
       }
     });
   }
@@ -101,13 +97,12 @@ class App extends React.Component<AppProps, AppState> {
     this.setState((state) => {
       const { index } = (e.target as HTMLButtonElement).dataset;
       const _index = Number.parseInt(index!);
-      const newConfig = deepClone(state.nfoConfig);
-      newConfig.content.splice(_index, 1);
+      const newData = deepClone(state.nfoData);
+      newData.content.splice(_index, 1);
       return {
-        nfoConfig: newConfig,
+        nfoData: newData,
       }
     });
-
   }
   render() {
     return (
@@ -132,14 +127,14 @@ class App extends React.Component<AppProps, AppState> {
                         handleContentChange={this.handleContentChange}
                         addSection={this.addSection}
                         delSection={this.delSection}
-                        nfoConfig={this.state.nfoConfig}
+                        nfoData={this.state.nfoData}
                       />
                     </Tab>
                     <Tab eventKey="json" title="Save/Load">
                       <OptionsJson
                         handleUpload={this.handleUpload}
                         handleChange={this.handleJsonChange}
-                        nfoConfig={this.state.nfoConfig}
+                        nfoData={this.state.nfoData}
                       />
                     </Tab>
                   </Tabs>
@@ -149,7 +144,7 @@ class App extends React.Component<AppProps, AppState> {
           </Col>
           <Col sm="12" xl="6" className="border-start" style={{ minHeight: "100vh" }}>
             <div className="my-3">
-              <Nfo nfoConfig={this.state.nfoConfig} />
+              <Nfo nfoData={this.state.nfoData} />
               <CopyNfo />
             </div>
           </Col>

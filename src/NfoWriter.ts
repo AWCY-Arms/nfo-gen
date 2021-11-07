@@ -1,19 +1,19 @@
 import headers from './headers';
 
 
-export interface NfoFormSectionData {
+export interface NfoSectionData {
   header: string,
-  text: string,
+  text: string[],
   text_align: string,
 }
 
-export interface NfoConfig {
+export interface NfoData {
   header: string,
   header_align: string,
   title: string,
   description: string,
   version: string,
-  content: Array<NfoFormSectionData>,
+  content: Array<NfoSectionData>,
 }
 
 export function formatText(text: string, line_length: number): string[] {
@@ -86,7 +86,7 @@ const line_sep = "##############################################################
 const post_logo = "                       -*- Are We Cool Yet? Presents -*-                        ";
 
 // TODO make options a sub of AppState instead of using AppState directly
-export function renderNfo(options: NfoConfig) {
+export function renderNfo(options: NfoData) {
   let lines: string[] = [
     line_blank,
     ...horizontalAlign((headers)[options.header], options.header_align, 80),
@@ -104,7 +104,9 @@ export function renderNfo(options: NfoConfig) {
   options.content?.forEach((content) => {
     lines.push(...borderText(centerHeader(content.header)));
     lines.push(line_sep);
-    lines.push(...borderText(horizontalAlign(content.text, content.text_align)))
+    lines.push(...content.text.flatMap((textRow) => {
+      return borderText(horizontalAlign(textRow, content.text_align))
+    }));
     lines.push(line_sep);
   });
 
@@ -119,7 +121,13 @@ export function renderNfo(options: NfoConfig) {
   return lines.join('\n');
 }
 
-export const defaultOptions: NfoConfig = {
+export const defaultNfoSectionData: NfoSectionData = {
+  "header": "",
+  "text_align": "center",
+  "text": [""],
+}
+
+export const defaultNfoData: NfoData = {
   header: 'Bloody',
   header_align: 'center',
   title: '',
@@ -129,7 +137,7 @@ export const defaultOptions: NfoConfig = {
     {
       "header": "Release Notes",
       "text_align": "center",
-      "text": "",
+      "text": [""],
     },
   ],
 };
@@ -138,6 +146,6 @@ export const exportedForTesting = {
   formatText,
 }
 
-const defaultExports = { defaultOptions, renderNfo };
+const defaultExports = { defaultNfoData, defaultNfoSectionData, renderNfo };
 
 export default defaultExports;

@@ -1,9 +1,9 @@
 import React from 'react';
-import { NfoConfig, renderNfo } from './NfoWriter';
+import { NfoData, renderNfo } from './NfoWriter';
 
 
 type NfoProps = {
-    nfoConfig: NfoConfig,
+    nfoData: NfoData,
 }
 
 export class Nfo extends React.Component<NfoProps> {
@@ -12,7 +12,7 @@ export class Nfo extends React.Component<NfoProps> {
             lineHeight: 'initial',
             fontFamily: "Liberation Mono, Courier New, Consolas",
         };
-        const text = renderNfo(this.props.nfoConfig);
+        const text = renderNfo(this.props.nfoData);
         return <pre id="content" style={style}>{text}</pre>
     }
 }
