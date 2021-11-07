@@ -75,6 +75,7 @@ class App extends React.Component<AppProps, AppState> {
       if (!result) return;
       const newState = JSON.parse(result);
       this.setState(newState);
+      e.target.value = '';
     };
     const target = e.target as HTMLInputElement;
     const selectedFile = target.files![0]
