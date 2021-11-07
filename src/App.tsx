@@ -15,13 +15,15 @@ interface AppProps {
 
 export interface AppState {
   nfoData: NfoData,
+  nfoJson: string | null,
 }
 
 class App extends React.Component<AppProps, AppState> {
   constructor(props: AppProps) {
     super(props);
     this.state = {
-      nfoData: deepClone(defaultNfoData)
+      nfoData: deepClone(defaultNfoData),
+      nfoJson: null,
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleContentChange = this.handleContentChange.bind(this);
@@ -37,6 +39,7 @@ class App extends React.Component<AppProps, AppState> {
       newData[target.name] = target.value;
       this.setState({
         nfoData: newData as NfoData,
+        nfoJson: null,
       });
     });
   }
@@ -48,6 +51,7 @@ class App extends React.Component<AppProps, AppState> {
       newData.content[index][target.name] = target.value.split('\n');
       return {
         nfoData: newData as NfoData,
+        nfoJson: null,
       }
     });
   }
@@ -56,9 +60,12 @@ class App extends React.Component<AppProps, AppState> {
       const config: NfoData = JSON.parse(e.target.value);
       this.setState({
         nfoData: config,
+        nfoJson: null,
       });
     } catch {
-      // TODO allow invalid json so user can edit it in the textarea input
+      this.setState({
+        nfoJson: e.target.value,
+      });
     }
   }
   handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
@@ -69,7 +76,8 @@ class App extends React.Component<AppProps, AppState> {
       try {
         const config: NfoData = Object.assign(deepClone(defaultNfoData), JSON.parse(result));
         this.setState({
-          nfoData: config
+          nfoData: config,
+          nfoJson: null,
         });
       } catch (e) {
         console.error('Invalid JSON');
@@ -89,6 +97,7 @@ class App extends React.Component<AppProps, AppState> {
       newData.content.push(deepClone(defaultNfoSectionData));
       return {
         nfoData: newData,
+        nfoJson: null,
       }
     });
   }
@@ -101,6 +110,7 @@ class App extends React.Component<AppProps, AppState> {
       newData.content.splice(_index, 1);
       return {
         nfoData: newData,
+        nfoJson: null,
       }
     });
   }
@@ -135,6 +145,7 @@ class App extends React.Component<AppProps, AppState> {
                         handleUpload={this.handleUpload}
                         handleChange={this.handleJsonChange}
                         nfoData={this.state.nfoData}
+                        nfoJson={this.state.nfoJson}
                       />
                     </Tab>
                   </Tabs>

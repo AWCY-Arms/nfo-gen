@@ -6,6 +6,7 @@ import { NfoData } from './NfoWriter';
 
 interface OptionsJsonProps {
     nfoData: NfoData,
+    nfoJson: string | null,
     handleUpload: ChangeEventHandler,
     handleChange: ChangeEventHandler,
 }
@@ -30,8 +31,7 @@ class OptionsJson extends React.Component<OptionsJsonProps, OptionsJsonState> {
         };
     }
     getText() {
-        const text = JSON.stringify(this.props.nfoData, undefined, 2);
-        return text;
+        return this.props.nfoJson ? this.props.nfoJson : JSON.stringify(this.props.nfoData, undefined, 2);
     }
     save() {
         var blob = new Blob([this.getText()], { type: "text/plain;charset=utf-8" });

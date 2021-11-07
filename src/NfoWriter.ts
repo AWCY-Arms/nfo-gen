@@ -102,6 +102,7 @@ export function renderNfo(options: NfoData) {
   ];
 
   options.content?.forEach((content) => {
+    if (!(content.header && content.text_align && content.text)) return;
     lines.push(...borderText(centerHeader(content.header)));
     lines.push(line_sep);
     lines.push(...content.text.flatMap((textRow) => {
