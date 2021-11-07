@@ -33,7 +33,7 @@ export class NfoFormSection extends React.Component<NfoFormSectionProps> {
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Label>Text Align</Form.Label>
-                    <Form.Select name="align" onChange={this.props.onChange} data-index={this.props.index} value={this.props.text_align}>
+                    <Form.Select name="text_align" onChange={this.props.onChange} data-index={this.props.index} value={this.props.text_align}>
                         <option value="left">Left</option>
                         <option value="center">Center</option>
                         <option value="right" disabled>Right</option>
