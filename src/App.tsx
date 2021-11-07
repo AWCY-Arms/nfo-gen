@@ -1,4 +1,4 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.scss';
 import React from 'react';
 import { Badge, Col, Container, Row, Stack, Tab, Tabs } from 'react-bootstrap';
 import packageJson from '../package.json';
@@ -47,7 +47,7 @@ class App extends React.Component<AppProps, AppState> {
   handleContentChange(e: React.ChangeEvent<Element>) {
     this.setState((state) => {
       const target = (e.target as HTMLInputElement)
-      const index =  Number.parseInt(target.dataset['index']!);
+      const index = Number.parseInt(target.dataset['index']!);
       const newConfig = deepClone(state.nfoConfig);
       newConfig.content[index][target.name] = target.value;
       return {
@@ -113,7 +113,7 @@ class App extends React.Component<AppProps, AppState> {
     return (
       <Container fluid>
         <Row>
-          <Col sm="12" xl="6" className="border-end">
+          <Col sm="12" xl="6" className="border-end" style={{ minHeight: "100vh" }}>
             <div className="mx-3 my-3">
               <Row className="mb-3">
                 <Col>
@@ -147,7 +147,7 @@ class App extends React.Component<AppProps, AppState> {
               </Row>
             </div>
           </Col>
-          <Col sm="12" xl="6" className="border-start">
+          <Col sm="12" xl="6" className="border-start" style={{ minHeight: "100vh" }}>
             <div className="my-3">
               <Nfo nfoConfig={this.state.nfoConfig} />
               <CopyNfo />
