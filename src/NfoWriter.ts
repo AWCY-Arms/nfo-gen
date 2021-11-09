@@ -8,12 +8,13 @@ export interface NfoSectionData {
 }
 
 export interface NfoData {
+  data_version: number,
   header: string,
   header_align: string,
   title: string,
   description: string,
   version: string,
-  content: Array<NfoSectionData>,
+  content: NfoSectionData[],
 }
 
 export function formatText(text: string, line_length: number): string[] {
@@ -67,7 +68,8 @@ function horizontalAlign(text: string, align: string, length?: number): string[]
   }
 }
 
-function borderText(textRows: string[], borderStart: string = "#", borderEnd: string = "#") {
+function borderText(textRows: string[], borderStart: string = "#", borderEnd: string | undefined = undefined) {
+  borderEnd = borderEnd ? borderEnd : borderStart;
   return textRows.map((text) => {
     return borderStart + ' ' + text + ' ' + borderEnd;
   });
@@ -81,9 +83,9 @@ function centerHeader(text: string, borderStart = "/X>", borderEnd = "<X\\") {
 //   return centerHeader(text, "[-+", "+-]");
 // }
 
-const line_blank = "                                                                                ";
-const line_sep = "################################################################################";
-const post_logo = "                       -*- Are We Cool Yet? Presents -*-                        ";
+const line_blank = " ".repeat(80);
+const line_sep = "#".repeat(80);
+const post_logo = centerText(...borderText(["Are We Cool Yet? Presents"], "-*-"), 80).join('');
 
 // TODO make options a sub of AppState instead of using AppState directly
 export function renderNfo(options: NfoData) {
@@ -133,6 +135,7 @@ export const defaultNfoSectionData: NfoSectionData = {
 }
 
 export const defaultNfoData: NfoData = {
+  data_version: 1,
   header: 'Bloody',
   header_align: 'center',
   title: '',
