@@ -102,7 +102,11 @@ export function renderNfo(options: NfoData) {
   ];
 
   options.content?.forEach((content) => {
-    if (!(content.header && content.text_align && content.text)) return;
+    if (!(
+      typeof content.header === 'string' &&
+      typeof content.text_align  === 'string'&&
+      typeof content.text === 'object'
+      )) return;
     lines.push(...borderText(centerHeader(content.header)));
     lines.push(line_sep);
     lines.push(...content.text.flatMap((textRow) => {
