@@ -48,7 +48,14 @@ class App extends React.Component<AppProps, AppState> {
       const target = (e.target as HTMLInputElement)
       const index = Number.parseInt(target.dataset['index']!);
       const newData = deepClone(state.nfoData);
-      newData.content[index][target.name] = target.value.split('\n');
+      switch (target.name) {
+        case 'text':
+          newData.content[index][target.name] = target.value.split('\n');
+          break;
+        default:
+          newData.content[index][target.name] = target.value;
+          break;
+      }
       return {
         nfoData: newData as NfoData,
         nfoJson: null,
