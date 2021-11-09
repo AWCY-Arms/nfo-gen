@@ -49,6 +49,7 @@ export class NfoFormSection extends React.Component<NfoFormSectionProps> {
                         data-index={this.props.index}
                         onChange={this.props.onChange}
                         value={this.props.text.join('\n')}></Form.Control>
+                    {this.props.index === 0 ? <div className="form-text">Shift+Enter to start a new line</div> : ''}
                 </Form.Group>
                 <div className="d-grid mt-2">
                     <Button

@@ -87,7 +87,6 @@ const line_blank = " ".repeat(80);
 const line_sep = "#".repeat(80);
 const post_logo = centerText(...borderText(["Are We Cool Yet? Presents"], "-*-"), 80).join('');
 
-// TODO make options a sub of AppState instead of using AppState directly
 export function renderNfo(options: NfoData) {
   let lines: string[] = [
     line_blank,
