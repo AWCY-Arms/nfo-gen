@@ -8,11 +8,11 @@ import vandal from './headers/vandal';
 
 
 export const headers: IMap = {
-  'Bloody': bloody,
-  'Chilled': chilled,
-  'Poki': poki,
-  'Royal': royal,
-  'Vandal': vandal,
+    'Bloody': bloody,
+    'Chilled': chilled,
+    'Poki': poki,
+    'Royal': royal,
+    'Vandal': vandal,
 };
 
 export default headers;

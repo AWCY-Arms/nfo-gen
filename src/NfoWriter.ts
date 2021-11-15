@@ -6,113 +6,113 @@ import defaultNfoData from './templates/examples/default';
 export type TextAlign = "left" | "center" | "right";
 
 export interface NfoSection extends IMap {
-  header: string,
-  sectionType?: string,
-  sectionData: NfoSectionData,
-  uiRemoveDisabled?: boolean,
-  uiHeaderDisabled?: boolean,
-  uiSectionTypeDisabled?: boolean,
+    header: string,
+    sectionType?: string,
+    sectionData: NfoSectionData,
+    uiRemoveDisabled?: boolean,
+    uiHeaderDisabled?: boolean,
+    uiSectionTypeDisabled?: boolean,
 }
 
 export interface NfoSubsection {
-  style?: string,
-  subheader: string,
-  text: string[],
-  textAlign: TextAlign,
-  uiRemoveDisabled?: boolean,
-  uiSubheaderDisabled?: boolean,
-  uiSubheaderHide?: boolean,
-  uiTextAlignDisabled?: boolean,
-  uiTextAlignHide?: boolean,
+    style?: string,
+    subheader: string,
+    text: string[],
+    textAlign: TextAlign,
+    uiRemoveDisabled?: boolean,
+    uiSubheaderDisabled?: boolean,
+    uiSubheaderHide?: boolean,
+    uiTextAlignDisabled?: boolean,
+    uiTextAlignHide?: boolean,
 }
 
 export interface NfoSectionData {
-  text: string[],
-  textAlign: TextAlign,
-  subsections: NfoSubsection[],
-  uiAddSubsectionDisabled?: boolean,
-  uiTextHide?: boolean,
+    text: string[],
+    textAlign: TextAlign,
+    subsections: NfoSubsection[],
+    uiAddSubsectionDisabled?: boolean,
+    uiTextHide?: boolean,
 }
 
 export interface NfoData extends IMap {
-  dataVersion: number,
-  header: string,
-  headerAlign: TextAlign,
-  title: string,
-  description: string,
-  version: string,
-  content: NfoSection[],
+    dataVersion: number,
+    header: string,
+    headerAlign: TextAlign,
+    title: string,
+    description: string,
+    version: string,
+    content: NfoSection[],
 }
 
 export function readConfig(config: any): NfoData {
-  switch (config.dataVersion) {
-    case currentDataVersion:
-      return Object.assign(deepClone(defaultNfoData), config);
-    default:
-      return deepClone(defaultNfoData);
-  }
+    switch (config.dataVersion) {
+        case currentDataVersion:
+            return Object.assign(deepClone(defaultNfoData), config);
+        default:
+            return deepClone(defaultNfoData);
+    }
 }
 
 export function formatText(text: string, lineLength: number): string[] {
-  let outputRowIndex = 0;
-  const outputRows: string[][] = [];
-  const inputRows = text.split('\n');
-  inputRows.forEach((rowtext) => {
-    outputRows.push([]);
-    // Split into words, rejoin up to lineLength
-    const words = rowtext.split(' ');
-    for (let i = 0; i < words.length; i++) {
-      const word = words[i];
-      if (outputRows[outputRowIndex].join(' ').length + word.length + (words.length > 1 ? 1 : 0) > lineLength) {
+    let outputRowIndex = 0;
+    const outputRows: string[][] = [];
+    const inputRows = text.split('\n');
+    inputRows.forEach((rowtext) => {
+        outputRows.push([]);
+        // Split into words, rejoin up to lineLength
+        const words = rowtext.split(' ');
+        for (let i = 0; i < words.length; i++) {
+            const word = words[i];
+            if (outputRows[outputRowIndex].join(' ').length + word.length + (words.length > 1 ? 1 : 0) > lineLength) {
+                outputRowIndex++;
+                outputRows.push([word]);
+            } else {
+                outputRows[outputRowIndex].push(word);
+            }
+        }
         outputRowIndex++;
-        outputRows.push([word]);
-      } else {
-        outputRows[outputRowIndex].push(word);
-      }
-    }
-    outputRowIndex++;
-  });
-  return outputRows.map((textArray) => {
-    return textArray.join(' ')
-  });
+    });
+    return outputRows.map((textArray) => {
+        return textArray.join(' ')
+    });
 }
 
 function padEnd(text: string, length: number): string {
-  return text.padEnd(length, ' ');
+    return text.padEnd(length, ' ');
 }
 
 function leftText(text = '', length = defaultTextWidth) {
-  return formatText(text, length).map((rowText) => {
-    return padEnd(rowText, length);
-  });
+    return formatText(text, length).map((rowText) => {
+        return padEnd(rowText, length);
+    });
 }
 
 function centerText(text = '', length = defaultTextWidth): string[] {
-  return formatText(text, length).map((rowText) => {
-    const spaces = length - rowText.length;
-    const padStartLen = (spaces / 2) + rowText.length;
-    return rowText.padStart(padStartLen, ' ').padEnd(length, ' ');
-  });
+    return formatText(text, length).map((rowText) => {
+        const spaces = length - rowText.length;
+        const padStartLen = (spaces / 2) + rowText.length;
+        return rowText.padStart(padStartLen, ' ').padEnd(length, ' ');
+    });
 }
 
 function horizontalAlign(text: string, align: TextAlign = "center", length?: number): string[] {
-  switch (align) {
-    case 'center':
-      return centerText(text, length);
-    default:
-      return leftText(text, length);
-  }
+    switch (align) {
+        case 'center':
+            return centerText(text, length);
+        default:
+            return leftText(text, length);
+    }
 }
 
 function borderText(textRows: string[], borderStart: string = "#", borderEnd: string | undefined = undefined) {
-  borderEnd = borderEnd ? borderEnd : borderStart;
-  return textRows.map((text) => {
-    return borderStart + ' ' + text + ' ' + borderEnd;
-  });
+    borderEnd = borderEnd ? borderEnd : borderStart;
+    return textRows.map((text) => {
+        return borderStart + ' ' + text + ' ' + borderEnd;
+    });
 }
 
 function centerHeader(text: string, borderStart = "/X>", borderEnd = "<X\\", length?: number) {
-  return centerText(...borderText([text], borderStart, borderEnd), length);
+    return centerText(...borderText([text], borderStart, borderEnd), length);
 }
 
 // function centerCreditHeader(text) {
@@ -133,132 +133,132 @@ const creditsNameRight = "─╤╦︻";
 const adjustedWidth = defaultTextWidth - 1;
 
 function renderSection(lines: string[], content: NfoSection): void {
-  const data = content.sectionData as NfoSectionData;
-  if (typeof content.header !== 'string') return;
+    const data = content.sectionData as NfoSectionData;
+    if (typeof content.header !== 'string') return;
 
-  if (
-    typeof data.textAlign === 'string' &&
-    typeof data.text === 'object' &&
-    data.text.length &&
-    data.text.join() !== ""
-  ) {
-    lines.push(lineEmpty);
-    lines.push(...data.text.flatMap((textRow) => {
-      return borderText(horizontalAlign(textRow, data.textAlign))
-    }));
-  }
-
-  data.subsections?.forEach((el, i) => {
-    if (el.subheader && typeof el.subheader === "string") {
-      lines.push(lineEmpty);
-      lines.push(...borderText(centerHeader(el.subheader, subSectionHeaderL, subSectionHeaderR)));
-    }
-    if (el.text && typeof el.text === "object" && el.text.join() !== "") {
-      if (typeof el.textAlign !== "string") return;
-      lines.push(lineEmpty);
-
-      if (!el.style) {
-        lines.push(...el.text.flatMap((textRow) => {
-          return borderText(horizontalAlign(textRow, el.textAlign))
+    if (
+        typeof data.textAlign === 'string' &&
+        typeof data.text === 'object' &&
+        data.text.length &&
+        data.text.join() !== ""
+    ) {
+        lines.push(lineEmpty);
+        lines.push(...data.text.flatMap((textRow) => {
+            return borderText(horizontalAlign(textRow, data.textAlign))
         }));
-        return;
-      }
-
-      switch (el.style) {
-        case "credits1":
-          el.text.forEach((name) => {
-            lines.push(...borderText(horizontalAlign(centerHeader(name, creditsNameLeft, creditsNameRight, adjustedWidth).join(''), undefined, adjustedWidth)));
-          });
-          break;
-        case "credits2":
-          switch (el.text.length) {
-            case 1:
-              lines.push(...borderText(centerText(el.text[0])));
-              break;
-            case 2:
-              lines.push(...borderText(centerText(el.text.join(' and '))));
-              break;
-            default:
-              lines.push(...borderText(centerText(el.text.slice(0, -1).join(', ') + ", and " + el.text.slice(-1))));
-              break;
-          }
-          break;
-        case "credits3":
-          let additionalCreditsText;
-          switch (el.text.length) {
-            case 1:
-              additionalCreditsText = el.text[0];
-              break;
-            case 2:
-              additionalCreditsText = el.text.join(' and ');
-              break;
-            default:
-              additionalCreditsText = el.text.slice(0, -1).join(', ') + ", and " + el.text.slice(-1);
-              break;
-          }
-          // Check if the next section is credits4
-          if (data.subsections[i + 1]?.style === "credits4") {
-            additionalCreditsText += ", and"
-          }
-          lines.push(...borderText(horizontalAlign(additionalCreditsText)));
-          break;
-        default:
-          lines.push(...el.text.flatMap((textRow) => {
-            return borderText(horizontalAlign(textRow, el.textAlign))
-          }));
-          break;
-      }
     }
-  });
 
-  lines.push(lineEmpty);
+    data.subsections?.forEach((el, i) => {
+        if (el.subheader && typeof el.subheader === "string") {
+            lines.push(lineEmpty);
+            lines.push(...borderText(centerHeader(el.subheader, subSectionHeaderL, subSectionHeaderR)));
+        }
+        if (el.text && typeof el.text === "object" && el.text.join() !== "") {
+            if (typeof el.textAlign !== "string") return;
+            lines.push(lineEmpty);
+
+            if (!el.style) {
+                lines.push(...el.text.flatMap((textRow) => {
+                    return borderText(horizontalAlign(textRow, el.textAlign))
+                }));
+                return;
+            }
+
+            switch (el.style) {
+                case "credits1":
+                    el.text.forEach((name) => {
+                        lines.push(...borderText(horizontalAlign(centerHeader(name, creditsNameLeft, creditsNameRight, adjustedWidth).join(''), undefined, adjustedWidth)));
+                    });
+                    break;
+                case "credits2":
+                    switch (el.text.length) {
+                        case 1:
+                            lines.push(...borderText(centerText(el.text[0])));
+                            break;
+                        case 2:
+                            lines.push(...borderText(centerText(el.text.join(' and '))));
+                            break;
+                        default:
+                            lines.push(...borderText(centerText(el.text.slice(0, -1).join(', ') + ", and " + el.text.slice(-1))));
+                            break;
+                    }
+                    break;
+                case "credits3":
+                    let additionalCreditsText;
+                    switch (el.text.length) {
+                        case 1:
+                            additionalCreditsText = el.text[0];
+                            break;
+                        case 2:
+                            additionalCreditsText = el.text.join(' and ');
+                            break;
+                        default:
+                            additionalCreditsText = el.text.slice(0, -1).join(', ') + ", and " + el.text.slice(-1);
+                            break;
+                    }
+                    // Check if the next section is credits4
+                    if (data.subsections[i + 1]?.style === "credits4") {
+                        additionalCreditsText += ", and"
+                    }
+                    lines.push(...borderText(horizontalAlign(additionalCreditsText)));
+                    break;
+                default:
+                    lines.push(...el.text.flatMap((textRow) => {
+                        return borderText(horizontalAlign(textRow, el.textAlign))
+                    }));
+                    break;
+            }
+        }
+    });
+
+    lines.push(lineEmpty);
 }
 
 export function renderNfo(options: NfoData) {
-  let lines: string[] = [
-    lineBlank,
-    ...horizontalAlign((headers)[options.header], options.headerAlign, defaultNfoWidth),
-    lineBlank,
-    lineIntro,
-    lineBlank,
+    let lines: string[] = [
+        lineBlank,
+        ...horizontalAlign((headers)[options.header], options.headerAlign, defaultNfoWidth),
+        lineBlank,
+        lineIntro,
+        lineBlank,
 
-    lineSep,
-    ...borderText(centerText(options.title)),
-    ...borderText(centerText(options.description)),
-    ...borderText(centerText(options.version)),
-    lineSep,
-  ];
+        lineSep,
+        ...borderText(centerText(options.title)),
+        ...borderText(centerText(options.description)),
+        ...borderText(centerText(options.version)),
+        lineSep,
+    ];
 
-  options.content?.forEach((content) => {
-    lines.push(...borderText(centerHeader(content.header)));
+    options.content?.forEach((content) => {
+        lines.push(...borderText(centerHeader(content.header)));
+        lines.push(lineSep);
+        renderSection(lines, content);
+        lines.push(lineSep);
+    });
+
+    // Footer
+    lines.push(...borderText(centerText('')));
+    lines.push(...borderText(centerText('-`-,-{@  AWCY? - Stronger Together  @}-,-`-')));
+    lines.push(...borderText(centerText('(oven appreciation group)')));
+    lines.push(...borderText(centerText('Join us at: https://www.AreWeCoolYet.WTF')));
+    lines.push(...borderText(centerText('')));
     lines.push(lineSep);
-    renderSection(lines, content);
-    lines.push(lineSep);
-  });
 
-  // Footer
-  lines.push(...borderText(centerText('')));
-  lines.push(...borderText(centerText('-`-,-{@  AWCY? - Stronger Together  @}-,-`-')));
-  lines.push(...borderText(centerText('(oven appreciation group)')));
-  lines.push(...borderText(centerText('Join us at: https://www.AreWeCoolYet.WTF')));
-  lines.push(...borderText(centerText('')));
-  lines.push(lineSep);
-
-  return lines.join('\n');
+    return lines.join('\n');
 }
 
 
 export const sectionTypes: IMap = {
-  "default": "Default",
-  "credits": "Credits",
+    "default": "Default",
+    "credits": "Credits",
 }
 
 export const exportedForTesting = {
-  formatText,
+    formatText,
 }
 
 const defaultExports = {
-  renderNfo,
+    renderNfo,
 };
 
 export default defaultExports;
