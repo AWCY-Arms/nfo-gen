@@ -2,6 +2,7 @@ import FileSaver from 'file-saver';
 import React, { ChangeEventHandler } from 'react';
 import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
 import { NfoData } from './NfoWriter';
+import sampleTemplates from './templates/examples';
 
 
 interface OptionsJsonProps {
@@ -9,6 +10,7 @@ interface OptionsJsonProps {
     nfoJson: string | null,
     handleUpload: ChangeEventHandler,
     handleChange: ChangeEventHandler,
+    loadTemplate: ChangeEventHandler,
 }
 
 interface OptionsJsonState {
@@ -38,13 +40,26 @@ class OptionsJson extends React.Component<OptionsJsonProps, OptionsJsonState> {
         FileSaver.saveAs(blob, "readme.json");
     }
     render() {
+        const templates = Object.keys(sampleTemplates).map((templateId, i) => {
+            const [templateName] = sampleTemplates[templateId];
+            return <option key={i} value={templateId}>{templateName}</option>
+        });
         return <div>
             <Row>
                 <Col>
-                    <Alert variant="info">To load, upload or paste a valid <code>readme.json</code> below.</Alert>
+                    <Alert variant="info">Upload or paste a valid <code>readme.json</code>, or select a sample template.</Alert>
                 </Col>
             </Row>
             <Row>
+                <Col xs="12" sm="6">
+                    <Form.Group className="mb-3">
+                        <Form.Label>Templates</Form.Label>
+                        <Form.Select name="loadTemplate" size="sm" onChange={this.props.loadTemplate} value="">
+                            <option value=""/>
+                            {templates}
+                        </Form.Select>
+                    </Form.Group>
+                </Col>
                 <Col>
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>Upload</Form.Label>
