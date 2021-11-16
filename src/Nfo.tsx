@@ -1,20 +1,16 @@
-import React from 'react';
-import { NfoData, renderNfo } from './NfoWriter';
+import { useAppSelector } from './app/hooks';
+import { renderNfo } from './NfoWriter';
 
 
-type NfoProps = {
-    nfoData: NfoData,
-}
+const style = {
+    lineHeight: 'initial',
+    fontFamily: "Liberation Mono, Courier New, Consolas",
+};
 
-export class Nfo extends React.Component<NfoProps> {
-    render() {
-        const style = {
-            lineHeight: 'initial',
-            fontFamily: "Liberation Mono, Courier New, Consolas",
-        };
-        const text = renderNfo(this.props.nfoData);
-        return <pre id="content" style={style}>{text}</pre>
-    }
+export function Nfo() {
+    const nfoData = useAppSelector((state) => state.nfoConfig.nfoData);
+    const text = renderNfo(nfoData);
+    return <pre id="content" style={style}>{text}</pre>
 }
 
 export default Nfo;
