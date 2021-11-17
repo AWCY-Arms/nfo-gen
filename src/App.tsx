@@ -1,13 +1,37 @@
+import { useEffect } from 'react';
 import { Badge, Col, Container, Row, Stack, Tab, Tabs } from 'react-bootstrap';
 import packageJson from '../package.json';
 import './App.scss';
+import store from './app/store';
 import CopyNfo from './CopyNfo';
+import { updateDarkMode } from './features/app/appSlice';
 import Nfo from './Nfo';
 import NfoForm from './NfoForm';
 import OptionsJson from './OptionsJson';
 
 
+function updateDarkColorScheme() {
+    const html = document.getElementsByTagName('html')[0];
+    let mode;
+    if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        html.classList.remove('light');
+        html.classList.add("dark");
+        mode = 'dark';
+    } else {
+        html.classList.remove('dark');
+        html.classList.add("light");
+        mode = 'light';
+    }
+    store.dispatch(updateDarkMode({ mode }))
+}
+
 function App() {
+    useEffect(() => {
+        updateDarkColorScheme();
+        if (window.matchMedia) {
+            window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", updateDarkColorScheme);
+        }
+    });
     return <Container fluid>
         <Row>
             <Col sm="12" xl="6" className="border-end" style={{ minHeight: "100vh" }}>

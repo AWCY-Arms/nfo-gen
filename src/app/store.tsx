@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import nfoReducer from '../features/nfo/nfoSlice';
+import appReducer from '../features/app/appSlice';
 
 const store = configureStore({
   reducer: {
     nfoConfig: nfoReducer,
+    app: appReducer,
   },
 });
 

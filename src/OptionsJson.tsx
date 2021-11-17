@@ -44,6 +44,7 @@ const onMount = (editor: editor.IStandaloneCodeEditor, monaco: Monaco) => {
 function OptionsJson() {
     const nfoConfig = useAppSelector((state) => state.nfoConfig);
     const text = nfoConfig.nfoJson ? nfoConfig.nfoJson : JSON.stringify(nfoConfig.nfoData, undefined, 2);
+    const editorTheme = useAppSelector((state) => state.app.darkMode === "dark" ? "vs-dark" : "light");
     return <div>
         <Row>
             <Col>
@@ -78,7 +79,7 @@ function OptionsJson() {
                             beforeMount={beforeMount}
                             onMount={onMount}
                             height="60vh"
-                            theme="vs-dark"
+                            theme={editorTheme}
                         />
                     </Card.Body>
                 </Card>
