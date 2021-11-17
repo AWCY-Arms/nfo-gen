@@ -100,10 +100,12 @@ export const nfoSlice = createSlice({
         },
         addSection: (state) => {
             state.nfoData.content.push(deepClone(blankNfoSectionData));
+            state.nfoJson = formatJson(state.nfoData);
         },
         delSection: (state, action) => {
             const { index } = action.payload;
             state.nfoData.content.splice(index, 1);
+            state.nfoJson = formatJson(state.nfoData);
         },
         addSubsection: (state, action) => {
             const { index } = action.payload;
