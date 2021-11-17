@@ -6,6 +6,7 @@ import packageJson from '../../../package.json';
 
 
 const credits = deepClone(defaultNfoSectionCredits);
+credits.sectionData.subsections[0].style = undefined
 credits.sectionData.subsections[0].text = ["dimmadong"]
 credits.sectionData.subsections[1].text = ["recce"]
 credits.sectionData.subsections[2].text = ["Mom"]

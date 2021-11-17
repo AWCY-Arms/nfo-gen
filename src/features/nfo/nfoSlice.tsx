@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import deepClone from '../../helpers';
-import { NfoData, NfoSection, NfoSubsection, readConfig, TextAlign } from '../../NfoWriter';
+import { formatJson, NfoData, NfoSection, NfoSubsection, readConfig, TextAlign } from '../../NfoWriter';
 import sampleTemplates from '../../templates/examples';
 import defaultNfoData from '../../templates/examples/default';
 import { blankNfoSectionData, blankNfoSubsectionData } from '../../templates/partials/blank';
@@ -9,12 +9,12 @@ import defaultNfoSectionCredits from '../../templates/partials/credits';
 
 interface NfoState {
     nfoData: NfoData,
-    nfoJson: string | null,
+    nfoJson: string,
 }
 
 const initialState: NfoState = {
     nfoData: deepClone(defaultNfoData),
-    nfoJson: null,
+    nfoJson: formatJson(defaultNfoData),
 }
 
 export const nfoSlice = createSlice({
@@ -24,7 +24,7 @@ export const nfoSlice = createSlice({
         handleInputChange: (state, action) => {
             const { targetName, targetValue } = action.payload;
             state.nfoData[targetName] = targetValue;
-            state.nfoJson = null;
+            state.nfoJson = formatJson(state.nfoData);
         },
         handleContentChange: (state, action) => {
             const index: number = action.payload.index;
@@ -73,19 +73,19 @@ export const nfoSlice = createSlice({
                     section[targetName] = targetValue;
                     break;
             }
-            state.nfoJson = null;
+            state.nfoJson = formatJson(state.nfoData);
         },
         loadTemplate: (state, action) => {
             const config: NfoData = sampleTemplates[action.payload.value][1];
             state.nfoData = config;
-            state.nfoJson = null;
+            state.nfoJson = formatJson(state.nfoData);
         },
         handleUpload: (state, action) => {
             const jsonText = action.payload.jsonText;
             try {
                 const config: NfoData = readConfig(JSON.parse(jsonText));
                 state.nfoData = config
-                state.nfoJson = null
+                state.nfoJson = formatJson(state.nfoData);
             } catch (e) {
                 console.error('Invalid JSON');
             }
@@ -94,10 +94,9 @@ export const nfoSlice = createSlice({
             try {
                 const config: NfoData = JSON.parse(action.payload.value);
                 state.nfoData = config;
-                state.nfoJson = null;
             } catch {
-                state.nfoJson = action.payload.value;
             }
+            state.nfoJson = action.payload.value;
         },
         addSection: (state) => {
             state.nfoData.content.push(deepClone(blankNfoSectionData));
@@ -109,12 +108,12 @@ export const nfoSlice = createSlice({
         addSubsection: (state, action) => {
             const { index } = action.payload;
             state.nfoData.content[index]!.sectionData!.subsections!.push(deepClone(blankNfoSubsectionData));
-            state.nfoJson = null
+            state.nfoJson = formatJson(state.nfoData);
         },
         delSubsection: (state, action) => {
             const { index, subindex } = action.payload;
             state.nfoData.content[index]!.sectionData!.subsections!.splice(subindex, 1);
-            state.nfoJson = null;
+            state.nfoJson = formatJson(state.nfoData);
         }
     },
 })

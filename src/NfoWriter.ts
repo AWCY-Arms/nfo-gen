@@ -265,6 +265,10 @@ export function renderNfo(options: NfoData) {
     return lines.join('\n');
 }
 
+export function formatJson(obj: any) {
+    return JSON.stringify(obj, undefined, 2);
+}
+
 export const exportedForTesting = {
     formatText,
 }

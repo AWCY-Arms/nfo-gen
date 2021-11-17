@@ -42,8 +42,7 @@ const onMount = (editor: editor.IStandaloneCodeEditor, monaco: Monaco) => {
 }
 
 function OptionsJson() {
-    const nfoConfig = useAppSelector((state) => state.nfoConfig);
-    const text = nfoConfig.nfoJson ? nfoConfig.nfoJson : JSON.stringify(nfoConfig.nfoData, undefined, 2);
+    const nfoJson = useAppSelector((state) => state.nfoConfig.nfoJson);
     const editorTheme = useAppSelector((state) => state.app.darkMode === "dark" ? "vs-dark" : "light");
     return <div>
         <Row>
@@ -74,7 +73,7 @@ function OptionsJson() {
                     <Card.Body style={{ padding: 0 }}>
                         <Editor
                             language="json"
-                            value={text}
+                            value={nfoJson}
                             onChange={eHandleJsonChange}
                             beforeMount={beforeMount}
                             onMount={onMount}
@@ -87,7 +86,7 @@ function OptionsJson() {
         </Row>
         <Row>
             <Col>
-                <Button id="save_nfo" variant="primary" onClick={() => { save(text) }}>Download</Button>
+                <Button id="save_nfo" variant="primary" onClick={() => { save(nfoJson) }}>Download</Button>
             </Col>
         </Row>
     </div>;
