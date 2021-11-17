@@ -1,4 +1,4 @@
-import headers from './headers';
+import headers, { Header } from './headers';
 import deepClone, { IMap } from './helpers';
 import { currentDataVersion, defaultNfoWidth, defaultTextWidth } from './NfoWriterSettings';
 import defaultNfoData from './templates/examples/default';
@@ -53,7 +53,7 @@ export interface NfoSectionData {
 
 export interface NfoData extends IMap {
     dataVersion: number,
-    header: string,
+    header: Header,
     headerAlign: TextAlign,
     title: string,
     description: string,

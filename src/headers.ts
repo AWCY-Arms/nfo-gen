@@ -15,4 +15,6 @@ export const headers: IMap = {
     'Vandal': vandal,
 };
 
+export type Header = "Bloody" | "Chilled" | "Poki" | "Royal" | "Vandal";
+
 export default headers;
