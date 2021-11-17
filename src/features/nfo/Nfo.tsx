@@ -1,3 +1,4 @@
+import { editor } from "monaco-editor";
 import React from "react";
 import store from "../../app/store";
 import { addSection, addSubsection, delSection, delSubsection, handleContentChange, handleInputChange, handleJsonChange, handleUpload, loadTemplate } from "./nfoSlice";
@@ -46,9 +47,9 @@ export const eHandleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.target.value = '';
 }
 
-export const eHandleJsonChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+export const eHandleJsonChange = (value: string | undefined, ev: editor.IModelContentChangedEvent) => {
     store.dispatch(handleJsonChange({
-        value: e.target.value,
+        value: value,
     }));
 }
 

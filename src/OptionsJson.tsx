@@ -1,25 +1,44 @@
+import Editor, { Monaco } from "@monaco-editor/react";
 import FileSaver from 'file-saver';
-import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
+import { Alert, Button, Card, Col, Form, Row } from 'react-bootstrap';
 import { useAppSelector } from './app/hooks';
-import { eHandleJsonChange, eHandleUpload, eLoadTemplate, } from './features/nfo/Nfo';
+import { eHandleJsonChange, eHandleUpload, eLoadTemplate } from './features/nfo/Nfo';
 import sampleTemplates from './templates/examples';
-import {Property} from 'csstype';
+import NfoSchema from './NfoSchema.json';
+import { editor, Position } from "monaco-editor";
+
 
 const templates = Object.keys(sampleTemplates).map((templateId, i) => {
     const [templateName] = sampleTemplates[templateId];
     return <option key={i} value={templateId}>{templateName}</option>
 });
 
-const jsonTextAreaStyle = {
-    whiteSpace: 'pre' as Property.WhiteSpace,
-    fontFamily: 'monospace',
-    lineHeight: 'initial',
-    height: '60vh',
-}
-
 function save(text: string) {
     var blob = new Blob([text], { type: "text/plain;charset=utf-8" });
     FileSaver.saveAs(blob, "readme.json");
+}
+
+const beforeMount = (monaco: Monaco) => {
+    monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+        validate: true,
+        schemas: [{
+            uri: "http://myserver/foo-schema.json",
+            fileMatch: ["*"],
+            schema: NfoSchema
+        }]
+    });
+}
+
+let position: Position | null;
+
+const onMount = (editor: editor.IStandaloneCodeEditor, monaco: Monaco) => {
+    // Set position to previous position
+    editor.onDidChangeModelContent((e) => {
+        if (position) editor.setPosition(position);
+    });
+    editor.onDidChangeCursorPosition(e => {
+        position = editor.getPosition();
+    });
 }
 
 function OptionsJson() {
@@ -50,12 +69,24 @@ function OptionsJson() {
         </Row>
         <Row className="mb-3">
             <Col>
-                <Form.Control as="textarea" size="sm" style={jsonTextAreaStyle} value={text} onChange={eHandleJsonChange}></Form.Control>
+                <Card>
+                    <Card.Body style={{ padding: 0 }}>
+                        <Editor
+                            language="json"
+                            value={text}
+                            onChange={eHandleJsonChange}
+                            beforeMount={beforeMount}
+                            onMount={onMount}
+                            height="60vh"
+                            theme="vs-dark"
+                        />
+                    </Card.Body>
+                </Card>
             </Col>
         </Row>
         <Row>
             <Col>
-                <Button id="save_nfo" variant="primary" onClick={() => {save(text)}}>Download</Button>
+                <Button id="save_nfo" variant="primary" onClick={() => { save(text) }}>Download</Button>
             </Col>
         </Row>
     </div>;

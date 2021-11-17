@@ -12,6 +12,7 @@ interface NfoFormSectionProps {
 const sectionElements = Object.keys(sectionTypes).map((key: string, i: number) => {
     return <option key={i} value={key}>{sectionTypes[key]}</option>
 });
+
 export function NfoFormSection(props: NfoFormSectionProps) {
     const nfoData = useAppSelector((state) => state.nfoConfig.nfoData);
     const section = nfoData.content[props.index];

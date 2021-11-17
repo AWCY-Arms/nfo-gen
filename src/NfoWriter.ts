@@ -3,11 +3,28 @@ import deepClone, { IMap } from './helpers';
 import { currentDataVersion, defaultNfoWidth, defaultTextWidth } from './NfoWriterSettings';
 import defaultNfoData from './templates/examples/default';
 
+
 export type TextAlign = "left" | "center" | "right";
+
+export type SectionType = "default" | "credits";
+
+export const sectionTypes: IMap = {
+    "default": "Default",
+    "credits": "Credits",
+}
+
+export type TextStyle = "credits1" | "credits2" | "credits3" | "credits4";
+
+export const textStyles: IMap = {
+    "credits1": "Credits 1",
+    "credits2": "Credits 2",
+    "credits3": "Credits 3",
+    "credits4": "Credits 4",
+}
 
 export interface NfoSection extends IMap {
     header: string,
-    sectionType?: string,
+    sectionType?: SectionType,
     sectionData: NfoSectionData,
     uiRemoveDisabled?: boolean,
     uiHeaderDisabled?: boolean,
@@ -15,7 +32,7 @@ export interface NfoSection extends IMap {
 }
 
 export interface NfoSubsection {
-    style?: string,
+    style?: TextStyle,
     subheader: string,
     text: string[],
     textAlign: TextAlign,
@@ -134,6 +151,7 @@ const adjustedWidth = defaultTextWidth - 1;
 
 function renderSection(lines: string[], content: NfoSection): void {
     const data = content.sectionData as NfoSectionData;
+    if (!data) return;
     if (typeof content.header !== 'string') return;
 
     if (
@@ -230,7 +248,7 @@ export function renderNfo(options: NfoData) {
     ];
 
     options.content?.forEach((content) => {
-        lines.push(...borderText(centerHeader(content.header)));
+        lines.push(...borderText(centerHeader(content.header || "")));
         lines.push(lineSep);
         renderSection(lines, content);
         lines.push(lineSep);
@@ -245,12 +263,6 @@ export function renderNfo(options: NfoData) {
     lines.push(lineSep);
 
     return lines.join('\n');
-}
-
-
-export const sectionTypes: IMap = {
-    "default": "Default",
-    "credits": "Credits",
 }
 
 export const exportedForTesting = {

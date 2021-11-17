@@ -10,6 +10,7 @@ interface NfoFormSectionDataProps {
 
 export function NfoFormSectionData(props: NfoFormSectionDataProps) {
     const section = useAppSelector((state) => state.nfoConfig.nfoData.content[props.index].sectionData);
+    if (!section) return <div/>;
     const subsectionsLength = section.subsections?.length || 0;
     const subsections = section.subsections?.map((subsection: NfoSubsection, i: number) => {
         return <Card key={i} className={subsectionsLength === i + 1 ? "" : "mb-3"}>
@@ -75,7 +76,7 @@ export function NfoFormSectionData(props: NfoFormSectionDataProps) {
                         data-index={props.index}
                         data-index2={i}
                         onChange={eHandleContentChange}
-                        value={subsection.text.join('\n')}
+                        value={subsection.text?.join('\n')}
                     ></Form.Control>
                 </Form.Group>
             </Card.Body>

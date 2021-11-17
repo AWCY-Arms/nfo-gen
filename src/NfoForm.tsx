@@ -125,7 +125,7 @@ function NfoForm() {
                         </Card.Title>
                         <div id="sections">
                             {
-                                nfoData.content.map((e: NfoSection, i: number) => {
+                                nfoData.content?.map((e: NfoSection, i: number) => {
                                     return <NfoFormSection
                                         key={i}
                                         index={i}
