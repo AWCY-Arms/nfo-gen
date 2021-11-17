@@ -31,10 +31,12 @@
 
     "prebuild": "npm run schema",
     "build": "react-scripts build",
-    "postbuild": "purgecss -c purgecss.config.js",
+    "postbuild": "purgecss -c purgecss.config.js && npm run readme",
 
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+
+    "readme": "npx ts-node -P tsconfig.buildscripts.json buildscripts/readme.ts"
   },
   "eslintConfig": {
     "extends": [
