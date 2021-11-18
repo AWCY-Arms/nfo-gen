@@ -9,7 +9,7 @@ const credits = deepClone(defaultNfoSectionCredits);
 credits.sectionData.subsections[0].style = undefined
 credits.sectionData.subsections[0].text = ["dimmadong"]
 credits.sectionData.subsections[1].text = ["recce"]
-credits.sectionData.subsections[2].text = ["Mom"]
+credits.sectionData.subsections[2].text = ["Mom", "Ferus"]
 
 const releaseNotes = deepClone(defaultNfoSectionReleaseNotes)
 releaseNotes.sectionData.text = ["Hello World!"]
@@ -19,7 +19,7 @@ export const nfoGen: NfoData = {
     header: "Delta",
     headerAlign: "center",
     title: "AWCY? NFO Generator",
-    description: "The Premium Enterprise-Grade NFO Generator",
+    description: "The Premium Triple-Distilled Enterprise-Grade NFO Generator for the Sweaty and Moist Yet Sophisticated Artist who needed their README done yesterday",
     version: packageJson.version,
     content: [
         releaseNotes,

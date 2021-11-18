@@ -15,7 +15,8 @@
 ################################################################################
 #                                                                              #
 #                             AWCY? NFO Generator                              #
-#                  The Premium Enterprise-Grade NFO Generator                  #
+#  The Premium Triple-Distilled Enterprise-Grade NFO Generator for the Sweaty  #
+#  and Moist Yet Sophisticated Artist who needed their README done yesterday   #
 #                                    0.8.3                                     #
 #                                                                              #
 ################################################################################
@@ -38,7 +39,7 @@
 #                                                                              #
 #                         [-+ Additional thanks to +-]                         #
 #                                                                              #
-#                                   Mom, and                                   #
+#                              Mom and Ferus, and                              #
 #                                                                              #
 #                       the entire Are We Cool Yet? team                       #
 #                                                                              #
