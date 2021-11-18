@@ -107,6 +107,13 @@ export const nfoSlice = createSlice({
             state.nfoData.content.splice(index, 1);
             state.nfoJson = formatJson(state.nfoData);
         },
+        moveSection: (state, action) => {
+            const { index, direction } = action.payload;
+            const newIndex = direction === 'up' ? index - 1 : index + 1;
+            const content = state.nfoData.content;
+            [content[index], content[newIndex]] = [content[newIndex], content[index]];
+            state.nfoJson = formatJson(state.nfoData);
+        },
         addSubsection: (state, action) => {
             const { index } = action.payload;
             state.nfoData.content[index]!.sectionData!.subsections!.push(deepClone(blankNfoSubsectionData));
@@ -120,6 +127,6 @@ export const nfoSlice = createSlice({
     },
 })
 
-export const { handleInputChange, handleContentChange, loadTemplate, handleUpload, handleJsonChange, addSection, delSection, addSubsection, delSubsection } = nfoSlice.actions
+export const { handleInputChange, handleContentChange, loadTemplate, handleUpload, handleJsonChange, addSection, delSection, moveSection, addSubsection, delSubsection } = nfoSlice.actions
 
 export default nfoSlice.reducer

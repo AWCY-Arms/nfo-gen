@@ -129,6 +129,7 @@ function NfoForm() {
                                     return <NfoFormSection
                                         key={i}
                                         index={i}
+                                        maxIndex={nfoData.content.length - 1}
                                     />
                                 })
                             }

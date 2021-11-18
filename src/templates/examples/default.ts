@@ -1,9 +1,12 @@
 import deepClone from "../../helpers";
-import { NfoData, NfoSection } from "../../NfoWriter";
+import { NfoData } from "../../NfoWriter";
 import { currentDataVersion } from "../../NfoWriterSettings";
 import defaultNfoSectionCredits from "../partials/credits";
 import defaultNfoSectionReleaseNotes from "../partials/releaseNotes";
 
+
+const releaseNotes = deepClone(defaultNfoSectionReleaseNotes)
+releaseNotes.uiRemoveDisabled = false;
 
 export const defaultNfoData: NfoData = {
     dataVersion: currentDataVersion,
@@ -13,8 +16,8 @@ export const defaultNfoData: NfoData = {
     description: "Short Description",
     version: "1.0.0",
     content: [
-        deepClone(defaultNfoSectionReleaseNotes) as NfoSection,
-        deepClone(defaultNfoSectionCredits) as NfoSection,
+        releaseNotes,
+        deepClone(defaultNfoSectionCredits),
     ],
 }
 

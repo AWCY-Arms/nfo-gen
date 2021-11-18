@@ -1,7 +1,7 @@
 import { editor } from "monaco-editor";
 import React from "react";
 import store from "../../app/store";
-import { addSection, addSubsection, delSection, delSubsection, handleContentChange, handleInputChange, handleJsonChange, handleUpload, loadTemplate } from "./nfoSlice";
+import { addSection, addSubsection, delSection, delSubsection, handleContentChange, handleInputChange, handleJsonChange, handleUpload, loadTemplate, moveSection } from "./nfoSlice";
 
 
 export const eHandleInputChange = (e: React.ChangeEvent<Element>)=> {
@@ -64,6 +64,16 @@ export const eDelSection = (e: React.MouseEvent) => {
     const _index = Number.parseInt(index!);
     store.dispatch(delSection({
         index: _index,
+    }));
+}
+
+export const eMoveSection = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const { index, direction } = (e.target as HTMLButtonElement).dataset;
+    const _index = Number.parseInt(index!);
+    store.dispatch(moveSection({
+        index: _index,
+        direction,
     }));
 }
 

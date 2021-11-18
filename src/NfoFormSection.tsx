@@ -1,12 +1,13 @@
 import { Button, Card, Col, FloatingLabel, Form, Row } from 'react-bootstrap';
 import { useAppSelector } from './app/hooks';
-import { eDelSection, eHandleContentChange } from './features/nfo/Nfo';
+import { eDelSection, eHandleContentChange, eMoveSection } from './features/nfo/Nfo';
 import { NfoFormSectionData } from './NfoFormSectionData';
 import { sectionTypes } from './NfoWriter';
 
 
 interface NfoFormSectionProps {
     index: number,
+    maxIndex: number,
 }
 
 const sectionElements = Object.keys(sectionTypes).map((key: string, i: number) => {
@@ -43,6 +44,24 @@ export function NfoFormSection(props: NfoFormSectionProps) {
                         onClick={eDelSection}
                         disabled={section.uiRemoveDisabled}
                     >Remove Section</Button>
+                    &nbsp;
+                    <Button
+                        variant="primary"
+                        size="sm"
+                        data-index={props.index}
+                        data-direction="up"
+                        onClick={eMoveSection}
+                        disabled={props.index === 0}
+                    >Move Up</Button>
+                    &nbsp;
+                    <Button
+                        variant="primary"
+                        size="sm"
+                        data-index={props.index}
+                        data-direction="down"
+                        onClick={eMoveSection}
+                        disabled={props.index === props.maxIndex}
+                    >Move Down</Button>
                 </Col>
             </Row>
             <Row className="mb-3">
