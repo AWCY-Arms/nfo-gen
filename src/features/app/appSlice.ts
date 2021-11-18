@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 
-interface NfoState {
+interface AppState {
     darkMode: string,
 }
 
-const initialState: NfoState = {
+const initialState: AppState = {
     darkMode: '',
 }
 

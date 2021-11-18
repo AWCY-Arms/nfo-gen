@@ -1,16 +1,16 @@
-import { useAppSelector } from './app/hooks';
-import { renderNfo } from './NfoWriter';
-
+interface NfoProps {
+    id: string,
+    text: string,
+}
 
 const style = {
     lineHeight: 'initial',
-    fontFamily: "Liberation Mono, Courier New, Consolas",
+    fontFamily: "Courier New",
+    textShadow: "0px 0px 40px #7F7F7F40"
 };
 
-export function Nfo() {
-    const nfoData = useAppSelector((state) => state.nfoConfig.nfoData);
-    const text = renderNfo(nfoData);
-    return <pre id="content" style={style}>{text}</pre>
+export function Nfo(props: NfoProps) {
+    return <pre id={props.id} style={style}>{props.text}</pre>
 }
 
 export default Nfo;

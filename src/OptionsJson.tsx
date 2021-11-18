@@ -32,6 +32,9 @@ const beforeMount = (monaco: Monaco) => {
 let position: Position | null;
 
 const onMount = (editor: editor.IStandaloneCodeEditor, monaco: Monaco) => {
+    editor.updateOptions({
+        fontSize: 12,
+    });
     // Set position to previous position
     editor.onDidChangeModelContent((e) => {
         if (position) editor.setPosition(position);
