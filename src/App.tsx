@@ -30,7 +30,7 @@ function updateDarkColorScheme() {
 const tabsId = "tabs";
 
 function updateCurrentTab(e: any) {
-    console.log(e);
+    // if (e.matches) {}
     const tabIsNfo = document.getElementById(tabsId + '-tab-nfo')!.classList.contains('active');
     if (tabIsNfo) {
         document.getElementById(tabsId + '-tab-form')!.click();

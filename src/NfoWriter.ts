@@ -241,9 +241,11 @@ export function renderNfo(options: NfoData) {
         lineBlank,
 
         lineSep,
+        lineEmpty,
         ...borderText(centerText(options.title)),
         ...borderText(centerText(options.description)),
         ...borderText(centerText(options.version)),
+        lineEmpty,
         lineSep,
     ];
 

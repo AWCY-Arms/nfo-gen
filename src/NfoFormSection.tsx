@@ -1,8 +1,8 @@
 import { Button, Card, Col, FloatingLabel, Form, Row } from 'react-bootstrap';
 import { useAppSelector } from './app/hooks';
-import { eDelSection, eHandleContentChange, eMoveSection } from './features/nfo/Nfo';
-import { NfoFormSectionData } from './NfoFormSectionData';
-import { sectionTypes } from './NfoWriter';
+import { eAddSubsection, eDelSection, eHandleContentChange, eMoveSection } from './features/nfo/Nfo';
+import { NfoFormSubsection } from './NfoFormSubsection';
+import { NfoSubsection, sectionTypes } from './NfoWriter';
 
 
 interface NfoFormSectionProps {
@@ -15,8 +15,9 @@ const sectionElements = Object.keys(sectionTypes).map((key: string, i: number) =
 });
 
 export function NfoFormSection(props: NfoFormSectionProps) {
-    const nfoData = useAppSelector((state) => state.nfoConfig.nfoData);
-    const section = nfoData.content[props.index];
+    const section = useAppSelector((state) => state.nfoConfig.nfoData.content[props.index]);
+    const sectionData = section.sectionData;
+    if (!section || !sectionData) return <div />;
     return <Card className="mb-2">
         <Card.Body>
             <Row className="mb-3">
@@ -79,9 +80,54 @@ export function NfoFormSection(props: NfoFormSectionProps) {
                     </Form.Select>
                 </Col>
             </Row>
-            <NfoFormSectionData
-                index={props.index}
-            />
+            {sectionData.uiTextHide ? "" : <div>
+                <Row className="mb-3">
+                    <Form.Label column="sm" lg="2">Text Align</Form.Label>
+                    <Col>
+                        <Form.Select
+                            name="textAlign"
+                            size="sm"
+                            onChange={eHandleContentChange}
+                            data-index={props.index}
+                            value={sectionData.textAlign}
+                        >
+                            <option value="left">Left</option>
+                            <option value="center">Center</option>
+                            <option value="right" disabled>Right</option>
+                        </Form.Select>
+                    </Col>
+                </Row>
+                <Form.Group className="mb-3">
+                    <Form.Label>Text</Form.Label>
+                    <Form.Control
+                        as="textarea"
+                        name="text"
+                        size="sm"
+                        placeholder="Text"
+                        data-index={props.index}
+                        onChange={eHandleContentChange}
+                        value={sectionData.text?.join('\n')}
+                    ></Form.Control>
+                    {props.index === 0 ? <Form.Text>Shift+Enter to start a new line</Form.Text> : ''}
+                </Form.Group></div>
+            }
+            {
+                sectionData.subsections?.map((_: NfoSubsection, i: number) => {
+                    return <NfoFormSubsection key={i} index={props.index} subindex={i} maxSubindex={sectionData.subsections.length - 1} />
+                })
+            }
+            {sectionData.uiAddSubsectionDisabled ? "" :
+                <Row className={sectionData.subsections?.length || 0 ? "mt-3" : ""}>
+                    <Col>
+                        <Button
+                            variant="primary"
+                            size="sm"
+                            data-index={props.index}
+                            onClick={eAddSubsection}
+                        >Add Subsection</Button>
+                    </Col>
+                </Row>
+            }
         </Card.Body>
     </Card>
 }
