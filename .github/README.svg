@@ -1,0 +1,94 @@
+<svg fill="none" viewBox="0 0 700 900" width="700" height="900" xmlns="http://www.w3.org/2000/svg">
+<foreignObject width="100%" height="100%">
+<div xmlns="http://www.w3.org/1999/xhtml">
+<style>
+				@keyframes gradientBackground {
+					0% { background-position: 0% 50%; }
+					50% { background-position: 100% 50%; }
+					100% { background-position: 0% 50%; }
+				}
+
+				@keyframes fadeIn {
+					0% { opacity: 0; }
+					100% { opacity: 1; }
+				}
+
+				.container {
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+					margin: 0;
+					width: 100%;
+					height: 900px;
+					background: linear-gradient(45deg, #510044, #4a0000, #006865, #009750);
+					background-size: 600% 100%;
+					animation: gradientBackground 30s ease infinite;
+					border-radius: 10px;
+					color: white;
+					text-align: start;
+				}
+
+				pre {
+					font-size: 14px;
+					font-family: "Courier New", monospace;
+					animation: 1s ease 0s normal forwards 1 fadeIn;
+				}
+</style>
+<div class="container">
+<pre>
+                                                                                
+                                                                                
+             ▄████████  ▄█     ███  ▄████████  ▄█    ███  ▄████████             
+            ███    ███ ███     ███ ███    ███ ███    ███ ███    ███             
+            ███    ███ ███     ███ ███    █▀  ███    ███ ▀██    ███             
+            ███    ███ ███     ███ ███        ███    ███   ▀   ▄███             
+          ▀███████████ ███     ███ ███        ██████████     ▄███▀              
+            ███    ███ ███     ███ ███    █▄   ▄▄    ███    ████                
+            ███    ███ ███ ▄█▄ ███ ███    ███ ███    ███     ▄▄                 
+             ▀█     ▀█  ▀███▀███▀   ▀██████▀   ▀██████▀     ▀██▀                
+                                                                                
+                                                                                
+                       -*- Are We Cool Yet? Presents -*-                        
+                                                                                
+################################################################################
+#                                                                              #
+#                             AWCY? NFO Generator                              #
+#                  The Premium Enterprise-Grade NFO Generator                  #
+#                                    0.8.3                                     #
+#                                                                              #
+################################################################################
+#                            /X&gt; Release Notes &lt;X\                             #
+################################################################################
+#                                                                              #
+#                                 Hello World!                                 #
+#                                                                              #
+################################################################################
+#                               /X&gt; Credits &lt;X\                                #
+################################################################################
+#                                                                              #
+#                          [-+ Brought to you by +-]                           #
+#                                                                              #
+#                                  dimmadong                                   #
+#                                                                              #
+#                           [-+ With the help of +-]                           #
+#                                                                              #
+#                                    recce                                     #
+#                                                                              #
+#                         [-+ Additional thanks to +-]                         #
+#                                                                              #
+#                                   Mom, and                                   #
+#                                                                              #
+#                       the entire Are We Cool Yet? team                       #
+#                                                                              #
+################################################################################
+#                                                                              #
+#                 -`-,-{@  AWCY? - Stronger Together  @}-,-`-                  #
+#                          (oven appreciation group)                           #
+#                   Join us at: https://www.AreWeCoolYet.WTF                   #
+#                                                                              #
+################################################################################
+</pre>
+</div>
+</div>
+</foreignObject>
+</svg>
