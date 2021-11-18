@@ -5,7 +5,7 @@ interface NfoProps {
 
 const style = {
     lineHeight: 'initial',
-    fontFamily: "Courier New",
+    fontFamily: "Courier New, monospace",
     textShadow: "0px 0px 40px #7F7F7F40"
 };
 
