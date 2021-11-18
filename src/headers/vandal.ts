@@ -1,3 +1,4 @@
+// Font: Graffiti, Smush(R), Smush(R)
 export const vandal = String.raw`
          _____                  __      __                   
         /  _  \_______  ____   /  \    /  \ ____             

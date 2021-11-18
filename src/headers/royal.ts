@@ -1,3 +1,5 @@
+// Font: Elite, Smush(U), modified
+// Font: ANSI Shadow
 export const royal = String.raw`
  ▄▄▄·▄▄▄ ▄▄▄ .    ▄▄▌ ▐ ▄▄▄▄ .     ▄▄·          ▄▄▌     ▄· ▄▄▄▄ ▄▄▄▄▄
 ▐█ ▀█▀▄ █▀▄.▀·    ██· █▌▐▀▄.▀·    ▐█ ▌▪    ▪    ██•    ▐█▪██▀▄.▀•██  

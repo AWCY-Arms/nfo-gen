@@ -16,7 +16,7 @@ releaseNotes.sectionData.text = ["Hello World!"]
 
 export const nfoGen: NfoData = {
     dataVersion: 1,
-    header: "Bloody",
+    header: "Delta",
     headerAlign: "center",
     title: "AWCY? NFO Generator",
     description: "The Premium Enterprise-Grade NFO Generator",

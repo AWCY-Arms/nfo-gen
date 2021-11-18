@@ -1,3 +1,4 @@
+// Font: Stronger Than All, modified
 export const chilled = String.raw`
      .______           ___ ._______ ____   ____ ____ ._    
      :      \ .___    |   |:_.  ___\\   \_/   //  _    :   
