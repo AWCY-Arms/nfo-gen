@@ -1,3 +1,33 @@
 // @import "bootstrap/scss/bootstrap";
 
 @import "bootstrap-dark-5/dist/css/bootstrap-dark";
+
+@keyframes fadeIn{
+    0% {
+        filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0));
+    }
+    100% {
+        filter: drop-shadow(0px 0px 10px #3acb);
+    }
+}
+
+@keyframes darkCool {
+    0% {
+        filter: drop-shadow(0px 0px 10px rgba(221, 160, 46, 0.7));
+    }
+    33% {
+        filter: drop-shadow(0px 0px 10px #3acb);
+    }
+    67% {
+        filter: drop-shadow(0px 0px 10px rgba(128, 0, 0, 0.75));
+    }
+    100% {
+        filter: drop-shadow(0px 0px 10px rgba(221, 160, 46, 0.7));
+    }
+}
+
+@media(prefers-color-scheme: dark) {
+    pre {
+        animation: 120s darkCool 300s forwards infinite, 30s fadeIn 300s;
+    }
+}

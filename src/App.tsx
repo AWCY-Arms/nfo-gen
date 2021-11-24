@@ -49,7 +49,7 @@ function App() {
     const nfoText = renderNfo(nfoData);
     return <Container fluid>
         <Row>
-            <Col sm="12" xl="6" className="border-end" style={{ minHeight: "100vh" }}>
+            <Col sm="12" xl="6" style={{ height: "100vh", overflowY: "scroll" }}>
                 <div className="mx-3 my-3">
                     <Row className="mb-3">
                         <Col>
@@ -69,7 +69,7 @@ function App() {
                                     <OptionsJson />
                                 </Tab>
                                 <Tab eventKey="nfo" title="NFO" tabClassName="d-xl-none">
-                                    <div className="d-xl-none">
+                                    <div className="d-xl-none mx-auto" style={{ width: "fit-content" }}>
                                         <Nfo id="content0" text={nfoText} />
                                         <CopyNfo contentId="content0" />
                                     </div>
@@ -79,8 +79,8 @@ function App() {
                     </Row>
                 </div>
             </Col>
-            <Col sm="12" xl="6" className="border-start d-none d-xl-block" style={{ minHeight: "100vh" }}>
-                <div className="my-3">
+            <Col sm="12" xl="6" className="d-none d-xl-block" style={{ height: "100vh", overflowY: "scroll" }}>
+                <div className="my-3 mx-auto" style={{ width: "fit-content" }}>
                     <Nfo id="content1" text={nfoText} />
                     <CopyNfo contentId="content1" />
                 </div>
