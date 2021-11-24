@@ -32,6 +32,7 @@
 					font-size: 14px;
 					font-family: "Courier New", monospace;
 					animation: 1s ease 0s normal forwards 1 fadeIn;
+					filter: drop-shadow(0px 0px 10px #0000007F);
 				}
 </style>
 <div class="container">

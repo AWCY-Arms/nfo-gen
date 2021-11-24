@@ -3,6 +3,6 @@ export default function deepClone<T>(oldObject: T): T {
     return JSON.parse(JSON.stringify(oldObject));
 }
 
-export interface IMap {
-    [key: string]: any,
+export interface IMap<T = any> {
+    [key: string]: T,
 }

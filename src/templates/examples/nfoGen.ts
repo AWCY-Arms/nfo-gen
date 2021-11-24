@@ -6,13 +6,14 @@ import packageJson from '../../../package.json';
 
 
 const credits = deepClone(defaultNfoSectionCredits);
-credits.sectionData.subsections[0].style = undefined
+credits.sectionData.subsections[0].textStyle = "center"
 credits.sectionData.subsections[0].text = ["dimmadong"]
 credits.sectionData.subsections[1].text = ["recce"]
-credits.sectionData.subsections[2].text = ["Mom", "Ferus"]
+credits.sectionData.subsections[2].text = ["Mom", "Darren", "Ferus"]
 
 const releaseNotes = deepClone(defaultNfoSectionReleaseNotes)
-releaseNotes.sectionData.text = ["Hello World!"]
+releaseNotes.sectionData.subsections[0].text[0] = "Hello World!";
+releaseNotes.uiRemoveDisabled = true;
 
 export const nfoGen: NfoData = {
     dataVersion: 1,

@@ -4,7 +4,6 @@ import { formatJson, NfoData, NfoSection, NfoSubsection, readConfig, TextAlign }
 import sampleTemplates from '../../templates/examples';
 import defaultNfoData from '../../templates/examples/default';
 import { blankNfoSectionData, blankNfoSubsectionData } from '../../templates/partials/blank';
-import defaultNfoSectionCredits from '../../templates/partials/credits';
 
 
 interface NfoState {
@@ -33,17 +32,6 @@ export const nfoSlice = createSlice({
             const targetValue: string = action.payload.targetValue;
             let section;
             switch (targetName) {
-                case "sectionType":
-                    switch (targetValue) {
-                        case "credits":
-                            section = defaultNfoSectionCredits;
-                            break;
-                        default:
-                            section = blankNfoSectionData;
-                            break;
-                    }
-                    state.nfoData.content[index] = deepClone(section);
-                    break;
                 case "subheader":
                     if (subindex !== null) {
                         section = state.nfoData.content[index].sectionData.subsections![subindex] as NfoSubsection;
@@ -54,18 +42,12 @@ export const nfoSlice = createSlice({
                     if (subindex !== null) {
                         section = state.nfoData.content[index].sectionData.subsections![subindex] as NfoSubsection;
                         section[targetName] = targetValue.split('\n')
-                    } else {
-                        section = state.nfoData.content[index] as NfoSection;
-                        section.sectionData[targetName] = targetValue.split('\n');
                     }
                     break;
-                case "textAlign":
+                case "textStyle":
                     if (subindex !== null) {
                         section = state.nfoData.content[index].sectionData.subsections![subindex] as NfoSubsection;
                         section[targetName] = targetValue as TextAlign;
-                    } else {
-                        section = state.nfoData.content[index] as NfoSection;
-                        section.sectionData[targetName] = targetValue as TextAlign;
                     }
                     break;
                 default:

@@ -8,7 +8,7 @@ import { IMap } from './helpers';
 
 
 // See https://github.com/patorjk/figlet.js and http://patorjk.com/software/taag/ for more
-export const headers: IMap = {
+export const headers: IMap<string> = {
     'Bloody': bloody,
     'Chilled': chilled,
     'Delta': delta,
@@ -16,6 +16,8 @@ export const headers: IMap = {
     'Royal': royal,
     'Vandal': vandal,
 };
+
+export const headerKeys = Object.keys(headers) as Header[];
 
 export type Header = "Bloody" | "Chilled" | "Delta" | "Poki"| "Royal" | "Vandal";
 

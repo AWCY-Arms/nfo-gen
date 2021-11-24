@@ -1,12 +1,13 @@
 import { Button, Card, Col, Form, Row } from 'react-bootstrap';
 import { useAppSelector } from './app/hooks';
 import { eAddSection, eHandleInputChange } from './features/nfo/Nfo';
-import { headers } from './headers';
+import { headerKeys } from './headers';
 import { NfoFormSection } from './NfoFormSection';
 import { NfoSection } from './NfoWriter';
+import { defaultTextWidth } from './NfoWriterSettings';
 
 
-const headerOptions = Object.keys(headers).map((e, i) => {
+const headerOptions = headerKeys.map((e, i) => {
     return <option key={i} value={e}>{e}</option>
 })
 
@@ -77,7 +78,7 @@ function NfoForm() {
                                     placeholder="Title"
                                     onChange={eHandleInputChange}
                                     value={nfoData.title}
-                                    maxLength={76}
+                                    maxLength={defaultTextWidth}
                                 />
                             </Col>
                         </Row>
@@ -104,7 +105,7 @@ function NfoForm() {
                                     placeholder="1.0.0"
                                     onChange={eHandleInputChange}
                                     value={nfoData.version}
-                                    maxLength={76}
+                                    maxLength={defaultTextWidth}
                                 />
                             </Col>
                         </Row>

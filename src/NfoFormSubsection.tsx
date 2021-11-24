@@ -1,6 +1,7 @@
 import { Button, Card, Col, FloatingLabel, Form, Row } from "react-bootstrap";
 import { useAppSelector } from "./app/hooks";
 import { eDelSubsection, eHandleContentChange } from "./features/nfo/Nfo";
+import { textStyles } from "./NfoWriter";
 
 
 interface NfoFormSubsectionProps {
@@ -8,6 +9,10 @@ interface NfoFormSubsectionProps {
     subindex: number,
     maxSubindex: number,
 }
+
+const styles = Object.keys(textStyles).filter((x: string) => { return textStyles[x].hidden !== true }).map((key: string, i: number) => {
+    return <option key={i} value={key}>{textStyles[key]["name"]}</option>
+});
 
 export function NfoFormSubsection(props: NfoFormSubsectionProps) {
     const subsection = useAppSelector(state => state.nfoConfig.nfoData.content[props.index].sectionData.subsections[props.subindex]);
@@ -44,22 +49,20 @@ export function NfoFormSubsection(props: NfoFormSubsectionProps) {
                     >Remove Subsection</Button>
                 </Col>
             </Row>
-            {subsection.uiTextAlignHide ? "" :
+            {subsection.uiTextStyleHide ? "" :
                 <Row className="mb-3">
-                    <Form.Label column="sm" lg="2">Text Align</Form.Label>
+                    <Form.Label column="sm" lg="2">Text Style</Form.Label>
                     <Col>
                         <Form.Select
-                            name="textAlign"
+                            name="textStyle"
                             size="sm"
                             onChange={eHandleContentChange}
                             data-index={props.index}
                             data-index2={props.subindex}
-                            value={subsection.textAlign}
-                            disabled={subsection.uiTextAlignDisabled}
+                            value={subsection.textStyle}
+                            disabled={subsection.uiTextStyleDisabled}
                         >
-                            <option value="left">Left</option>
-                            <option value="center">Center</option>
-                            <option value="right" disabled>Right</option>
+                            {styles}
                         </Form.Select>
                     </Col>
                 </Row>
@@ -76,6 +79,7 @@ export function NfoFormSubsection(props: NfoFormSubsectionProps) {
                     onChange={eHandleContentChange}
                     value={subsection.text?.join('\n')}
                 ></Form.Control>
+                {props.index === 0 && props.subindex === 0 ? <Form.Text>Shift+Enter to start a new line</Form.Text> : ""}
             </Form.Group>
         </Card.Body>
     </Card>

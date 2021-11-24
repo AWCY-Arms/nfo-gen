@@ -1,4 +1,5 @@
 import { exportedForTesting } from './NfoWriter';
+import { defaultTextWidth } from './NfoWriterSettings';
 
 
 const { formatText } = exportedForTesting;
@@ -17,6 +18,6 @@ test('formatText 1', () => {
 });
 
 test('formatText 2', () => {
-    const input = "#".repeat(76);
-    expect(formatText(input, 76)).toStrictEqual([input]);
+    const input = "#".repeat(defaultTextWidth);
+    expect(formatText(input, defaultTextWidth)).toStrictEqual([input]);
 });
