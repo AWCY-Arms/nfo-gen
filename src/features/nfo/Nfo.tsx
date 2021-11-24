@@ -29,6 +29,8 @@ export const eLoadTemplate = (e: React.ChangeEvent<HTMLSelectElement>) => {
     store.dispatch(loadTemplate({
         value: e.target.value,
     }));
+    e.target.value = "";
+    e.target.blur();
 }
 
 export const eHandleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {

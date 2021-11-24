@@ -58,8 +58,8 @@ export const nfoSlice = createSlice({
             state.nfoJson = formatJson(state.nfoData);
         },
         loadTemplate: (state, action) => {
-            const config: NfoData = sampleTemplates[action.payload.value][1];
-            state.nfoData = config;
+            const config: NfoData | Function = sampleTemplates[action.payload.value][1];
+            state.nfoData = typeof config === "function" ? config() : config;
             state.nfoJson = formatJson(state.nfoData);
         },
         handleUpload: (state, action) => {
