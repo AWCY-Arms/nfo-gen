@@ -13,6 +13,7 @@ module.exports = {
             /btn-primary/,
             /btn-danger/,
             /btn-sm/,
+            /btn-link/,
             /nav/,
             /form-control/,
             /form-control-sm/,

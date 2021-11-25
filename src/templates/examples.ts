@@ -6,7 +6,7 @@ import nfoGen from './examples/nfoGen';
 
 export const sampleTemplates: IMap = {
     "default": ["Default", defaultNfoData],
-    "loremIpsum": ["Lorem Ipsum", loremIpsum],
+    "loremIpsum": ["Lorem ipsum", loremIpsum],
     "gen": ["AWCY? NFO Generator", nfoGen],
 
 }

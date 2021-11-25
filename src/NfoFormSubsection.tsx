@@ -1,6 +1,7 @@
 import { Button, Card, Col, FloatingLabel, Form, Row } from "react-bootstrap";
+import TextareaAutosize from 'react-textarea-autosize';
 import { useAppSelector } from "./app/hooks";
-import { eDelSubsection, eHandleContentChange } from "./features/nfo/Nfo";
+import { eDelSubsection, eHandleContentChange, eHandleInputFocus } from "./features/nfo/Nfo";
 import { textStyles } from "./NfoWriter";
 
 
@@ -30,8 +31,10 @@ export function NfoFormSubsection(props: NfoFormSubsectionProps) {
                                 data-index={props.index}
                                 data-index2={props.subindex}
                                 onChange={eHandleContentChange}
+                                onFocus={eHandleInputFocus}
+                                className="nfo highlight off"
                                 value={subsection.subheader}
-                                disabled={subsection.uiSubheaderDisabled}
+                                readOnly={subsection.uiSubheaderDisabled}
                             />
                         </FloatingLabel>
                     </Col>
@@ -70,14 +73,18 @@ export function NfoFormSubsection(props: NfoFormSubsectionProps) {
             <Form.Group>
                 <Form.Label>Text</Form.Label>
                 <Form.Control
-                    as="textarea"
+                    as={TextareaAutosize}
+                    minRows={2}
                     name="text"
                     size="sm"
                     placeholder="Text"
                     data-index={props.index}
                     data-index2={props.subindex}
                     onChange={eHandleContentChange}
+                    onFocus={eHandleInputFocus}
+                    className="nfo highlight off"
                     value={subsection.text?.join('\n')}
+                    style={{ resize: "none" }}
                 ></Form.Control>
                 {props.index === 0 && props.subindex === 0 ? <Form.Text>Shift+Enter to start a new line</Form.Text> : ""}
             </Form.Group>

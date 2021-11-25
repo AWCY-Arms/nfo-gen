@@ -1,6 +1,6 @@
 import { Button, Card, Col, FloatingLabel, Form, Row } from 'react-bootstrap';
 import { useAppSelector } from './app/hooks';
-import { eAddSubsection, eDelSection, eHandleContentChange, eMoveSection } from './features/nfo/Nfo';
+import { eAddSubsection, eDelSection, eHandleContentChange, eHandleInputFocus, eMoveSection } from './features/nfo/Nfo';
 import { NfoFormSubsection } from './NfoFormSubsection';
 import { NfoSubsection } from './NfoWriter';
 
@@ -26,8 +26,10 @@ export function NfoFormSection(props: NfoFormSectionProps) {
                             placeholder="Header"
                             data-index={props.index}
                             onChange={eHandleContentChange}
+                            onFocus={eHandleInputFocus}
+                            className="nfo highlight off"
                             value={section.header}
-                            disabled={section.uiHeaderDisabled}
+                            readOnly={section.uiHeaderDisabled}
                         />
                     </FloatingLabel>
                 </Col>

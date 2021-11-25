@@ -4,7 +4,7 @@ import store from "../../app/store";
 import { addSection, addSubsection, delSection, delSubsection, handleContentChange, handleInputChange, handleJsonChange, handleUpload, loadTemplate, moveSection } from "./nfoSlice";
 
 
-export const eHandleInputChange = (e: React.ChangeEvent<Element>)=> {
+export const eHandleInputChange = (e: React.ChangeEvent<Element>) => {
     const target = e.target as HTMLInputElement;
     store.dispatch(handleInputChange({
         targetName: target.name,
@@ -23,6 +23,9 @@ export const eHandleContentChange = (e: React.ChangeEvent<Element>) => {
         targetName: target.name,
         targetValue: target.value,
     }));
+    if (target.tagName === "TEXTAREA") {
+        target.style.height = target.scrollHeight + "px";
+    }
 }
 
 export const eLoadTemplate = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -44,7 +47,7 @@ export const eHandleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         }));
     };
     if (selectedFile) {
-      reader.readAsText(selectedFile);
+        reader.readAsText(selectedFile);
     }
     e.target.value = '';
 }
@@ -97,4 +100,55 @@ export const eDelSubsection = (e: React.MouseEvent) => {
         index: _index,
         subindex,
     }));
+}
+
+const scrollAndHighlight = (el: Element | null) => {
+    if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
+        el.classList.remove('off');
+        setTimeout(() => {
+            el.classList.add('off');
+        }, 2000);
+    }
+}
+
+export const eHandleInputFocus = (e: React.FocusEvent) => {
+    const visibleNfo = store.getState().app.nfo;
+    if (visibleNfo !== 1) return;
+
+    const { index, index2, section } = (e.target as HTMLInputElement).dataset;
+    let elId;
+    if (section) {
+        elId = "content" + visibleNfo + "-" + section;
+    } else {
+        const name = (e.target as HTMLInputElement).name;
+        elId = "content" + visibleNfo + "-section-" + index + (index2 !== undefined ? "-" + index2 : "") + (name?.indexOf("header") !== -1 ? "-h" : "");
+    }
+    scrollAndHighlight(document.getElementById(elId));
+}
+
+export const eHandleClickNfo = (e: React.MouseEvent) => {
+    const [, sectionType, i1, i2, h] = (e.target as HTMLElement).id.split('-');
+    let selector;
+    if (sectionType === "main") {
+        selector = "[data-section=main]";
+    } else {
+        selector = "[data-index=\"" + i1 + "\"]"
+        switch (i2) {
+            case undefined:
+                break;
+            case "h":
+                selector = "input" + selector;
+                break;
+            default:
+                selector += "[data-index2=\"" + i2 + "\"]";
+                break;
+        }
+        if (h) {
+            selector += "[name=\"subheader\"]";
+        } else if (i2 !== "h") {
+            selector = "textarea" + selector;
+        }
+    }
+    scrollAndHighlight(document.querySelector(selector));
 }

@@ -5,9 +5,6 @@ import defaultNfoSectionCredits from "../partials/credits";
 import defaultNfoSectionReleaseNotes from "../partials/releaseNotes";
 
 
-const releaseNotes = deepClone(defaultNfoSectionReleaseNotes)
-releaseNotes.uiRemoveDisabled = false;
-
 export const defaultNfoData: NfoData = {
     dataVersion: currentDataVersion,
     header: "Bloody",
@@ -16,7 +13,7 @@ export const defaultNfoData: NfoData = {
     description: "Short Description",
     version: "1.0.0",
     content: [
-        releaseNotes,
+        deepClone(defaultNfoSectionReleaseNotes),
         deepClone(defaultNfoSectionCredits),
     ],
 }

@@ -7,7 +7,6 @@ import { Button } from "react-bootstrap";
 interface CopyNfoProps {
     copy: string,
     copied: string,
-    contentId: string,
 }
 
 interface CopyNfoState {
@@ -47,15 +46,15 @@ class CopyNfo extends React.Component<CopyNfoProps, CopyNfoState> {
         });
     }
     save() {
-        var blob = new Blob([document.getElementById(this.props.contentId)?.textContent || ''], { type: "text/plain;charset=utf-8" });
+        var blob = new Blob([document.getElementById('nfoText')?.textContent || ''], { type: "text/plain;charset=utf-8" });
         FileSaver.saveAs(blob, "README.txt");
     }
     componentWillUnmount() {
         if (this.state.clipboard) this.state.clipboard.destroy();
     }
     render() {
-        return <div>
-            <Button id="copy_nfo" variant="primary" data-action="copy" data-clipboard-target={"#" + this.props.contentId} className="me-1">{this.state.text}</Button>
+        return <div className="mb-3">
+            <Button id="copy_nfo" variant="primary" data-action="copy" data-clipboard-target="#nfoText" className="me-1">{this.state.text}</Button>
             <Button variant="primary" onClick={this.save}>Download</Button>
         </div>
     }

@@ -65,8 +65,7 @@ export const nfoSlice = createSlice({
         handleUpload: (state, action) => {
             const jsonText = action.payload.jsonText;
             try {
-                const config: NfoData = readConfig(JSON.parse(jsonText));
-                state.nfoData = config
+                state.nfoData = readConfig(JSON.parse(jsonText));
                 state.nfoJson = formatJson(state.nfoData);
             } catch (e) {
                 console.error('Invalid JSON');
@@ -81,6 +80,9 @@ export const nfoSlice = createSlice({
             state.nfoJson = action.payload.value;
         },
         addSection: (state) => {
+            if (!state.nfoData.content) {
+                state.nfoData = deepClone(defaultNfoData);
+            }
             state.nfoData.content.push(deepClone(blankNfoSectionData));
             state.nfoJson = formatJson(state.nfoData);
         },

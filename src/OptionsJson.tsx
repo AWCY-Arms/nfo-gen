@@ -56,7 +56,7 @@ function OptionsJson() {
         <Row>
             <Col xs="12" sm="6">
                 <Form.Group className="mb-3">
-                    <Form.Label>Templates</Form.Label>
+                    <Form.Label>Sample Templates</Form.Label>
                     <Form.Select name="loadTemplate" size="sm" onChange={eLoadTemplate} value="">
                         <option value="" />
                         {templates}

@@ -1,10 +1,11 @@
 import { Button, Card, Col, Form, Row } from 'react-bootstrap';
 import { useAppSelector } from './app/hooks';
-import { eAddSection, eHandleInputChange } from './features/nfo/Nfo';
+import { eAddSection, eHandleInputChange, eHandleInputFocus } from './features/nfo/Nfo';
 import { headerKeys } from './headers';
 import { NfoFormSection } from './NfoFormSection';
 import { NfoSection } from './NfoWriter';
 import { defaultTextWidth } from './NfoWriterSettings';
+import ReturnToTop from './ReturnToTop';
 
 
 const headerOptions = headerKeys.map((e, i) => {
@@ -20,16 +21,14 @@ function NfoForm() {
                     <Card.Body>
                         <Card.Title>
                             <Row>
-                                <Col>
-                                    Header
-                                </Col>
+                                <Col>Header</Col>
                             </Row>
                         </Card.Title>
                         <Row>
                             <Col xs={12} md={6}>
                                 <Form.Group as={Col}>
                                     <Row className="mb-3">
-                                        <Form.Label >Image</Form.Label>
+                                        <Form.Label>Image</Form.Label>
                                         <Col>
                                             <Form.Select name="header" size="sm" onChange={eHandleInputChange} value={nfoData.header}>
                                                 {headerOptions}
@@ -46,7 +45,7 @@ function NfoForm() {
                                             <Form.Select name="headerAlign" size="sm" onChange={eHandleInputChange} value={nfoData.headerAlign}>
                                                 <option value="left">Left</option>
                                                 <option value="center">Center</option>
-                                                <option value="right" disabled>Right</option>
+                                                <option value="right">Right</option>
                                             </Form.Select>
                                         </Col>
                                     </Row>
@@ -59,13 +58,11 @@ function NfoForm() {
         </Row >
         <Row className="mb-3">
             <Col>
-                <Card>
+                <Card data-section="main" className="nfo highlight off">
                     <Card.Body>
                         <Card.Title>
                             <Row>
-                                <Col>
-                                    Main
-                                </Col>
+                                <Col>Main</Col>
                             </Row>
                         </Card.Title>
                         <Row className="mb-3">
@@ -77,6 +74,8 @@ function NfoForm() {
                                     name="title"
                                     placeholder="Title"
                                     onChange={eHandleInputChange}
+                                    onFocus={eHandleInputFocus}
+                                    data-section="main"
                                     value={nfoData.title}
                                     maxLength={defaultTextWidth}
                                 />
@@ -91,6 +90,8 @@ function NfoForm() {
                                     name="description"
                                     placeholder="Description"
                                     onChange={eHandleInputChange}
+                                    onFocus={eHandleInputFocus}
+                                    data-section="main"
                                     value={nfoData.description}
                                 />
                             </Col>
@@ -104,6 +105,8 @@ function NfoForm() {
                                     name="version"
                                     placeholder="1.0.0"
                                     onChange={eHandleInputChange}
+                                    onFocus={eHandleInputFocus}
+                                    data-section="main"
                                     value={nfoData.version}
                                     maxLength={defaultTextWidth}
                                 />
@@ -124,17 +127,15 @@ function NfoForm() {
                                 </Col>
                             </Row>
                         </Card.Title>
-                        <div id="sections">
-                            {
-                                nfoData.content?.map((e: NfoSection, i: number) => {
-                                    return <NfoFormSection
-                                        key={i}
-                                        index={i}
-                                        maxIndex={nfoData.content.length - 1}
-                                    />
-                                })
-                            }
-                        </div>
+                        {
+                            nfoData.content?.map((e: NfoSection, i: number) => {
+                                return <NfoFormSection
+                                    key={i}
+                                    index={i}
+                                    maxIndex={nfoData.content.length - 1}
+                                />
+                            })
+                        }
                         <Row>
                             <Col>
                                 <Button variant="primary" size="sm" onClick={eAddSection}>Add a Section</Button>
@@ -144,6 +145,7 @@ function NfoForm() {
                 </Card>
             </Col>
         </Row>
+        <ReturnToTop id="leftCol"/>
     </Form >
 }
 

@@ -7,6 +7,7 @@ import { blankNfoSectionData } from "../partials/blank";
 import defaultNfoSectionCredits from "../partials/credits";
 import defaultNfoSectionReleaseNotes from "../partials/releaseNotes";
 
+
 function randInt(max: number) {
     return Math.floor(Math.random() * max);
 }
@@ -58,7 +59,7 @@ export const loremIpsumNfo = (): NfoData => {
         dataVersion: currentDataVersion,
         header: header,
         headerAlign: "center",
-        title: loremIpsum({ count: 3, units: "words" }),
+        title: loremIpsum({ count: randInt(5), units: "words" }),
         description: loremIpsum({ count: 1, units: "sentences", sentenceLowerBound: 10, sentenceUpperBound: 12 }),
         version: randInt(10) + "." + randInt(50) + "." + randInt(100),
         content: [

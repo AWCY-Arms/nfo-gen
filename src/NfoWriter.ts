@@ -194,20 +194,20 @@ function renderList(lines: string[], sec: NfoSubsection) {
     }
 }
 
-function renderSection(lines: string[], content: NfoSection): void {
+function renderSection(sections: IMap<string[]>, content: NfoSection, cIndex: number): void {
     const data = content.sectionData as NfoSectionData;
     if (!data) return;
     if (typeof content.header !== 'string') return;
 
-    data.subsections?.forEach((el, i) => {
+    data.subsections?.forEach((el, sIndex) => {
         if (el.subheader && typeof el.subheader === "string") {
-            lines.push(lineEmpty);
-            lines.push(...borderText(centerHeader(el.subheader, subSectionHeaderL, subSectionHeaderR)));
+            sections["section-" + cIndex + "-" + sIndex + "-h"] = [
+                ...borderText(centerHeader(el.subheader, subSectionHeaderL, subSectionHeaderR)),
+                lineEmpty,
+            ];
         }
+        const lines: string[] = [];
         if (el.text && typeof el.text === "object" && el.text.join() !== "") {
-            if (typeof el.textStyle !== "string") return;
-            lines.push(lineEmpty);
-
             switch (el.textStyle) {
                 case "twoCol":
                     renderTwoCol(lines, el);
@@ -235,7 +235,7 @@ function renderSection(lines: string[], content: NfoSection): void {
                     break;
                 case "credits3":
                     let additionalCreditsText;
-                    const credits4 = (data.subsections[i + 1]?.textStyle === "credits4");
+                    const credits4 = (data.subsections[sIndex + 1]?.textStyle === "credits4");
                     switch (el.text.length) {
                         case 1:
                             additionalCreditsText = el.text[0];
@@ -271,45 +271,71 @@ function renderSection(lines: string[], content: NfoSection): void {
                     }));
                     break;
             }
+            lines.push(lineEmpty);
+        }
+        if (lines.length) {
+            sections["section-" + cIndex + "-" + sIndex] = lines;
         }
     });
-
-    lines.push(lineEmpty);
 }
 
-export function renderNfo(options: NfoData) {
-    let lines: string[] = [
-        lineBlank,
-        ...horizontalAlign((headers)[options.header], options.headerAlign, defaultNfoWidth),
-        lineBlank,
-        lineIntro,
-        lineBlank,
+export function convertToSections(options: NfoData) {
+    const sections: IMap<string[]> = {
+        "header": [
+            lineBlank,
+            ...horizontalAlign((headers)[options.header], options.headerAlign, defaultNfoWidth),
+            lineBlank,
+        ],
+        "postheader": [
+            lineIntro,
+            lineBlank,
+            lineSep,
+        ],
+        "main": [
+            lineEmpty,
+            ...borderText(centerText(options.title)),
+            ...borderText(centerText(options.description)),
+            ...borderText(centerText(options.version)),
+            lineEmpty,
+        ],
+        "footer": [
+            lineSep,
+            lineEmpty,
+            ...borderText(centerText('-`-,-{@  AWCY? - Stronger Together  @}-,-`-')),
+            ...borderText(centerText('(oven appreciation group)')),
+            ...borderText(centerText('Join us at: https://www.AreWeCoolYet.WTF')),
+            lineEmpty,
+            lineSep,
+        ]
+    };
 
-        lineSep,
-        lineEmpty,
-        ...borderText(centerText(options.title)),
-        ...borderText(centerText(options.description)),
-        ...borderText(centerText(options.version)),
-        lineEmpty,
-        lineSep,
-    ];
+    options.content?.forEach((content, index) => {
+        const section = [
+            lineSep,
+            ...borderText(centerHeader(content.header || "")),
+            lineSep,
+            lineEmpty,
+        ];
+        sections["section-" + index + "-h"] = section;
 
-    options.content?.forEach((content) => {
-        lines.push(...borderText(centerHeader(content.header || "")));
-        lines.push(lineSep);
-        renderSection(lines, content);
-        lines.push(lineSep);
+        renderSection(sections, content, index);
     });
 
-    // Footer
-    lines.push(...borderText(centerText('')));
-    lines.push(...borderText(centerText('-`-,-{@  AWCY? - Stronger Together  @}-,-`-')));
-    lines.push(...borderText(centerText('(oven appreciation group)')));
-    lines.push(...borderText(centerText('Join us at: https://www.AreWeCoolYet.WTF')));
-    lines.push(...borderText(centerText('')));
-    lines.push(lineSep);
+    return sections;
+}
 
-    return lines.join('\n');
+export function renderToText(sections: IMap<string[]>): string {
+    return [
+        ...sections["header"],
+        ...sections["postheader"],
+        ...sections["main"],
+        ...Object.keys(sections).filter(k => k.startsWith('section-')).flatMap(k => sections[k]),
+        ...sections["footer"],
+    ].join("\n")
+}
+
+export function renderNfo(nfoData: NfoData) {
+    return renderToText(convertToSections(nfoData));
 }
 
 export function formatJson(obj: any) {

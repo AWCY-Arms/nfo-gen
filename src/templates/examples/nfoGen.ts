@@ -19,7 +19,7 @@ export const nfoGen: NfoData = {
     dataVersion: 1,
     header: "Delta",
     headerAlign: "center",
-    title: "AWCY? NFO Generator",
+    title: "AWCY? Readme Generator",
     description: "The Premium Triple-Distilled Enterprise-Grade NFO Generator for the Sweaty and Moist Yet Sophisticated Artist who needed their README done yesterday",
     version: packageJson.version,
     content: [

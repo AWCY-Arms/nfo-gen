@@ -1,6 +1,6 @@
 {
   "name": "awcy-readme-generator",
-  "version": "0.9.0",
+  "version": "0.10.1",
   "private": true,
   "dependencies": {
     "@monaco-editor/react": "^4.3.1",
@@ -21,6 +21,7 @@
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.6",
     "react-scripts": "4.0.3",
+    "react-textarea-autosize": "^8.3.3",
     "typescript": "^4.4.4",
     "typescript-json-schema": "^0.51.0"
   },
