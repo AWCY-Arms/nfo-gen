@@ -1,6 +1,7 @@
 import { editor } from "monaco-editor";
 import React from "react";
 import store from "../../app/store";
+import { setLastInput } from "../app/appSlice";
 import { addSection, addSubsection, delSection, delSubsection, handleContentChange, handleInputChange, handleJsonChange, handleUpload, loadTemplate, moveSection } from "./nfoSlice";
 
 
@@ -113,27 +114,31 @@ const scrollAndHighlight = (el: Element | null) => {
 }
 
 export const eHandleInputFocus = (e: React.FocusEvent) => {
-    const visibleNfo = store.getState().app.nfo;
-    if (visibleNfo !== 1) return;
-
+    const state = store.getState();
+    const visibleNfo = state.app.nfo;
+    const lastInput = state.app.lastInput;
     const { index, index2, section } = (e.target as HTMLInputElement).dataset;
     let elId;
     if (section) {
-        elId = "content" + visibleNfo + "-" + section;
+        elId = section;
     } else {
         const name = (e.target as HTMLInputElement).name;
-        elId = "content" + visibleNfo + "-section-" + index + (index2 !== undefined ? "-" + index2 : "") + (name?.indexOf("header") !== -1 ? "-h" : "");
+        elId = "section-" + index + (index2 !== undefined ? "-" + index2 : "") + (name?.indexOf("header") !== -1 ? "-h" : "");
     }
-    scrollAndHighlight(document.getElementById(elId));
+    if (elId !== lastInput) {
+        store.dispatch(setLastInput({ lastInput: elId }));
+        if (visibleNfo !== 1) return;
+        scrollAndHighlight(document.getElementById("content" + visibleNfo + "-" + elId));
+    }
 }
 
 export const eHandleClickNfo = (e: React.MouseEvent) => {
     const [, sectionType, i1, i2, h] = (e.target as HTMLElement).id.split('-');
     let selector;
     if (sectionType === "main") {
-        selector = "[data-section=main]";
+        selector = `[data-section="main"]`;
     } else {
-        selector = "[data-index=\"" + i1 + "\"]"
+        selector = `[data-index="${i1}"]`;
         switch (i2) {
             case undefined:
                 break;
@@ -141,11 +146,11 @@ export const eHandleClickNfo = (e: React.MouseEvent) => {
                 selector = "input" + selector;
                 break;
             default:
-                selector += "[data-index2=\"" + i2 + "\"]";
+                selector += `[data-index2="${i2}"]`;
                 break;
         }
         if (h) {
-            selector += "[name=\"subheader\"]";
+            selector += `[name="subheader"]`;
         } else if (i2 !== "h") {
             selector = "textarea" + selector;
         }

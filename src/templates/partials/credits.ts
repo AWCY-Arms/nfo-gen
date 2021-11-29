@@ -8,7 +8,7 @@ export const defaultNfoSectionCredits: NfoSection = {
         subsections: [
             {
                 subheader: "Brought to you by",
-                text: ["You"],
+                text: [],
                 textStyle: "credits1",
                 uiRemoveDisabled: true,
                 uiSubheaderDisabled: true,
@@ -16,7 +16,7 @@ export const defaultNfoSectionCredits: NfoSection = {
             },
             {
                 subheader: "With the help of",
-                text: ["Thing 1", "Friend 2"],
+                text: [],
                 textStyle: "credits2",
                 uiRemoveDisabled: true,
                 uiSubheaderDisabled: true,

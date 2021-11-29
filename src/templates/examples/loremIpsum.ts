@@ -46,13 +46,13 @@ export const loremIpsumNfo = (): NfoData => {
     });
     sampleSection.sectionData.subsections.push({
         subheader: loremIpsum({ count: 3, units: "words" }),
-        text: Array.from(Array(10).keys()).map(() => { return loremIpsum({ count: 2, units: "sentences" }) }),
+        text: Array.from(Array(10).keys()).map(() => loremIpsum({ count: 2, units: "sentences" })),
         textStyle: "numList"
     });
 
     const credits = deepClone(defaultNfoSectionCredits);
     credits.sectionData.subsections[0].text = loremIpsum({ count: 3, units: "words" }).split(" ");
-    credits.sectionData.subsections[1].text = loremIpsum({ count: 6, units: "words" }).split(" ");
+    credits.sectionData.subsections[1].text = Array.from(Array(8).keys()).map(() => loremIpsum({ count: 2, units: "words" }));
     credits.sectionData.subsections[2].text = loremIpsum({ count: 12, units: "words" }).split(" ");
 
     return {

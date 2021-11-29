@@ -1,35 +1,37 @@
-import CopyNfo from './CopyNfo';
+import { useAppSelector } from './app/hooks';
 import { eHandleClickNfo } from "./features/nfo/Nfo";
-import { IMap } from "./helpers";
+import { convertToSections, getSeparators } from './NfoWriter';
 
 
 interface NfoProps {
     id: string,
-    sections: IMap<string[]>,
 }
 
 export function Nfo(props: NfoProps) {
-    return <div className="pt-3" id={props.id}>
-        <CopyNfo />
-        <div className="container-nfo">
-            <pre className="nfo highlight off" id={props.id + "-header"}>{props.sections["header"].join("\n")}</pre>
-            <pre className="nfo highlight off" id={props.id + "-postheader"}>{props.sections["postheader"].join("\n")}</pre>
-            <pre className="nfo highlight off" id={props.id + "-main"} onClick={eHandleClickNfo}>{props.sections["main"].join("\n")}</pre>
-            {
-                Object.keys(props.sections).filter(k => k.startsWith('section-')).map((k, i) => {
-                    return <pre
+    const sections = useAppSelector((state) => convertToSections(state.nfoConfig.nfoData));
+    const visibleNfo = useAppSelector((state) => state.app.nfo);
+
+    return <div id={props.id}>
+        <pre className="nfo highlight off" id={props.id + "-header"}>{sections["header"].join("\n")}</pre>
+        <pre className="nfo highlight off" id={props.id + "-postheader"}>{sections["postheader"].join("\n")}</pre>
+        <pre className="nfo highlight off" id={props.id + "-main"} onClick={eHandleClickNfo}>{sections["main"].join("\n")}</pre>
+        {
+            Object.keys(sections).filter(k => k.startsWith('section-')).map((k, i) => {
+                let content = sections[k].join("\n");
+                return <div key={i}>
+                    {getSeparators(k, content !== "").map((sep, j) => <pre className="nfo" key={j}>{sep}</pre>)}
+                    <pre
                         className="nfo highlight off"
-                        key={i}
                         id={props.id + "-" + k}
-                        onClick={eHandleClickNfo}
+                        onClick={visibleNfo ? eHandleClickNfo : undefined}
                     >
-                        {props.sections[k].join("\n")}
+                        {content}
                     </pre>
-                })
-            }
-            <pre className="nfo highlight off" id={props.id + "-footer"}>{props.sections["footer"].join("\n")}</pre>
-        </div>
-    </div >
+                </div>
+            })
+        }
+        <pre className="nfo highlight off" id={props.id + "-footer"}>{sections["footer"].join("\n")}</pre>
+    </div>
 }
 
 export default Nfo;

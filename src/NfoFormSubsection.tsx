@@ -11,9 +11,7 @@ interface NfoFormSubsectionProps {
     maxSubindex: number,
 }
 
-const styles = Object.keys(textStyles).filter((x: string) => { return textStyles[x].hidden !== true }).map((key: string, i: number) => {
-    return <option key={i} value={key}>{textStyles[key]["name"]}</option>
-});
+const styles = Object.keys(textStyles).filter((x: string) => textStyles[x].hidden !== true).map((key: string, i: number) => <option key={i} value={key}>{textStyles[key]["name"]}</option>);
 
 export function NfoFormSubsection(props: NfoFormSubsectionProps) {
     const subsection = useAppSelector(state => state.nfoConfig.nfoData.content[props.index].sectionData.subsections[props.subindex]);

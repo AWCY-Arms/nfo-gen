@@ -135,7 +135,7 @@ function rightText(text = "", length = defaultTextWidth): string[] {
 
 function horizontalAlign(text: string, align: TextAlign = "center", length?: number): string[] {
     switch (align) {
-        case 'center':
+        case "center":
             return centerText(text, length);
         case "right":
             return rightText(text, length);
@@ -194,18 +194,10 @@ function renderList(lines: string[], sec: NfoSubsection) {
     }
 }
 
-function renderSection(sections: IMap<string[]>, content: NfoSection, cIndex: number): void {
-    const data = content.sectionData as NfoSectionData;
-    if (!data) return;
-    if (typeof content.header !== 'string') return;
-
-    data.subsections?.forEach((el, sIndex) => {
-        if (el.subheader && typeof el.subheader === "string") {
-            sections["section-" + cIndex + "-" + sIndex + "-h"] = [
-                ...borderText(centerHeader(el.subheader, subSectionHeaderL, subSectionHeaderR)),
-                lineEmpty,
-            ];
-        }
+function addSection(sections: IMap<string[]>, content: NfoSection, cIndex: number): void {
+    sections["section-" + cIndex + "-h"] = [...borderText(centerHeader(content.header || ""))];
+    content.sectionData.subsections?.forEach((el, sIndex) => {
+        sections["section-" + cIndex + "-" + sIndex + "-h"] = (el.subheader && typeof el.subheader === "string") ? [...borderText(centerHeader(el.subheader, subSectionHeaderL, subSectionHeaderR))] : [];
         const lines: string[] = [];
         if (el.text && typeof el.text === "object" && el.text.join() !== "") {
             switch (el.textStyle) {
@@ -221,21 +213,24 @@ function renderSection(sections: IMap<string[]>, content: NfoSection, cIndex: nu
                     });
                     break;
                 case "credits2":
+                    let credits2;
                     switch (el.text.length) {
+                        // TODO try to not split a name into multiple lines
                         case 1:
-                            lines.push(...borderText(centerText(el.text[0])));
+                            credits2 = el.text[0];
                             break;
                         case 2:
-                            lines.push(...borderText(centerText(el.text.join(' and '))));
+                            credits2 = el.text.join(' and ');
                             break;
                         default:
-                            lines.push(...borderText(centerText(el.text.slice(0, -1).join(', ') + ", and " + el.text.slice(-1))));
+                            credits2 = el.text.slice(0, -1).join(', ') + ", and " + el.text.slice(-1);
                             break;
                     }
+                    lines.push(...borderText(centerText(credits2)));
                     break;
                 case "credits3":
                     let additionalCreditsText;
-                    const credits4 = (data.subsections[sIndex + 1]?.textStyle === "credits4");
+                    const credits4 = (content.sectionData.subsections[sIndex + 1]?.textStyle === "credits4");
                     switch (el.text.length) {
                         case 1:
                             additionalCreditsText = el.text[0];
@@ -271,7 +266,6 @@ function renderSection(sections: IMap<string[]>, content: NfoSection, cIndex: nu
                     }));
                     break;
             }
-            lines.push(lineEmpty);
         }
         if (lines.length) {
             sections["section-" + cIndex + "-" + sIndex] = lines;
@@ -290,15 +284,15 @@ export function convertToSections(options: NfoData) {
             lineIntro,
             lineBlank,
             lineSep,
+            lineEmpty,
         ],
         "main": [
-            lineEmpty,
             ...borderText(centerText(options.title)),
             ...borderText(centerText(options.description)),
             ...borderText(centerText(options.version)),
-            lineEmpty,
         ],
         "footer": [
+            lineEmpty,
             lineSep,
             lineEmpty,
             ...borderText(centerText('-`-,-{@  AWCY? - Stronger Together  @}-,-`-')),
@@ -310,32 +304,53 @@ export function convertToSections(options: NfoData) {
     };
 
     options.content?.forEach((content, index) => {
-        const section = [
-            lineSep,
-            ...borderText(centerHeader(content.header || "")),
-            lineSep,
-            lineEmpty,
-        ];
-        sections["section-" + index + "-h"] = section;
-
-        renderSection(sections, content, index);
+        addSection(sections, content, index);
     });
 
     return sections;
 }
 
-export function renderToText(sections: IMap<string[]>): string {
+export function getSeparators(sectionKey: string, hasContent: boolean) {
+    const [, , i2, h] = sectionKey.split("-");
+    if (i2 === "h") {
+        return [lineEmpty, lineSep];
+    } else if (i2 === "0") {
+        if (h === "h") {
+            if (hasContent) {
+                return [lineSep, lineEmpty];
+            }
+            return [lineSep];
+        }
+        if (hasContent) {
+            return [lineEmpty];
+        }
+    } else {
+        if (hasContent) {
+            return [lineEmpty];
+        }
+    }
+    return [];
+}
+
+export function renderToLines(subsection: string[], k: string) {
+    const hasContent = subsection.join("\n") !== ""
+    const lines = [...getSeparators(k, hasContent)];
+    if (hasContent) lines.push(...subsection);
+    return lines;
+}
+
+export function renderAllToLines(sections: IMap<string[]>) {
     return [
         ...sections["header"],
         ...sections["postheader"],
         ...sections["main"],
-        ...Object.keys(sections).filter(k => k.startsWith('section-')).flatMap(k => sections[k]),
+        ...Object.keys(sections).filter(k => k.startsWith('section-')).flatMap(k => renderToLines(sections[k], k)),
         ...sections["footer"],
-    ].join("\n")
+    ]
 }
 
 export function renderNfo(nfoData: NfoData) {
-    return renderToText(convertToSections(nfoData));
+    return renderAllToLines(convertToSections(nfoData)).join("\n");
 }
 
 export function formatJson(obj: any) {

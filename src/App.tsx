@@ -1,20 +1,21 @@
 import { useEffect } from 'react';
 import { Badge, Col, Container, Row, Stack, Tab, Tabs } from 'react-bootstrap';
 import packageJson from '../package.json';
+import About from './About';
 import './App.scss';
-import { useAppSelector } from './app/hooks';
 import store from './app/store';
+import CopyNfo from './CopyNfo';
+import CopyNfoText from './CopyNfoText';
 import { setNfo, updateDarkMode } from './features/app/appSlice';
 import Nfo from './Nfo';
 import NfoForm from './NfoForm';
-import { convertToSections, renderToText } from './NfoWriter';
 import OptionsJson from './OptionsJson';
 import ReturnToTop from './ReturnToTop';
 
 
 function updateDarkColorScheme() {
     const mode = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? 'dark' : 'light';
-    store.dispatch(updateDarkMode({ mode }))
+    store.dispatch(updateDarkMode({ mode }));
 }
 
 const tabsId = "tabs";
@@ -38,11 +39,8 @@ function App() {
             window.matchMedia("(min-width: 1200px)").addEventListener("change", updateCurrentTab);
         }
     });
-    const nfoData = useAppSelector((state) => state.nfoConfig.nfoData);
-    const nfoSections = convertToSections(nfoData);
-    const nfoText = renderToText(nfoSections);
     return <Container fluid>
-        <pre id="nfoText" style={{ position: "absolute", transform: "scale(0)", zIndex: -1 }}>{nfoText}</pre>
+        <CopyNfoText />
         <Row>
             <Col sm="12" xl="6" style={{ height: "100vh", overflowY: "scroll" }}>
                 <div id="leftCol" className="px-3 py-3">
@@ -59,15 +57,21 @@ function App() {
                             <Tabs defaultActiveKey="form" id={tabsId} className="mb-3">
                                 <Tab eventKey="form" title="Form">
                                     <NfoForm />
+                                    <ReturnToTop id="leftCol" />
                                 </Tab>
                                 <Tab eventKey="json" title="Save/Load">
                                     <OptionsJson />
                                 </Tab>
                                 <Tab eventKey="nfo" title="NFO" tabClassName="d-xl-none">
                                     <div className="d-xl-none mx-auto" style={{ width: "fit-content" }}>
-                                        <Nfo id="content0" sections={nfoSections} />
+                                        <CopyNfo />
+                                        <Nfo id="content0" />
                                         <ReturnToTop id="leftCol" />
                                     </div>
+                                </Tab>
+                                <Tab eventKey="about" title="About">
+                                    <About />
+                                    <ReturnToTop id="leftCol" />
                                 </Tab>
                             </Tabs>
                         </Col>
@@ -75,8 +79,9 @@ function App() {
                 </div>
             </Col>
             <Col sm="12" xl="6" className="d-none d-xl-block" style={{ height: "100vh", overflowY: "scroll" }}>
-                <div id="rightCol" className="mx-auto" style={{ width: "fit-content" }}>
-                    <Nfo id="content1" sections={nfoSections} />
+                <div id="rightCol" className="mx-auto pt-3" style={{ width: "fit-content" }}>
+                    <CopyNfo />
+                    <Nfo id="content1" />
                     <ReturnToTop id="rightCol" />
                 </div>
             </Col>

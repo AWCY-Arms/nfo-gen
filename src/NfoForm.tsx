@@ -5,7 +5,6 @@ import { headerKeys } from './headers';
 import { NfoFormSection } from './NfoFormSection';
 import { NfoSection } from './NfoWriter';
 import { defaultTextWidth } from './NfoWriterSettings';
-import ReturnToTop from './ReturnToTop';
 
 
 const headerOptions = headerKeys.map((e, i) => {
@@ -55,7 +54,7 @@ function NfoForm() {
                     </Card.Body>
                 </Card>
             </Col>
-        </Row >
+        </Row>
         <Row className="mb-3">
             <Col>
                 <Card data-section="main" className="nfo highlight off">
@@ -145,8 +144,7 @@ function NfoForm() {
                 </Card>
             </Col>
         </Row>
-        <ReturnToTop id="leftCol"/>
-    </Form >
+    </Form>
 }
 
 export default NfoForm;
