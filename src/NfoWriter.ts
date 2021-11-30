@@ -286,9 +286,13 @@ export function convertToSections(options: NfoData) {
             lineSep,
             lineEmpty,
         ],
-        "main": [
+        "title": [
             ...borderText(centerText(options.title)),
+        ],
+        "description": [
             ...borderText(centerText(options.description)),
+        ],
+        "version": [
             ...borderText(centerText(options.version)),
         ],
         "footer": [
@@ -343,7 +347,9 @@ export function renderAllToLines(sections: IMap<string[]>) {
     return [
         ...sections["header"],
         ...sections["postheader"],
-        ...sections["main"],
+        ...sections["title"],
+        ...sections["description"],
+        ...sections["version"],
         ...Object.keys(sections).filter(k => k.startsWith('section-')).flatMap(k => renderToLines(sections[k], k)),
         ...sections["footer"],
     ]

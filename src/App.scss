@@ -27,8 +27,14 @@
 }
 
 @media (prefers-color-scheme: dark) {
-    pre#header {
+    pre#content0-header,
+    pre#content1-header {
         animation: 120s darkCool 300s forwards infinite, 30s fadeIn 300s;
+    }
+
+    .form-control:disabled,
+    .form-control[readonly] {
+        background-color: #333;
     }
 }
 

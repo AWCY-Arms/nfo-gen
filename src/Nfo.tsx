@@ -12,9 +12,11 @@ export function Nfo(props: NfoProps) {
     const visibleNfo = useAppSelector((state) => state.app.nfo);
 
     return <div id={props.id}>
-        <pre className="nfo highlight off" id={props.id + "-header"}>{sections["header"].join("\n")}</pre>
-        <pre className="nfo highlight off" id={props.id + "-postheader"}>{sections["postheader"].join("\n")}</pre>
-        <pre className="nfo highlight off" id={props.id + "-main"} onClick={eHandleClickNfo}>{sections["main"].join("\n")}</pre>
+        {
+            ["header", "postheader", "title", "description", "version"].map((k, i) => {
+                return <pre key={i} className="nfo highlight off" id={props.id + "-" + k} onClick={eHandleClickNfo}>{sections[k].join("\n")}</pre>
+            })
+        }
         {
             Object.keys(sections).filter(k => k.startsWith('section-')).map((k, i) => {
                 let content = sections[k].join("\n");

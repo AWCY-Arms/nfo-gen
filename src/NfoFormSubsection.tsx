@@ -75,7 +75,7 @@ export function NfoFormSubsection(props: NfoFormSubsectionProps) {
                     minRows={2}
                     name="text"
                     size="sm"
-                    placeholder="Text"
+                    placeholder="Shift+Enter to start a new line"
                     data-index={props.index}
                     data-index2={props.subindex}
                     onChange={eHandleContentChange}
@@ -84,7 +84,6 @@ export function NfoFormSubsection(props: NfoFormSubsectionProps) {
                     value={subsection.text?.join('\n')}
                     style={{ resize: "none" }}
                 ></Form.Control>
-                {props.index === 0 && props.subindex === 0 ? <Form.Text>Shift+Enter to start a new line</Form.Text> : ""}
             </Form.Group>
         </Card.Body>
     </Card>

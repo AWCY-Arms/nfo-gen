@@ -29,7 +29,7 @@ function NfoForm() {
                                     <Row className="mb-3">
                                         <Form.Label>Image</Form.Label>
                                         <Col>
-                                            <Form.Select name="header" size="sm" onChange={eHandleInputChange} value={nfoData.header}>
+                                            <Form.Select name="header" size="sm" onChange={eHandleInputChange} value={nfoData.header} data-section="header" className="nfo highlight off">
                                                 {headerOptions}
                                             </Form.Select>
                                         </Col>
@@ -57,7 +57,7 @@ function NfoForm() {
         </Row>
         <Row className="mb-3">
             <Col>
-                <Card data-section="main" className="nfo highlight off">
+                <Card>
                     <Card.Body>
                         <Card.Title>
                             <Row>
@@ -74,9 +74,10 @@ function NfoForm() {
                                     placeholder="Title"
                                     onChange={eHandleInputChange}
                                     onFocus={eHandleInputFocus}
-                                    data-section="main"
+                                    data-section="title"
                                     value={nfoData.title}
                                     maxLength={defaultTextWidth}
+                                    className="nfo highlight off"
                                 />
                             </Col>
                         </Row>
@@ -90,8 +91,9 @@ function NfoForm() {
                                     placeholder="Description"
                                     onChange={eHandleInputChange}
                                     onFocus={eHandleInputFocus}
-                                    data-section="main"
+                                    data-section="description"
                                     value={nfoData.description}
+                                    className="nfo highlight off"
                                 />
                             </Col>
                         </Row>
@@ -105,9 +107,10 @@ function NfoForm() {
                                     placeholder="1.0.0"
                                     onChange={eHandleInputChange}
                                     onFocus={eHandleInputFocus}
-                                    data-section="main"
+                                    data-section="version"
                                     value={nfoData.version}
                                     maxLength={defaultTextWidth}
+                                    className="nfo highlight off"
                                 />
                             </Col>
                         </Row>

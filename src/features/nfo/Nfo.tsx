@@ -24,9 +24,6 @@ export const eHandleContentChange = (e: React.ChangeEvent<Element>) => {
         targetName: target.name,
         targetValue: target.value,
     }));
-    if (target.tagName === "TEXTAREA") {
-        target.style.height = target.scrollHeight + "px";
-    }
 }
 
 export const eLoadTemplate = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -135,9 +132,7 @@ export const eHandleInputFocus = (e: React.FocusEvent) => {
 export const eHandleClickNfo = (e: React.MouseEvent) => {
     const [, sectionType, i1, i2, h] = (e.target as HTMLElement).id.split('-');
     let selector;
-    if (sectionType === "main") {
-        selector = `[data-section="main"]`;
-    } else {
+    if (sectionType === "section") {
         selector = `[data-index="${i1}"]`;
         switch (i2) {
             case undefined:
@@ -154,6 +149,8 @@ export const eHandleClickNfo = (e: React.MouseEvent) => {
         } else if (i2 !== "h") {
             selector = "textarea" + selector;
         }
+    } else {
+        selector = `[data-section="${sectionType}"]`;
     }
     scrollAndHighlight(document.querySelector(selector));
 }
