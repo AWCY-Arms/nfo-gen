@@ -29,7 +29,15 @@ function NfoForm() {
                                     <Row className="mb-3">
                                         <Form.Label>Image</Form.Label>
                                         <Col>
-                                            <Form.Select name="header" size="sm" onChange={eHandleInputChange} value={nfoData.header} data-section="header" className="nfo highlight off">
+                                            <Form.Select
+                                                name="header"
+                                                size="sm"
+                                                onChange={eHandleInputChange}
+                                                onFocus={eHandleInputFocus}
+                                                value={nfoData.header}
+                                                data-section="header"
+                                                className="nfo highlight off"
+                                            >
                                                 {headerOptions}
                                             </Form.Select>
                                         </Col>

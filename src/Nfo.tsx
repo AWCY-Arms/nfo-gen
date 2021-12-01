@@ -12,8 +12,11 @@ export function Nfo(props: NfoProps) {
     const visibleNfo = useAppSelector((state) => state.app.nfo);
 
     return <div id={props.id}>
+        <div id={props.id + "-header-container"}>
+            <pre className="nfo highlight off" id={props.id + "-header"} onClick={eHandleClickNfo}>{sections["header"].join("\n")}</pre>
+        </div>
         {
-            ["header", "postheader", "title", "description", "version"].map((k, i) => {
+            ["postheader", "title", "description", "version"].map((k, i) => {
                 return <pre key={i} className="nfo highlight off" id={props.id + "-" + k} onClick={eHandleClickNfo}>{sections[k].join("\n")}</pre>
             })
         }
