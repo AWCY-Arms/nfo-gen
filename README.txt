@@ -18,7 +18,7 @@
 #     The Premium Triple-Distilled Enterprise-Grade NFO Generator for the      #
 #    Sweaty and Moist Yet Sophisticated Artist who needed their README done    #
 #                                  yesterday                                   #
-#                                    0.10.1                                    #
+#                                    0.11.0                                    #
 #                                                                              #
 ################################################################################
 #                            /X> Release Notes <X\                             #
@@ -40,7 +40,7 @@
 #                                                                              #
 #                         [-+ Additional thanks to +-]                         #
 #                                                                              #
-#                           Mom, Darren, Ferus, and                            #
+#                       Mom, Darren, Ferus, Edison, and                        #
 #                                                                              #
 #                       the entire Are We Cool Yet? team                       #
 #                                                                              #

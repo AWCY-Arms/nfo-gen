@@ -13,6 +13,16 @@ interface NfoFormSubsectionProps {
 
 const styles = Object.keys(textStyles).filter((x: string) => textStyles[x].hidden !== true).map((key: string, i: number) => <option key={i} value={key}>{textStyles[key]["name"]}</option>);
 
+function getTextStyleHelp(style: string): string {
+    if (style.indexOf("credits") === 0)
+        return "One name per line. ";
+    if (style === "twoCol")
+        return "Text for the left column goes on the first line.\nText for the right column starts on the second line.\n";
+    if (style === "numList")
+        return "Each list item should go on its own line. ";
+    return "";
+}
+
 export function NfoFormSubsection(props: NfoFormSubsectionProps) {
     const subsection = useAppSelector(state => state.nfoConfig.nfoData.content[props.index].sectionData.subsections[props.subindex]);
     return <Card key={props.subindex} className={props.maxSubindex === props.subindex ? "" : "mb-3"}>
@@ -75,7 +85,7 @@ export function NfoFormSubsection(props: NfoFormSubsectionProps) {
                     minRows={2}
                     name="text"
                     size="sm"
-                    placeholder="Shift+Enter to start a new line"
+                    placeholder={getTextStyleHelp(subsection.textStyle) + "Press Shift+Enter to start a new line."}
                     data-index={props.index}
                     data-index2={props.subindex}
                     onChange={eHandleContentChange}

@@ -1,11 +1,12 @@
-import { renderNfo } from "./NfoWriter";
+import NfoContent from "./NfoContent";
+import { convertToSections } from "./NfoWriter";
 import nfoGen from "./templates/examples/nfoGen";
 
 
-const aboutText = renderNfo(nfoGen);
+const aboutSections = convertToSections(nfoGen);
 
 export default function About() {
-    return <div className="my-3 mx-auto text-center" style={{ width: "fit-content" }}>
-        <pre className="nfo">{aboutText}</pre>
+    return <div className="mx-auto" style={{ width: "fit-content" }}>
+        <NfoContent id="credits" sections={aboutSections} isRightNfo={false} />
     </div>
 }

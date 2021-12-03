@@ -26,14 +26,18 @@
     }
 }
 
+div#credits-header-container > pre {
+    color: #a80c00;
+}
+
 $darkCoolDelay: 300s;
 @media (prefers-color-scheme: dark) {
     /* prettier-ignore */
     div#content0-header-container,
     div#content1-header-container {
-        animation:
+        animation: /* fadeIn should be 1/4 the duration of darkCool */
             120s darkCool $darkCoolDelay forwards infinite,
-            15s fadeIn $darkCoolDelay;
+            30s fadeIn $darkCoolDelay;
     }
 
     .form-control:disabled,
