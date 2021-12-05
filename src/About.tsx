@@ -1,9 +1,9 @@
 import NfoContent from "./NfoContent";
-import { convertToSections } from "./NfoWriter";
+import { convertToSectionMap } from "./NfoWriter";
 import nfoGen from "./templates/examples/nfoGen";
 
 
-const aboutSections = convertToSections(nfoGen);
+const aboutSections = convertToSectionMap(nfoGen);
 
 export default function About() {
     return <div className="mx-auto" style={{ width: "fit-content" }}>

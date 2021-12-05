@@ -6,7 +6,7 @@ import './App.scss';
 import store from './app/store';
 import CopyNfo from './CopyNfo';
 import CopyNfoText from './CopyNfoText';
-import { setNfo, updateDarkMode } from './features/app/appSlice';
+import { setIsRightNfo, updateDarkMode } from './features/app/appSlice';
 import Nfo from './Nfo';
 import NfoForm from './NfoForm';
 import OptionsJson from './OptionsJson';
@@ -19,10 +19,12 @@ function updateDarkColorScheme() {
 }
 
 const tabsId = "tabs";
+const leftNfoId = "content0";
+export const rightNfoId = "content1";
 
 function updateCurrentTab() {
-    const nfo = window.matchMedia && window.matchMedia("(min-width: 1200px)").matches ? 1 : 0;
-    store.dispatch(setNfo({ nfo }));
+    const isRightNfo = window.matchMedia && window.matchMedia("(min-width: 1200px)").matches;
+    store.dispatch(setIsRightNfo({ isRightNfo }));
 
     const tabIsNfo = document.getElementById(tabsId + '-tab-nfo')!.classList.contains('active');
     if (tabIsNfo) {
@@ -65,7 +67,7 @@ function App() {
                                 <Tab eventKey="nfo" title="NFO" tabClassName="d-xl-none">
                                     <div className="d-xl-none mx-auto" style={{ width: "fit-content" }}>
                                         <CopyNfo />
-                                        <Nfo id="content0" />
+                                        <Nfo id={leftNfoId} />
                                         <ReturnToTop id="leftCol" />
                                     </div>
                                 </Tab>
@@ -81,7 +83,7 @@ function App() {
             <Col sm="12" xl="6" className="d-none d-xl-block" style={{ height: "100vh", overflowY: "scroll" }}>
                 <div id="rightCol" className="mx-auto pt-3" style={{ width: "fit-content" }}>
                     <CopyNfo />
-                    <Nfo id="content1" />
+                    <Nfo id={rightNfoId} />
                     <ReturnToTop id="rightCol" />
                 </div>
             </Col>

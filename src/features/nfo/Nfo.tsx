@@ -1,8 +1,20 @@
 import { editor } from "monaco-editor";
 import React from "react";
+import { rightNfoId } from "../../App";
 import store from "../../app/store";
 import { setLastInput } from "../app/appSlice";
-import { addSection, addSubsection, delSection, delSubsection, handleContentChange, handleInputChange, handleJsonChange, handleUpload, loadTemplate, moveSection } from "./nfoSlice";
+import {
+    addSection,
+    addSubsection,
+    delSection,
+    delSubsection,
+    handleContentChange,
+    handleInputChange,
+    handleJsonChange,
+    handleUpload,
+    loadTemplate,
+    moveSection
+} from "./nfoSlice";
 
 
 export const eHandleInputChange = (e: React.ChangeEvent<Element>) => {
@@ -112,45 +124,43 @@ const scrollAndHighlight = (el: Element | null) => {
 
 export const eHandleInputFocus = (e: React.FocusEvent) => {
     const state = store.getState();
-    const visibleNfo = state.app.nfo;
+    const isRightNfo = state.app.isRightNfo;
     const lastInput = state.app.lastInput;
-    const { index, index2, section } = (e.target as HTMLInputElement).dataset;
-    let elId;
-    if (section) {
-        elId = section;
-    } else {
-        const name = (e.target as HTMLInputElement).name;
-        elId = "section-" + index + (index2 !== undefined ? "-" + index2 : "") + (name?.indexOf("header") !== -1 ? "-h" : "");
-    }
+    const { index, index2 } = (e.target as HTMLInputElement).dataset;
+    const name = (e.target as HTMLInputElement).name;
+    const isHeader = name === "header" || name === "subheader";
+    const elId = (index + (index2 ? "-" + index2 : "") + (isHeader ? "-h" : "")).toString();
     if (elId !== lastInput) {
         store.dispatch(setLastInput({ lastInput: elId }));
-        if (visibleNfo !== 1) return;
-        scrollAndHighlight(document.getElementById("content" + visibleNfo + "-" + elId));
+        if (!isRightNfo) return;
+        scrollAndHighlight(document.getElementById(rightNfoId + "-" + elId));
     }
 }
 
 export const eHandleClickNfo = (e: React.MouseEvent) => {
-    const [, sectionType, i1, i2, h] = (e.target as HTMLElement).id.split('-');
+    const [, i1, i2, h] = (e.target as HTMLElement).id.split('-');
     let selector;
-    if (sectionType === "section") {
-        selector = `[data-index="${i1}"]`;
-        switch (i2) {
-            case undefined:
-                break;
-            case "h":
-                selector = "input" + selector;
-                break;
-            default:
-                selector += `[data-index2="${i2}"]`;
-                break;
-        }
-        if (h) {
-            selector += `[name="subheader"]`;
-        } else if (i2 !== "h") {
+    selector = `[data-index="${i1}"]`;
+    switch (i2) {
+        case undefined:
+            break;
+        case "h":
+            selector = "input" + selector;
+            break;
+        default:
+            selector += `[data-index2="${i2}"]`;
+            break;
+    }
+    if (h) {
+        selector += `[name="subheader"]`;
+    } else if (i2 !== "h") {
+        if (i1 === "1") {
+            selector = "input" + selector;
+        } else if (i1 === "0") {
+            selector = "select" + selector;
+        } else {
             selector = "textarea" + selector;
         }
-    } else {
-        selector = `[data-section="${sectionType}"]`;
     }
     scrollAndHighlight(document.querySelector(selector));
 }

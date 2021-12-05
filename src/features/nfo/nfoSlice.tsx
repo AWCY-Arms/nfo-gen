@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import deepClone from '../../helpers';
-import { formatJson, NfoData, NfoSection, NfoSubsection, readConfig, TextAlign } from '../../NfoWriter';
+import { formatJson, NfoData, NfoSection, nfoSectionOffset, NfoSubsection, readConfig, TextAlign } from '../../NfoWriter';
 import sampleTemplates from '../../templates/examples';
 import defaultNfoData from '../../templates/examples/default';
 import { blankNfoSectionData, blankNfoSubsectionData } from '../../templates/partials/blank';
@@ -26,7 +26,7 @@ export const nfoSlice = createSlice({
             state.nfoJson = formatJson(state.nfoData);
         },
         handleContentChange: (state, action) => {
-            const index: number = action.payload.index;
+            const index: number = action.payload.index - nfoSectionOffset;
             const subindex: number = action.payload.subindex;
             const targetName: string = action.payload.targetName;
             const targetValue: string = action.payload.targetValue;
@@ -88,24 +88,25 @@ export const nfoSlice = createSlice({
         },
         delSection: (state, action) => {
             const { index } = action.payload;
-            state.nfoData.content.splice(index, 1);
+            state.nfoData.content.splice(index - nfoSectionOffset, 1);
             state.nfoJson = formatJson(state.nfoData);
         },
         moveSection: (state, action) => {
             const { index, direction } = action.payload;
-            const newIndex = direction === 'up' ? index - 1 : index + 1;
+            const oldIndex = index - nfoSectionOffset;
+            const newIndex = direction === 'up' ? oldIndex - 1 : oldIndex + 1;
             const content = state.nfoData.content;
-            [content[index], content[newIndex]] = [content[newIndex], content[index]];
+            [content[oldIndex], content[newIndex]] = [content[newIndex], content[oldIndex]];
             state.nfoJson = formatJson(state.nfoData);
         },
         addSubsection: (state, action) => {
             const { index } = action.payload;
-            state.nfoData.content[index]!.sectionData!.subsections!.push(deepClone(blankNfoSubsectionData));
+            state.nfoData.content[index - nfoSectionOffset]!.sectionData!.subsections!.push(deepClone(blankNfoSubsectionData));
             state.nfoJson = formatJson(state.nfoData);
         },
         delSubsection: (state, action) => {
             const { index, subindex } = action.payload;
-            state.nfoData.content[index]!.sectionData!.subsections!.splice(subindex, 1);
+            state.nfoData.content[index - nfoSectionOffset]!.sectionData!.subsections!.splice(subindex, 1);
             state.nfoJson = formatJson(state.nfoData);
         }
     },

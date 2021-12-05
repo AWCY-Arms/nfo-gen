@@ -2,6 +2,12 @@
 
 @import "bootstrap-dark-5/dist/css/bootstrap-dark";
 
+pre {
+    color: black;
+}
+
+$awcy-red: #A80C00;
+
 @keyframes fadeIn {
     0% {
         filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0));
@@ -19,22 +25,23 @@
         filter: drop-shadow(0px 0px 10px #3acb);
     }
     67% {
-        filter: drop-shadow(0px 0px 10px rgba(128, 0, 0, 0.75));
+        filter: drop-shadow(0px 0px 10px $awcy-red);
     }
     100% {
         filter: drop-shadow(0px 0px 10px rgba(221, 160, 46, 0.7));
     }
 }
 
-div#credits-header-container > pre {
-    color: #a80c00;
+pre#credits-0-0 {
+    color: white;
+    filter: drop-shadow(0px 0px 4px $awcy-red) drop-shadow(0px 0px 16px $awcy-red);
 }
 
 $darkCoolDelay: 300s;
 @media (prefers-color-scheme: dark) {
     /* prettier-ignore */
-    div#content0-header-container,
-    div#content1-header-container {
+    div#p-content0-0-0,
+    div#p-content1-0-0 {
         animation: /* fadeIn should be 1/4 the duration of darkCool */
             120s darkCool $darkCoolDelay forwards infinite,
             30s fadeIn $darkCoolDelay;
@@ -43,6 +50,10 @@ $darkCoolDelay: 300s;
     .form-control:disabled,
     .form-control[readonly] {
         background-color: #333;
+    }
+
+    pre {
+        color: white;
     }
 }
 
@@ -74,7 +85,6 @@ pre.nfo {
     line-height: 17px;
     font-size: 14px;
     font-family: "Courier New", monospace;
-    width: fit-content;
     border-radius: 0.25rem;
     padding: 0 0.1rem;
 }

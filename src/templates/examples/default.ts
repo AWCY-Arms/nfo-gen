@@ -7,7 +7,7 @@ import defaultNfoSectionReleaseNotes from "../partials/releaseNotes";
 
 export const defaultNfoData: NfoData = {
     dataVersion: currentDataVersion,
-    header: "Bloody",
+    headerArt: "Bloody",
     headerAlign: "center",
     title: "Title",
     description: "Short Description",

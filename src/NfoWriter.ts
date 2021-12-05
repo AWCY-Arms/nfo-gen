@@ -11,6 +11,9 @@ import {
     defaultTextWidth,
     headerBorderEnd,
     headerBorderStart,
+    lineBlank,
+    lineEmpty,
+    lineSep,
     subSectionHeaderL,
     subSectionHeaderR
 } from "./NfoWriterSettings";
@@ -19,7 +22,7 @@ import defaultNfoData from "./templates/examples/default";
 
 export type TextAlign = "left" | "center" | "right";
 
-export type TextStyle = "left" | "center" | "right" | "twoCol" | "numList" | "credits1" | "credits2" | "credits3" | "credits4";
+export type TextStyle = "left" | "center" | "right" | "twoCol" | "numList" | "credits1" | "credits2" | "credits3" | "credits4" | "none";
 
 interface TextStyleObj {
     name: string,
@@ -58,6 +61,10 @@ export const textStyles: IMap<TextStyleObj> = {
         name: "Credits 4",
         hidden: true,
     },
+    none: {
+        name: "None",
+        hidden: true,
+    }
 }
 
 export interface NfoSection extends IMap {
@@ -85,7 +92,7 @@ export interface NfoSectionData {
 
 export interface NfoData extends IMap {
     dataVersion: number,
-    header: Header,
+    headerArt: Header,
     headerAlign: TextAlign,
     title: string,
     description: string,
@@ -93,13 +100,14 @@ export interface NfoData extends IMap {
     content: NfoSection[],
 }
 
+
 export function readConfig(config: any): NfoData {
     switch (config.dataVersion) {
-        case currentDataVersion:
-            return Object.assign(deepClone(defaultNfoData), config);
         default:
-            return deepClone(defaultNfoData);
+            break;
     }
+    config.dataVersion = currentDataVersion;
+    return Object.assign(deepClone(defaultNfoData), config);
 }
 
 export function formatText(text: string, lineLength: number): string[] {
@@ -126,7 +134,7 @@ export function formatText(text: string, lineLength: number): string[] {
     });
 }
 
-function leftText(text: string, format = true, length = defaultTextWidth) {
+function leftText(text: string, format = true, length = defaultTextWidth): string[] {
     return (format ? formatText(text, length) : text.split("\n")).map((rowText) => {
         return rowText.padEnd(length);
     });
@@ -155,7 +163,7 @@ function horizontalAlign(text: string, align: TextAlign = "center", length?: num
     }
 }
 
-function borderText(textRows: string[], borderStart: string = defaultBorderChar, borderEnd: string | undefined = undefined, borderPaddingWidth: number = defaultBorderPaddingWidth) {
+function borderText(textRows: string[], borderStart: string = defaultBorderChar, borderEnd: string | undefined = undefined, borderPaddingWidth: number = defaultBorderPaddingWidth): string[] {
     borderEnd = borderEnd ? borderEnd : defaultBorderChar;
     const padding = " ".repeat(borderPaddingWidth);
     return textRows.map((text) => {
@@ -163,17 +171,12 @@ function borderText(textRows: string[], borderStart: string = defaultBorderChar,
     });
 }
 
-function centerHeader(text: string, borderStart = headerBorderStart, borderEnd = headerBorderEnd, length?: number) {
-    return centerText(borderText([text], borderStart, borderEnd, 1)[0], true, length);
+function centerHeader(text: string, borderStart = headerBorderStart, borderEnd = headerBorderEnd, length?: number): string[] {
+    return borderText([text], borderStart, borderEnd, 1).flatMap(l => centerText(l, true, length));
 }
 
-const lineBlank = " ".repeat(defaultNfoWidth);
-const lineSep = defaultBorderChar.repeat(defaultNfoWidth);
-const lineEmpty = borderText(centerText("")).join("");
-const lineIntro = centerText(borderText(["Are We Cool Yet? Presents"], "-*-", "-*-", 1)[0], false, defaultNfoWidth).join("");
-
 const lMax = 30;
-function renderTwoCol(lines: string[], sec: NfoSubsection) {
+function renderTwoCol(lines: string[], sec: NfoSubsection): void {
     const lColText = sec.text[0] + ":";
     const lColWidth = Math.min(lColText.length, lMax);
     const lCol = leftText(lColText, true, lColWidth);
@@ -185,7 +188,7 @@ function renderTwoCol(lines: string[], sec: NfoSubsection) {
     }
 }
 
-function renderList(lines: string[], sec: NfoSubsection) {
+function renderList(lines: string[], sec: NfoSubsection): void {
     const lColWidth = Math.floor(Math.log10(sec.text.length)) + 1;
     for (let listCounter = 1; listCounter <= sec.text.length; listCounter++) {
         const lColText = listCounter.toString().padStart(lColWidth, " ");
@@ -218,11 +221,11 @@ export function formatCredits2(text: string, lineLength: number = defaultTextWid
 
 function addSection(sections: IMap<string[]>, content: NfoSection, cIndex: number): void {
     // Header
-    sections["section-" + cIndex + "-h"] = [...borderText(centerHeader(content.header || ""))];
+    sections[cIndex + "-h"] = content.header ? [...borderText(centerHeader(content.header))] : [];
     // Subsections
     content.sectionData.subsections?.forEach((el, sIndex) => {
         // Subheader
-        sections["section-" + cIndex + "-" + sIndex + "-h"] = (el.subheader && typeof el.subheader === "string") ? [...borderText(centerHeader(el.subheader, subSectionHeaderL, subSectionHeaderR))] : [];
+        sections[cIndex + "-" + sIndex + "-h"] = (el.subheader && typeof el.subheader === "string") ? [...borderText(centerHeader(el.subheader, subSectionHeaderL, subSectionHeaderR))] : [];
         // Text
         const lines: string[] = [];
         if (el.text && typeof el.text === "object" && el.text.join() !== "") {
@@ -286,6 +289,9 @@ function addSection(sections: IMap<string[]>, content: NfoSection, cIndex: numbe
                         return borderText(centerText(textRow))
                     }));
                     break;
+                case "none":
+                    lines.push(...el.text);
+                    break;
                 default:
                     lines.push(...el.text.flatMap((textRow) => {
                         return borderText(horizontalAlign(textRow, el.textStyle as TextAlign))
@@ -293,99 +299,179 @@ function addSection(sections: IMap<string[]>, content: NfoSection, cIndex: numbe
                     break;
             }
         }
-        if (lines.length) {
-            sections["section-" + cIndex + "-" + sIndex] = lines;
-        }
+        sections[cIndex + "-" + sIndex] = lines;
     });
 }
 
-export function convertToSections(options: NfoData) {
-    const sections: IMap<string[]> = {
-        "header": [
-            lineBlank,
-            ...horizontalAlign((headers)[options.header], options.headerAlign, defaultNfoWidth, false),
-            lineBlank,
-        ],
-        "postheader": [
-            lineIntro,
-            lineBlank,
-            lineSep,
-            lineEmpty,
-        ],
-        "title": [
-            ...borderText(centerText(options.title)),
-        ],
-        "description": [
-            ...borderText(centerText(options.description)),
-        ],
-        "version": [
-            ...borderText(centerText(options.version)),
-        ],
-        "footer": [
-            lineEmpty,
-            lineSep,
-            lineEmpty,
-            ...borderText(centerText("-`-,-{@  AWCY? - Stronger Together  @}-,-`-")),
-            ...borderText(centerText("(oven appreciation group)")),
-            ...borderText(centerText("Join us at: https://www.AreWeCoolYet.WTF")),
-            lineEmpty,
-            lineSep,
-        ]
-    };
+export const getSection0 = (headerArt: Header, headerAlign: TextAlign): NfoSection => {
+    return {
+        header: "",
+        sectionData: {
+            subsections: [
+                {
+                    subheader: "",
+                    text: horizontalAlign((headers)[headerArt] || "", headerAlign, defaultNfoWidth, false),
+                    textStyle: "none",
+                },
+                {
+                    subheader: "",
+                    text: [
+                        lineBlank,
+                        ...centerText("-*- Are We Cool Yet? Presents -*-", false, defaultNfoWidth),
+                        lineBlank,
+                    ],
+                    textStyle: "none",
+                }
+            ],
+        }
+    }
+}
 
-    options.content?.forEach((content, index) => {
+export const getSection1 = (title: string, description: string, version: string): NfoSection => {
+    return {
+        header: "",
+        sectionData: {
+            subsections: [
+                {
+                    subheader: "",
+                    text: [title || " "],
+                    textStyle: "center",
+                },
+                {
+                    subheader: "",
+                    text: [description],
+                    textStyle: "center",
+                },
+                {
+                    subheader: "",
+                    text: [version],
+                    textStyle: "center",
+                }
+            ],
+        }
+    };
+}
+
+export const sectionFooter: NfoSection = {
+    header: "",
+    sectionData: {
+        subsections: [
+            {
+                subheader: "",
+                textStyle: "center",
+                text: [
+                    "-`-,-{@  AWCY? - Stronger Together  @}-,-`-",
+                    "(oven appreciation group)",
+                    "Join us at: https://www.AreWeCoolYet.WTF",
+                ],
+            },
+            {
+                subheader: "",
+                textStyle: "none",
+                text: [lineSep],
+            }
+        ]
+    }
+}
+
+/**
+ *  Number of sections before `options.content` in `getNfoSections()`.
+ */
+export const nfoSectionOffset = 2;
+export function getNfoSections(options: NfoData): NfoSection[] {
+    return [
+        getSection0(options.headerArt, options.headerAlign),
+        getSection1(options.title, options.description, options.version),
+        ...options.content,
+        sectionFooter,
+    ];
+}
+
+export function convertToSectionMap(nfoData: NfoData): IMap<string[]> {
+    const content = getNfoSections(nfoData);
+    const sections: IMap<string[]> = {};
+    content?.forEach((content, index) => {
         addSection(sections, content, index);
     });
-
     return sections;
 }
 
-export function getSeparators(sectionKey: string, hasContent: boolean) {
-    const [, , i2, h] = sectionKey.split("-");
-    if (i2 === "h") {
-        return [lineEmpty, lineSep];
-    } else if (i2 === "0") {
-        if (h === "h") {
-            if (hasContent) {
-                return [lineSep, lineEmpty];
+export function getSepPre(sectionKey: string, hasContent?: boolean): string[] {
+    const [i1, i2, h] = sectionKey.split("-");
+    if (i1 === "0") {
+        // Header image
+        if (i2 === "0") {
+            if (h === "h") {
+                return []
+            } else {
+                if (hasContent) {
+                    return [lineBlank]
+                }
             }
-            return [lineSep];
         }
-        if (hasContent) {
-            return [lineEmpty];
+    } else if (i1 === "1") {
+        // Title, description, version
+        if (i2 === "0") {
+            if (h === "h") {
+                return [lineSep]
+            } else {
+                if (hasContent) {
+                    return [lineEmpty]
+                }
+            }
         }
     } else {
-        if (hasContent) {
-            return [lineEmpty];
+        if (i2 === "0") {
+            if (h === "h") {
+                if (hasContent) {
+                    return [lineSep, lineEmpty]
+                }
+                return [lineSep]
+            } else {
+                if (hasContent) {
+                    return [lineEmpty]
+                }
+                return []
+            }
+        } else if (i2 === "h") {
+            if (hasContent) {
+                return [lineEmpty, lineSep]
+            }
+            return [lineEmpty]
+        } else {
+            if (h === "h") {
+                if (hasContent) {
+                    return [lineEmpty]
+                }
+                return []
+            } else {
+                if (hasContent) {
+                    return [lineEmpty]
+                }
+                return []
+            }
         }
     }
     return [];
 }
 
-export function renderToLines(subsection: string[], k: string) {
-    const hasContent = subsection.join("\n") !== ""
-    const lines = [...getSeparators(k, hasContent)];
-    if (hasContent) lines.push(...subsection);
-    return lines;
-}
-
-export function renderAllToLines(sections: IMap<string[]>) {
+export function renderToLines(textSection: string[], k: string): string[] {
+    const hasContent = textSection.join("\n") !== "";
     return [
-        ...sections["header"],
-        ...sections["postheader"],
-        ...sections["title"],
-        ...sections["description"],
-        ...sections["version"],
-        ...Object.keys(sections).filter(k => k.startsWith("section-")).flatMap(k => renderToLines(sections[k], k)),
-        ...sections["footer"],
-    ]
+        ...getSepPre(k, hasContent),
+        ...textSection
+    ];
 }
 
-export function renderNfo(nfoData: NfoData) {
-    return renderAllToLines(convertToSections(nfoData)).join("\n");
+export function renderAllToLines(textSections: IMap<string[]>): string[] {
+    return Object.keys(textSections).flatMap(k => renderToLines(textSections[k], k));
 }
 
-export function formatJson(obj: any) {
+export function renderNfo(nfoData: NfoData): string {
+    return renderAllToLines(convertToSectionMap(nfoData)).join("\n");
+}
+
+export function formatJson(obj: any): string {
     return JSON.stringify(obj, undefined, 2);
 }
 

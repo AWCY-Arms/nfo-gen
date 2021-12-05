@@ -3,7 +3,7 @@ import { useAppSelector } from './app/hooks';
 import { eAddSection, eHandleInputChange, eHandleInputFocus } from './features/nfo/Nfo';
 import { headerKeys } from './headers';
 import { NfoFormSection } from './NfoFormSection';
-import { NfoSection } from './NfoWriter';
+import { NfoSection, nfoSectionOffset } from './NfoWriter';
 import { defaultTextWidth } from './NfoWriterSettings';
 
 
@@ -30,12 +30,13 @@ function NfoForm() {
                                         <Form.Label>Image</Form.Label>
                                         <Col>
                                             <Form.Select
-                                                name="header"
+                                                name="headerArt"
                                                 size="sm"
                                                 onChange={eHandleInputChange}
                                                 onFocus={eHandleInputFocus}
                                                 value={nfoData.header}
-                                                data-section="header"
+                                                data-index={0}
+                                                data-index2={0}
                                                 className="nfo highlight off"
                                             >
                                                 {headerOptions}
@@ -82,7 +83,8 @@ function NfoForm() {
                                     placeholder="Title"
                                     onChange={eHandleInputChange}
                                     onFocus={eHandleInputFocus}
-                                    data-section="title"
+                                    data-index={1}
+                                    data-index2={0}
                                     value={nfoData.title}
                                     maxLength={defaultTextWidth}
                                     className="nfo highlight off"
@@ -99,7 +101,8 @@ function NfoForm() {
                                     placeholder="Description"
                                     onChange={eHandleInputChange}
                                     onFocus={eHandleInputFocus}
-                                    data-section="description"
+                                    data-index={1}
+                                    data-index2={1}
                                     value={nfoData.description}
                                     className="nfo highlight off"
                                 />
@@ -115,7 +118,8 @@ function NfoForm() {
                                     placeholder="1.0.0"
                                     onChange={eHandleInputChange}
                                     onFocus={eHandleInputFocus}
-                                    data-section="version"
+                                    data-index={1}
+                                    data-index2={2}
                                     value={nfoData.version}
                                     maxLength={defaultTextWidth}
                                     className="nfo highlight off"
@@ -138,11 +142,12 @@ function NfoForm() {
                             </Row>
                         </Card.Title>
                         {
-                            nfoData.content?.map((e: NfoSection, i: number) => {
+                            nfoData.content?.map((_: NfoSection, i: number) => {
                                 return <NfoFormSection
                                     key={i}
-                                    index={i}
-                                    maxIndex={nfoData.content.length - 1}
+                                    index={i + nfoSectionOffset}
+                                    minIndex={nfoSectionOffset}
+                                    maxIndex={nfoData.content.length - 1 + nfoSectionOffset}
                                 />
                             })
                         }

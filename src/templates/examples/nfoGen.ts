@@ -1,8 +1,8 @@
+import packageJson from "../../../package.json";
 import deepClone from "../../helpers";
 import { NfoData } from "../../NfoWriter";
 import defaultNfoSectionCredits from "../partials/credits";
 import defaultNfoSectionReleaseNotes from "../partials/releaseNotes";
-import packageJson from '../../../package.json';
 
 
 const credits = deepClone(defaultNfoSectionCredits);
@@ -17,7 +17,7 @@ releaseNotes.uiRemoveDisabled = true;
 
 export const nfoGen: NfoData = {
     dataVersion: 1,
-    header: "Delta",
+    headerArt: "Delta",
     headerAlign: "center",
     title: "AWCY? Readme Generator",
     description: "The Premium Triple-Distilled Enterprise-Grade NFO Generator for the Sweaty and Moist Yet Sophisticated Artist who needed their README done yesterday",

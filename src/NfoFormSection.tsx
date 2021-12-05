@@ -2,16 +2,17 @@ import { Button, Card, Col, FloatingLabel, Form, Row } from 'react-bootstrap';
 import { useAppSelector } from './app/hooks';
 import { eAddSubsection, eDelSection, eHandleContentChange, eHandleInputFocus, eMoveSection } from './features/nfo/Nfo';
 import { NfoFormSubsection } from './NfoFormSubsection';
-import { NfoSubsection } from './NfoWriter';
+import { NfoSubsection, nfoSectionOffset } from "./NfoWriter";
 
 
 interface NfoFormSectionProps {
+    minIndex: number,
     index: number,
     maxIndex: number,
 }
 
 export function NfoFormSection(props: NfoFormSectionProps) {
-    const section = useAppSelector((state) => state.nfoConfig.nfoData.content[props.index]);
+    const section = useAppSelector(state => state.nfoConfig.nfoData.content[props.index - nfoSectionOffset]);
     const sectionData = section.sectionData;
     if (!section || !sectionData) return <div />;
     return <Card className="mb-2">
@@ -50,7 +51,7 @@ export function NfoFormSection(props: NfoFormSectionProps) {
                         data-index={props.index}
                         data-direction="up"
                         onClick={eMoveSection}
-                        disabled={props.index === 0}
+                        disabled={props.index === nfoSectionOffset}
                     >Move Up</Button>
                     &nbsp;
                     <Button

@@ -3,13 +3,13 @@ import { createSlice } from '@reduxjs/toolkit';
 
 interface AppState {
     darkMode: string,
-    nfo: number,
+    isRightNfo: boolean,
     lastInput: string,
 }
 
 const initialState: AppState = {
     darkMode: '',
-    nfo: 0,
+    isRightNfo: false,
     lastInput: '',
 }
 
@@ -20,8 +20,8 @@ export const appSlice = createSlice({
         updateDarkMode: (state, action) => {
             state.darkMode = action.payload.mode;
         },
-        setNfo: (state, action) => {
-            state.nfo = action.payload.nfo;
+        setIsRightNfo: (state, action) => {
+            state.isRightNfo = action.payload.isRightNfo;
         },
         setLastInput: (state, action) => {
             state.lastInput = action.payload.lastInput;
@@ -29,6 +29,6 @@ export const appSlice = createSlice({
     }
 });
 
-export const { updateDarkMode, setNfo, setLastInput } = appSlice.actions
+export const { updateDarkMode, setIsRightNfo, setLastInput } = appSlice.actions
 
 export default appSlice.reducer

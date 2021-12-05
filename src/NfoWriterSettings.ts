@@ -9,6 +9,10 @@ export const defaultBorderPaddingWidth = 3;
 export const headerBorderStart = "/X>";
 export const headerBorderEnd = "<X\\";
 
+export const lineBlank = " ".repeat(defaultNfoWidth);
+export const lineSep = defaultBorderChar.repeat(defaultNfoWidth);
+export const lineEmpty = defaultBorderChar + " ".repeat(defaultTextWidth + (defaultBorderPaddingWidth * 2)) + defaultBorderChar;
+
 export const subSectionHeaderL = "[-+";
 export const subSectionHeaderR = "+-]";
 

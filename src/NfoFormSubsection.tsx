@@ -2,7 +2,7 @@ import { Button, Card, Col, FloatingLabel, Form, Row } from "react-bootstrap";
 import TextareaAutosize from 'react-textarea-autosize';
 import { useAppSelector } from "./app/hooks";
 import { eDelSubsection, eHandleContentChange, eHandleInputFocus } from "./features/nfo/Nfo";
-import { textStyles } from "./NfoWriter";
+import { nfoSectionOffset, textStyles } from "./NfoWriter";
 
 
 interface NfoFormSubsectionProps {
@@ -24,7 +24,7 @@ function getTextStyleHelp(style: string): string {
 }
 
 export function NfoFormSubsection(props: NfoFormSubsectionProps) {
-    const subsection = useAppSelector(state => state.nfoConfig.nfoData.content[props.index].sectionData.subsections[props.subindex]);
+    const subsection = useAppSelector(state => state.nfoConfig.nfoData.content[props.index - nfoSectionOffset].sectionData.subsections[props.subindex]);
     return <Card key={props.subindex} className={props.maxSubindex === props.subindex ? "" : "mb-3"}>
         <Card.Body>
             {subsection.uiSubheaderHide ? "" :
@@ -92,7 +92,6 @@ export function NfoFormSubsection(props: NfoFormSubsectionProps) {
                     onFocus={eHandleInputFocus}
                     className="nfo highlight off"
                     value={subsection.text?.join('\n')}
-                    style={{ resize: "none" }}
                 ></Form.Control>
             </Form.Group>
         </Card.Body>

@@ -13,8 +13,6 @@ function randInt(max: number) {
 }
 
 export const loremIpsumNfo = (): NfoData => {
-    const header = headerKeys[randInt(headerKeys.length)];
-
     const releaseNotes = deepClone(defaultNfoSectionReleaseNotes);
     releaseNotes.header = loremIpsum({ count: 2, units: "words" });
     releaseNotes.sectionData.subsections[0].text = [loremIpsum({ count: 1, units: "paragraphs" })];
@@ -57,7 +55,7 @@ export const loremIpsumNfo = (): NfoData => {
 
     return {
         dataVersion: currentDataVersion,
-        header: header,
+        headerArt: headerKeys[randInt(headerKeys.length)],
         headerAlign: "center",
         title: loremIpsum({ count: randInt(5), units: "words" }),
         description: loremIpsum({ count: 1, units: "sentences", sentenceLowerBound: 10, sentenceUpperBound: 12 }),
