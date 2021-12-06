@@ -34,7 +34,7 @@ function NfoForm() {
                                                 size="sm"
                                                 onChange={eHandleInputChange}
                                                 onFocus={eHandleInputFocus}
-                                                value={nfoData.header}
+                                                value={nfoData.headerArt}
                                                 data-index={0}
                                                 data-index2={0}
                                                 className="nfo highlight off"
@@ -95,7 +95,7 @@ function NfoForm() {
                             <Form.Label column="sm" lg={2}>Description</Form.Label>
                             <Col>
                                 <Form.Control
-                                    type="text"
+                                    as="textarea"
                                     size="sm"
                                     name="description"
                                     placeholder="Description"

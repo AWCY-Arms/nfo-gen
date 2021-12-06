@@ -1,7 +1,7 @@
 import { Button, Card, Col, FloatingLabel, Form, Row } from "react-bootstrap";
 import TextareaAutosize from 'react-textarea-autosize';
 import { useAppSelector } from "./app/hooks";
-import { eDelSubsection, eHandleContentChange, eHandleInputFocus } from "./features/nfo/Nfo";
+import { eDelSubsection, eHandleContentChange, eHandleInputFocus, eMoveSubsection } from "./features/nfo/Nfo";
 import { nfoSectionOffset, textStyles } from "./NfoWriter";
 
 
@@ -30,7 +30,7 @@ export function NfoFormSubsection(props: NfoFormSubsectionProps) {
             {subsection.uiSubheaderHide ? "" :
                 <Row className="mb-3">
                     <Col>
-                        <FloatingLabel label="Subheader">
+                        <FloatingLabel label={(props.index + 1 - nfoSectionOffset) + "." + (props.subindex + 1) + ": Subheader"}>
                             <Form.Control
                                 type="text"
                                 name="subheader"
@@ -58,6 +58,26 @@ export function NfoFormSubsection(props: NfoFormSubsectionProps) {
                         onClick={eDelSubsection}
                         disabled={subsection.uiRemoveDisabled}
                     >Remove Subsection</Button>
+                    &nbsp;
+                    <Button
+                        variant="primary"
+                        size="sm"
+                        data-index={props.index}
+                        data-index2={props.subindex}
+                        data-direction="up"
+                        onClick={eMoveSubsection}
+                        disabled={props.subindex === 0}
+                    >Move Up</Button>
+                    &nbsp;
+                    <Button
+                        variant="primary"
+                        size="sm"
+                        data-index={props.index}
+                        data-index2={props.subindex}
+                        data-direction="down"
+                        onClick={eMoveSubsection}
+                        disabled={props.subindex === props.maxSubindex}
+                    >Move Down</Button>
                 </Col>
             </Row>
             {subsection.uiTextStyleHide ? "" :

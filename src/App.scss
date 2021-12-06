@@ -2,11 +2,13 @@
 
 @import "bootstrap-dark-5/dist/css/bootstrap-dark";
 
-pre {
-    color: black;
+@import url("https://fonts.googleapis.com/css2?family=Readex+Pro&display=swap");
+
+body {
+    font-family: "Readex Pro", sans-serif;
 }
 
-$awcy-red: #A80C00;
+$awcy-red: #a80c00;
 
 @keyframes fadeIn {
     0% {
@@ -34,27 +36,8 @@ $awcy-red: #A80C00;
 
 pre#credits-0-0 {
     color: white;
-    filter: drop-shadow(0px 0px 4px $awcy-red) drop-shadow(0px 0px 16px $awcy-red);
-}
-
-$darkCoolDelay: 300s;
-@media (prefers-color-scheme: dark) {
-    /* prettier-ignore */
-    div#p-content0-0-0,
-    div#p-content1-0-0 {
-        animation: /* fadeIn should be 1/4 the duration of darkCool */
-            120s darkCool $darkCoolDelay forwards infinite,
-            30s fadeIn $darkCoolDelay;
-    }
-
-    .form-control:disabled,
-    .form-control[readonly] {
-        background-color: #333;
-    }
-
-    pre {
-        color: white;
-    }
+    filter: drop-shadow(0px 0px 4px $awcy-red)
+        drop-shadow(0px 0px 16px $awcy-red);
 }
 
 @keyframes highlight1 {
@@ -80,6 +63,7 @@ $darkCoolDelay: 300s;
 }
 
 pre.nfo {
+    color: black;
     user-select: none;
     margin-bottom: 0;
     line-height: 17px;
@@ -87,4 +71,25 @@ pre.nfo {
     font-family: "Courier New", monospace;
     border-radius: 0.25rem;
     padding: 0 0.1rem;
+}
+
+@media (prefers-color-scheme: dark) {
+    $darkCoolDelay: 300s;
+    $darkCoolDuration: 120s;
+    /* prettier-ignore */
+    div#p-content0-0-0,
+    div#p-content1-0-0 {
+        animation:
+            $darkCoolDuration darkCool $darkCoolDelay forwards infinite,
+            ($darkCoolDuration / 3) fadeIn $darkCoolDelay;
+    }
+
+    .form-control:disabled,
+    .form-control[readonly] {
+        background-color: #333;
+    }
+
+    pre.nfo {
+        color: white;
+    }
 }

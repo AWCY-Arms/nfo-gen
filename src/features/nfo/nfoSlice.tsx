@@ -108,10 +108,17 @@ export const nfoSlice = createSlice({
             const { index, subindex } = action.payload;
             state.nfoData.content[index - nfoSectionOffset]!.sectionData!.subsections!.splice(subindex, 1);
             state.nfoJson = formatJson(state.nfoData);
-        }
+        },
+        moveSubsection: (state, action) => {
+            const { index, subindex, direction } = action.payload;
+            const newSubindex: number = direction === 'up' ? subindex - 1 : subindex + 1;
+            const content = state.nfoData.content[index - nfoSectionOffset].sectionData.subsections;
+            [content[subindex], content[newSubindex]] = [content[newSubindex], content[subindex]];
+            state.nfoJson = formatJson(state.nfoData);
+        },
     },
 })
 
-export const { handleInputChange, handleContentChange, loadTemplate, handleUpload, handleJsonChange, addSection, delSection, moveSection, addSubsection, delSubsection } = nfoSlice.actions
+export const { handleInputChange, handleContentChange, loadTemplate, handleUpload, handleJsonChange, addSection, delSection, moveSection, addSubsection, delSubsection, moveSubsection } = nfoSlice.actions
 
 export default nfoSlice.reducer

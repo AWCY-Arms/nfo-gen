@@ -19,7 +19,7 @@ export function NfoFormSection(props: NfoFormSectionProps) {
         <Card.Body>
             <Row className="mb-3">
                 <Col>
-                    <FloatingLabel label="Header">
+                    <FloatingLabel label={(props.index + 1 - nfoSectionOffset) + ": Header"}>
                         <Form.Control
                             type="text"
                             name="header"

@@ -13,7 +13,8 @@ import {
     handleJsonChange,
     handleUpload,
     loadTemplate,
-    moveSection
+    moveSection,
+    moveSubsection,
 } from "./nfoSlice";
 
 
@@ -112,6 +113,16 @@ export const eDelSubsection = (e: React.MouseEvent) => {
     }));
 }
 
+export const eMoveSubsection = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const { index, index2, direction } = (e.target as HTMLButtonElement).dataset;
+    store.dispatch(moveSubsection({
+        index: Number.parseInt(index!),
+        subindex: Number.parseInt(index2!),
+        direction,
+    }));
+}
+
 const scrollAndHighlight = (el: Element | null) => {
     if (el) {
         el.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
@@ -154,10 +165,14 @@ export const eHandleClickNfo = (e: React.MouseEvent) => {
     if (h) {
         selector += `[name="subheader"]`;
     } else if (i2 !== "h") {
-        if (i1 === "1") {
-            selector = "input" + selector;
-        } else if (i1 === "0") {
+        if (i1 === "0") {
             selector = "select" + selector;
+        } else if (i1 === "1") {
+            if (i2 === "1") {
+                selector = "textarea" + selector;
+            } else {
+                selector = "input" + selector;
+            }
         } else {
             selector = "textarea" + selector;
         }
