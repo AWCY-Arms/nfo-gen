@@ -2,6 +2,8 @@
 
 @import "bootstrap-dark-5/dist/css/bootstrap-dark";
 
+/*! purgecss start ignore */
+
 @import url("https://fonts.googleapis.com/css2?family=Readex+Pro&display=swap");
 
 body {
@@ -93,3 +95,5 @@ pre.nfo {
         color: white;
     }
 }
+
+/*! purgecss end ignore */
