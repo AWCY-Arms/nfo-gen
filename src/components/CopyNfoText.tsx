@@ -1,5 +1,5 @@
-import { useAppSelector } from "./app/hooks";
-import { renderNfo } from "./NfoWriter";
+import { useAppSelector } from "../app/hooks";
+import { renderNfo } from "../utils/NfoWriter";
 
 
 export const CopyNfoText = () => {

@@ -1,8 +1,8 @@
 import { loremIpsum } from "lorem-ipsum";
 import { headerKeys } from "../../headers";
-import deepClone from "../../helpers";
-import { NfoData } from "../../NfoWriter";
-import { currentDataVersion } from "../../NfoWriterSettings";
+import deepClone from "../../utils/helpers";
+import { NfoData } from "../../utils/NfoWriter";
+import { currentDataVersion } from "../../utils/NfoWriterSettings";
 import { blankNfoSectionData } from "../partials/blank";
 import defaultNfoSectionCredits from "../partials/credits";
 import defaultNfoSectionReleaseNotes from "../partials/releaseNotes";

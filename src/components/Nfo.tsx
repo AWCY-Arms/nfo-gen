@@ -1,6 +1,6 @@
-import { useAppSelector } from './app/hooks';
+import { useAppSelector } from '../app/hooks';
 import NfoContent from './NfoContent';
-import { convertToSectionMap } from "./NfoWriter";
+import { convertToSectionMap } from "../utils/NfoWriter";
 
 
 interface NfoProps {

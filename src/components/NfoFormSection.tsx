@@ -1,8 +1,8 @@
 import { Button, Card, Col, FloatingLabel, Form, Row } from 'react-bootstrap';
-import { useAppSelector } from './app/hooks';
-import { eAddSubsection, eDelSection, eHandleContentChange, eHandleInputFocus, eMoveSection } from './features/nfo/Nfo';
+import { useAppSelector } from '../app/hooks';
+import { eAddSubsection, eDelSection, eHandleContentChange, eHandleInputFocus, eMoveSection } from '../features/nfo/Nfo';
 import { NfoFormSubsection } from './NfoFormSubsection';
-import { NfoSubsection, nfoSectionOffset } from "./NfoWriter";
+import { NfoSubsection, nfoSectionOffset } from "../utils/NfoWriter";
 
 
 interface NfoFormSectionProps {

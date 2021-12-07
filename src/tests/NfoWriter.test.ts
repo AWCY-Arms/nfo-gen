@@ -1,5 +1,5 @@
-import { exportedForTesting } from './NfoWriter';
-import { defaultTextWidth } from './NfoWriterSettings';
+import { exportedForTesting } from '../utils/NfoWriter';
+import { defaultTextWidth } from '../utils/NfoWriterSettings';
 
 
 const { formatText } = exportedForTesting;

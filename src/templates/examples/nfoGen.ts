@@ -1,6 +1,6 @@
 import packageJson from "../../../package.json";
-import deepClone from "../../helpers";
-import { NfoData } from "../../NfoWriter";
+import deepClone from "../../utils/helpers";
+import { NfoData } from "../../utils/NfoWriter";
 import defaultNfoSectionCredits from "../partials/credits";
 import defaultNfoSectionReleaseNotes from "../partials/releaseNotes";
 

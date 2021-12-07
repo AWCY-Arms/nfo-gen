@@ -123,7 +123,7 @@ export const eMoveSubsection = (e: React.MouseEvent) => {
     }));
 }
 
-const scrollAndHighlight = (el: Element | null) => {
+const scrollAndHighlight = (el: HTMLElement | null) => {
     if (el) {
         el.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
         el.classList.remove('off');

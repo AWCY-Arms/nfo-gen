@@ -1,4 +1,4 @@
-import headers, { Header } from "./headers";
+import headers, { Header } from "../headers";
 import deepClone, { IMap } from "./helpers";
 import {
     creditsAdjustedWidth,
@@ -17,7 +17,7 @@ import {
     subSectionHeaderL,
     subSectionHeaderR
 } from "./NfoWriterSettings";
-import defaultNfoData from "./templates/examples/default";
+import defaultNfoData from "../templates/examples/default";
 
 
 export type TextAlign = "left" | "center" | "right";

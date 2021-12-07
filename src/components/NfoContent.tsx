@@ -1,6 +1,6 @@
-import { eHandleClickNfo } from "./features/nfo/Nfo";
-import { IMap } from "./helpers";
-import { getSepPre } from "./NfoWriter";
+import { eHandleClickNfo } from "../features/nfo/Nfo";
+import { IMap } from "../utils/helpers";
+import { getSepPre } from "../utils/NfoWriter";
 
 
 interface NfoContentProps {

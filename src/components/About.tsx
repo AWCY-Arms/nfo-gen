@@ -1,6 +1,6 @@
 import NfoContent from "./NfoContent";
-import { convertToSectionMap } from "./NfoWriter";
-import nfoGen from "./templates/examples/nfoGen";
+import { convertToSectionMap } from "../utils/NfoWriter";
+import nfoGen from "../templates/examples/nfoGen";
 
 
 const aboutSections = convertToSectionMap(nfoGen);

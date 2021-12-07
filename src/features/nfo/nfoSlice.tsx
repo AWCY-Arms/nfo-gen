@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import deepClone from '../../helpers';
-import { formatJson, NfoData, NfoSection, nfoSectionOffset, NfoSubsection, readConfig, TextAlign } from '../../NfoWriter';
+import deepClone from '../../utils/helpers';
+import { formatJson, NfoData, NfoSection, nfoSectionOffset, NfoSubsection, readConfig, TextAlign } from '../../utils/NfoWriter';
 import sampleTemplates from '../../templates/examples';
 import defaultNfoData from '../../templates/examples/default';
 import { blankNfoSectionData, blankNfoSubsectionData } from '../../templates/partials/blank';

@@ -1,10 +1,10 @@
 import { Button, Card, Col, Form, Row } from 'react-bootstrap';
-import { useAppSelector } from './app/hooks';
-import { eAddSection, eHandleInputChange, eHandleInputFocus } from './features/nfo/Nfo';
-import { headerKeys } from './headers';
+import { useAppSelector } from '../app/hooks';
+import { eAddSection, eHandleInputChange, eHandleInputFocus } from '../features/nfo/Nfo';
+import { headerKeys } from '../headers';
 import { NfoFormSection } from './NfoFormSection';
-import { NfoSection, nfoSectionOffset } from './NfoWriter';
-import { defaultTextWidth } from './NfoWriterSettings';
+import { NfoSection, nfoSectionOffset } from '../utils/NfoWriter';
+import { defaultTextWidth } from '../utils/NfoWriterSettings';
 
 
 const headerOptions = headerKeys.map((e, i) => {

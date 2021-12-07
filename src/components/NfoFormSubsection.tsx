@@ -1,8 +1,8 @@
 import { Button, Card, Col, FloatingLabel, Form, Row } from "react-bootstrap";
 import TextareaAutosize from 'react-textarea-autosize';
-import { useAppSelector } from "./app/hooks";
-import { eDelSubsection, eHandleContentChange, eHandleInputFocus, eMoveSubsection } from "./features/nfo/Nfo";
-import { nfoSectionOffset, textStyles } from "./NfoWriter";
+import { useAppSelector } from "../app/hooks";
+import { eDelSubsection, eHandleContentChange, eHandleInputFocus, eMoveSubsection } from "../features/nfo/Nfo";
+import { nfoSectionOffset, textStyles } from "../utils/NfoWriter";
 
 
 interface NfoFormSubsectionProps {

@@ -1,6 +1,6 @@
 import fs from "fs";
 
-import { renderNfo } from '../src/NfoWriter';
+import { renderNfo } from '../src/utils/NfoWriter';
 import nfoGen from '../src/templates/examples/nfoGen';
 
 export function run() {

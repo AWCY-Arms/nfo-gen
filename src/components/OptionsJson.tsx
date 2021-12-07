@@ -1,10 +1,10 @@
 import Editor, { Monaco } from "@monaco-editor/react";
 import FileSaver from 'file-saver';
 import { Alert, Button, Card, Col, Form, Row } from 'react-bootstrap';
-import { useAppSelector } from './app/hooks';
-import { eHandleJsonChange, eHandleUpload, eLoadTemplate } from './features/nfo/Nfo';
-import sampleTemplates from './templates/examples';
-import NfoSchema from './NfoSchema.json';
+import { useAppSelector } from '../app/hooks';
+import { eHandleJsonChange, eHandleUpload, eLoadTemplate } from '../features/nfo/Nfo';
+import sampleTemplates from '../templates/examples';
+import NfoSchema from '../NfoSchema.json';
 import { editor, Position } from "monaco-editor";
 
 

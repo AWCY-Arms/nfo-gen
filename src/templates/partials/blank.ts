@@ -1,4 +1,4 @@
-import { NfoSection, NfoSubsection } from "../../NfoWriter";
+import { NfoSection, NfoSubsection } from "../../utils/NfoWriter";
 
 
 export const blankNfoSectionData: NfoSection = {

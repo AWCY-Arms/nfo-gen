@@ -1,16 +1,16 @@
 import { useEffect } from 'react';
 import { Badge, Col, Container, Row, Stack, Tab, Tabs } from 'react-bootstrap';
 import packageJson from '../package.json';
-import About from './About';
+import About from './components/About';
 import './scss/App.scss';
 import store from './app/store';
-import CopyNfo from './CopyNfo';
-import CopyNfoText from './CopyNfoText';
+import CopyNfo from './components/CopyNfo';
+import CopyNfoText from './components/CopyNfoText';
 import { setIsRightNfo, updateDarkMode } from './features/app/appSlice';
-import Nfo from './Nfo';
-import NfoForm from './NfoForm';
-import OptionsJson from './OptionsJson';
-import ReturnToTop from './ReturnToTop';
+import Nfo from './components/Nfo';
+import NfoForm from './components/NfoForm';
+import OptionsJson from './components/OptionsJson';
+import ReturnToTop from './components/ReturnToTop';
 
 
 function updateDarkColorScheme() {
