@@ -1,14 +1,4 @@
-// @import "bootstrap/scss/bootstrap";
-
-@import "bootstrap-dark-5/dist/css/bootstrap-dark";
-
 /*! purgecss start ignore */
-
-@import url("https://fonts.googleapis.com/css2?family=Readex+Pro&display=swap");
-
-body {
-    font-family: "Readex Pro", sans-serif;
-}
 
 $awcy-red: #a80c00;
 
@@ -17,7 +7,7 @@ $awcy-red: #a80c00;
         filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0));
     }
     100% {
-        filter: drop-shadow(0px 0px 10px #3acb);
+        filter: drop-shadow(0px 0px 10px #33aaccbb);
     }
 }
 
@@ -26,7 +16,7 @@ $awcy-red: #a80c00;
         filter: drop-shadow(0px 0px 10px rgba(221, 160, 46, 0.7));
     }
     33% {
-        filter: drop-shadow(0px 0px 10px #3acb);
+        filter: drop-shadow(0px 0px 10px #33aaccbb);
     }
     67% {
         filter: drop-shadow(0px 0px 10px $awcy-red);
@@ -70,7 +60,6 @@ pre.nfo {
     margin-bottom: 0;
     line-height: 17px;
     font-size: 14px;
-    font-family: "Courier New", monospace;
     border-radius: 0.25rem;
     padding: 0 0.1rem;
 }
@@ -83,12 +72,7 @@ pre.nfo {
     div#p-content1-0-0 {
         animation:
             $darkCoolDuration darkCool $darkCoolDelay forwards infinite,
-            ($darkCoolDuration / 3) fadeIn $darkCoolDelay;
-    }
-
-    .form-control:disabled,
-    .form-control[readonly] {
-        background-color: #333;
+            calc($darkCoolDuration / 3) fadeIn $darkCoolDelay;
     }
 
     pre.nfo {

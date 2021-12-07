@@ -14,7 +14,6 @@
     "file-saver": "^2.0.5",
     "lorem-ipsum": "^2.0.4",
     "monaco-editor": "^0.30.1",
-    "node-sass": "^6.0.1",
     "purgecss": "^4.0.3",
     "react": "^17.0.2",
     "react-bootstrap": "^2.0.1",
@@ -22,22 +21,19 @@
     "react-redux": "^7.2.6",
     "react-scripts": "4.0.3",
     "react-textarea-autosize": "^8.3.3",
+    "sass": "^1.44.0",
     "typescript": "^4.4.4",
     "typescript-json-schema": "^0.51.0"
   },
   "scripts": {
     "schema": "typescript-json-schema ./src/NfoWriter.ts NfoData > src/NfoSchema.json",
-
     "prestart": "npm run schema",
     "start": "react-scripts start",
-
     "prebuild": "npm run schema",
     "build": "react-scripts build",
     "postbuild": "purgecss -c purgecss.config.js && npm run readme",
-
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-
     "readme": "npx ts-node -P tsconfig.buildscripts.json buildscripts/readme.ts"
   },
   "eslintConfig": {

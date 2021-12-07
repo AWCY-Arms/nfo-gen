@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Badge, Col, Container, Row, Stack, Tab, Tabs } from 'react-bootstrap';
 import packageJson from '../package.json';
 import About from './About';
-import './App.scss';
+import './scss/App.scss';
 import store from './app/store';
 import CopyNfo from './CopyNfo';
 import CopyNfoText from './CopyNfoText';
