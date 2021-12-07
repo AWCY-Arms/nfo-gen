@@ -22,7 +22,7 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          SASS_PATH: node_modules/bootstrap/scss/;node_modules/bootstrap-dark-5/scss/;
+          SASS_PATH: node_modules/bootstrap/scss/:node_modules/bootstrap-dark-5/scss/
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@4.1.6
