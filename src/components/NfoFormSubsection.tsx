@@ -56,7 +56,7 @@ export function NfoFormSubsection(props: NfoFormSubsectionProps) {
                         data-index={props.index}
                         data-index2={props.subindex}
                         onClick={eDelSubsection}
-                        disabled={subsection.uiRemoveDisabled}
+                        disabled={subsection.uiRemoveDisabled || props.subindex === 0}
                     >Remove Subsection</Button>
                     &nbsp;
                     <Button
