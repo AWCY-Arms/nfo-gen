@@ -2,6 +2,67 @@
 
 $awcy-red: #a80c00;
 
+@keyframes splashFadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+#splash {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 69420;
+    width: 100%;
+    height: 100%;
+    background-color: $awcy-red;
+    animation: 0.5s splashFadeOut 0.75s forwards;
+
+    @media (prefers-color-scheme: dark) {
+        background-color: mix($awcy-red, #222222, 33.3%);
+    }
+
+    & > div {
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        & > pre {
+            color: white;
+            font-family: "Courier New", monospace;
+            font-size: 14px;
+            line-height: 17px;
+            user-select: none;
+            overflow: hidden;
+            padding: 16px;
+
+            @media (max-width: 428px) {
+                font-size: 10px;
+                line-height: 12px;
+            }
+            @media (max-width: 360px) {
+                font-size: 8px;
+                line-height: 9px;
+            }
+
+            @media (prefers-color-scheme: dark) {
+                filter: drop-shadow(0px 0px 8px $awcy-red)
+                    drop-shadow(0px 0px 8px $awcy-red);
+            }
+        }
+    }
+
+    &.off {
+        display: none;
+    }
+}
+
 @keyframes fadeIn {
     0% {
         filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0));
@@ -62,6 +123,18 @@ pre.nfo {
     font-size: 14px;
     border-radius: 0.25rem;
     padding: 0 0.1rem;
+}
+@media (max-width: 640px) {
+    pre.nfo {
+        font-size: 8px;
+        line-height: 9px;
+    }
+}
+@media (max-width: 428px) {
+    pre.nfo {
+        font-size: 7px;
+        line-height: 8px;
+    }
 }
 
 @media (prefers-color-scheme: dark) {
