@@ -18,7 +18,7 @@
 #     The Premium Triple-Distilled Enterprise-Grade NFO Generator for the      #
 #    Sweaty and Moist Yet Sophisticated Artist who needed their README done    #
 #                                  yesterday                                   #
-#                                    0.11.0                                    #
+#                                    0.15.0                                    #
 #                                                                              #
 ################################################################################
 #                            /X> Release Notes <X\                             #
