@@ -5,7 +5,6 @@ import About from './components/About';
 import './scss/App.scss';
 import store from './app/store';
 import CopyNfo from './components/CopyNfo';
-import CopyNfoText from './components/CopyNfoText';
 import { setIsRightNfo, updateDarkMode } from './features/app/appSlice';
 import Nfo from './components/Nfo';
 import NfoForm from './components/NfoForm';
@@ -21,6 +20,9 @@ function updateDarkColorScheme() {
 const tabsId = "tabs";
 const leftNfoId = "content0";
 export const rightNfoId = "content1";
+
+const leftColId = "leftCol";
+const rightColId = "rightCol";
 
 function updateCurrentTab() {
     const isRightNfo = window.matchMedia && window.matchMedia("(min-width: 1200px)").matches;
@@ -42,10 +44,9 @@ function App() {
         }
     });
     return <Container fluid>
-        <CopyNfoText />
         <Row>
             <Col sm="12" xl="6" style={{ height: "100vh", overflowY: "scroll" }}>
-                <div id="leftCol" className="px-3 py-3">
+                <div id={leftColId} className="px-3 py-3">
                     <Row className="mb-3">
                         <Col>
                             <Stack direction="horizontal" style={{ alignItems: 'baseline' }} gap={3}>
@@ -59,7 +60,7 @@ function App() {
                             <Tabs defaultActiveKey="form" id={tabsId} className="mb-3">
                                 <Tab eventKey="form" title="Form">
                                     <NfoForm />
-                                    <ReturnToTop id="leftCol" />
+                                    <ReturnToTop id={leftColId} />
                                 </Tab>
                                 <Tab eventKey="json" title="Save/Load">
                                     <OptionsJson />
@@ -68,12 +69,12 @@ function App() {
                                     <div className="d-xl-none mx-auto" style={{ width: "fit-content" }}>
                                         <CopyNfo />
                                         <Nfo id={leftNfoId} />
-                                        <ReturnToTop id="leftCol" />
+                                        <ReturnToTop id={leftColId} />
                                     </div>
                                 </Tab>
                                 <Tab eventKey="about" title="About">
                                     <About />
-                                    <ReturnToTop id="leftCol" />
+                                    <ReturnToTop id={leftColId} />
                                 </Tab>
                             </Tabs>
                         </Col>
@@ -81,10 +82,10 @@ function App() {
                 </div>
             </Col>
             <Col sm="12" xl="6" className="d-none d-xl-block" style={{ height: "100vh", overflowY: "scroll" }}>
-                <div id="rightCol" className="mx-auto pt-3" style={{ width: "fit-content" }}>
+                <div id={rightColId} className="mx-auto pt-3" style={{ width: "fit-content" }}>
                     <CopyNfo />
                     <Nfo id={rightNfoId} />
-                    <ReturnToTop id="rightCol" />
+                    <ReturnToTop id={rightColId} />
                 </div>
             </Col>
         </Row>

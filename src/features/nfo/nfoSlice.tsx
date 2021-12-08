@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import deepClone from '../../utils/helpers';
-import { formatJson, NfoData, NfoSection, nfoSectionOffset, NfoSubsection, readConfig, TextAlign } from '../../utils/NfoWriter';
+import { formatJson, NfoData, NfoSection, nfoSectionOffset, NfoSubsection, readConfig, renderNfo, TextAlign } from '../../utils/NfoWriter';
 import sampleTemplates from '../../templates/examples';
 import defaultNfoData from '../../templates/examples/default';
 import { blankNfoSectionData, blankNfoSubsectionData } from '../../templates/partials/blank';
@@ -9,11 +9,13 @@ import { blankNfoSectionData, blankNfoSubsectionData } from '../../templates/par
 interface NfoState {
     nfoData: NfoData,
     nfoJson: string,
+    nfoText: string,
 }
 
 const initialState: NfoState = {
     nfoData: deepClone(defaultNfoData),
     nfoJson: formatJson(defaultNfoData),
+    nfoText: renderNfo(defaultNfoData),
 }
 
 export const nfoSlice = createSlice({
@@ -24,6 +26,7 @@ export const nfoSlice = createSlice({
             const { targetName, targetValue } = action.payload;
             state.nfoData[targetName] = targetValue;
             state.nfoJson = formatJson(state.nfoData);
+            state.nfoText = renderNfo(state.nfoData);
         },
         handleContentChange: (state, action) => {
             const index: number = action.payload.index - nfoSectionOffset;
@@ -56,17 +59,20 @@ export const nfoSlice = createSlice({
                     break;
             }
             state.nfoJson = formatJson(state.nfoData);
+            state.nfoText = renderNfo(state.nfoData);
         },
         loadTemplate: (state, action) => {
             const config: NfoData | Function = sampleTemplates[action.payload.value][1];
             state.nfoData = typeof config === "function" ? config() : config;
             state.nfoJson = formatJson(state.nfoData);
+            state.nfoText = renderNfo(state.nfoData);
         },
         handleUpload: (state, action) => {
             const jsonText = action.payload.jsonText;
             try {
                 state.nfoData = readConfig(JSON.parse(jsonText));
                 state.nfoJson = formatJson(state.nfoData);
+                state.nfoText = renderNfo(state.nfoData);
             } catch (e) {
                 console.error('Invalid JSON');
             }
@@ -78,6 +84,7 @@ export const nfoSlice = createSlice({
             } catch {
             }
             state.nfoJson = action.payload.value;
+            state.nfoText = renderNfo(state.nfoData);
         },
         addSection: (state) => {
             if (!state.nfoData.content) {
@@ -85,11 +92,13 @@ export const nfoSlice = createSlice({
             }
             state.nfoData.content.push(deepClone(blankNfoSectionData));
             state.nfoJson = formatJson(state.nfoData);
+            state.nfoText = renderNfo(state.nfoData);
         },
         delSection: (state, action) => {
             const { index } = action.payload;
             state.nfoData.content.splice(index - nfoSectionOffset, 1);
             state.nfoJson = formatJson(state.nfoData);
+            state.nfoText = renderNfo(state.nfoData);
         },
         moveSection: (state, action) => {
             const { index, direction } = action.payload;
@@ -98,16 +107,19 @@ export const nfoSlice = createSlice({
             const content = state.nfoData.content;
             [content[oldIndex], content[newIndex]] = [content[newIndex], content[oldIndex]];
             state.nfoJson = formatJson(state.nfoData);
+            state.nfoText = renderNfo(state.nfoData);
         },
         addSubsection: (state, action) => {
             const { index } = action.payload;
             state.nfoData.content[index - nfoSectionOffset]!.sectionData!.subsections!.push(deepClone(blankNfoSubsectionData));
             state.nfoJson = formatJson(state.nfoData);
+            state.nfoText = renderNfo(state.nfoData);
         },
         delSubsection: (state, action) => {
             const { index, subindex } = action.payload;
             state.nfoData.content[index - nfoSectionOffset]!.sectionData!.subsections!.splice(subindex, 1);
             state.nfoJson = formatJson(state.nfoData);
+            state.nfoText = renderNfo(state.nfoData);
         },
         moveSubsection: (state, action) => {
             const { index, subindex, direction } = action.payload;
@@ -115,6 +127,7 @@ export const nfoSlice = createSlice({
             const content = state.nfoData.content[index - nfoSectionOffset].sectionData.subsections;
             [content[subindex], content[newSubindex]] = [content[newSubindex], content[subindex]];
             state.nfoJson = formatJson(state.nfoData);
+            state.nfoText = renderNfo(state.nfoData);
         },
     },
 })
