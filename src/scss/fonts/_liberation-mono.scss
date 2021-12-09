@@ -1,0 +1,22 @@
+@font-face {
+    font-family: "Liberation Mono";
+    font-style: normal;
+    font-weight: normal;
+    size-adjust: 104%;
+    unicode-range:
+        /* FontSquirrel: Subsetting, Custom, Unicode Ranges: 0000-007F,0080-00FF,2000-206F,2500-257F,2580-259F,25A0-25FF,FE3B */
+        
+        /* Basic Latin */ U+0000-007F,
+        /* Latin-1 Supplement */ U+0080-00FF,
+        /* General Punctuation */ U+2000-206F,
+        /* Box Drawing */ U+2500-257F,
+        /* Block Elements */ U+2580-259F,
+        /* Geometric Shapes */ U+25A0-25FF,
+
+        /* Credits */ U+FE3B;
+
+    src:
+        local("Liberation Mono"),
+        url("../../fonts/liberation-fonts/liberationmono-regular-webfont.woff2") format("woff2"),
+        url("../../fonts/liberation-fonts/liberationmono-regular-webfont.woff") format("woff");
+}
