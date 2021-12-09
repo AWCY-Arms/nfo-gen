@@ -19,6 +19,7 @@ export const loremIpsumNfo = (): NfoData => {
 
     const sampleSection = deepClone(blankNfoSectionData);
     sampleSection.header = loremIpsum({ count: 4, units: "words" });
+    sampleSection.sectionData.subsections.splice(0);
     sampleSection.sectionData.subsections.push({
         subheader: "",
         text: [loremIpsum({ count: 1, units: "paragraphs" })],

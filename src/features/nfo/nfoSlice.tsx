@@ -67,8 +67,10 @@ export const nfoSlice = createSlice({
             try {
                 state.nfoData = readConfig(JSON.parse(jsonText));
                 state.nfoJson = formatJson(state.nfoData);
+                // TODO If right column is visible, scroll it to the top.
             } catch (e) {
                 console.error('Invalid JSON');
+                // TODO Show an error.
             }
         },
         handleJsonChange: (state, action) => {

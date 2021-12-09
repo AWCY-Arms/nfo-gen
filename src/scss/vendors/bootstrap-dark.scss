@@ -72,8 +72,8 @@ $input-disabled-bg-alt: mix(#3b3b3b /* $gray-800-alt */, #222 /* $gray-900-alt *
 @import "utilities/api";
 
 .form-control-lg + label {
-  font-size: 20px;
-  margin-top: -0.25rem;
+  font-size: 18px;
+  margin-top: -0.1rem;
 }
 
 /*

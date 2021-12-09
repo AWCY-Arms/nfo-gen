@@ -15,11 +15,12 @@ export function NfoFormSection(props: NfoFormSectionProps) {
     const section = useAppSelector(state => state.nfoConfig.nfoData.content[props.index - nfoSectionOffset]);
     const sectionData = section.sectionData;
     if (!section || !sectionData) return <div />;
-    return <Card className="mb-2">
+    return <Card className="mb-3">
         <Card.Body>
+            <h5 className="h5">Section {props.index + 1 - nfoSectionOffset}</h5>
             <Row className="mb-3">
                 <Col>
-                    <FloatingLabel label={(props.index + 1 - nfoSectionOffset) + ": Header"}>
+                    <FloatingLabel label="Header">
                         <Form.Control
                             type="text"
                             name="header"
@@ -64,6 +65,7 @@ export function NfoFormSection(props: NfoFormSectionProps) {
                     >Move Down</Button>
                 </Col>
             </Row>
+            <hr />
             {
                 sectionData.subsections?.map((_: NfoSubsection, i: number) => {
                     return <NfoFormSubsection key={i} index={props.index} subindex={i} maxSubindex={sectionData.subsections.length - 1} />
