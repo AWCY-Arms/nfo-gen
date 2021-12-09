@@ -4,19 +4,20 @@ pre.nfo {
     color: black;
     user-select: none;
     margin-bottom: 0;
-    line-height: 17px;
-    font-size: 14px;
+    line-height: normal;
+    font-size: 10pt;
     border-radius: 0.25rem;
     padding: 0 0.1rem;
     overflow: hidden;
 
-    @media (max-width: 640px) {
-        font-size: 8px;
-        line-height: 9px;
+    @media (max-width: 700px) {
+        font-size: 8pt;
     }
-    @media (max-width: 428px) {
-        font-size: 7px;
-        line-height: 8px;
+    @media (max-width: 620px) {
+        font-size: 7pt;
+    }
+    @media (max-width: 480px) {
+        font-size: 5pt;
     }
 
     @media (prefers-color-scheme: dark) {

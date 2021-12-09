@@ -36,19 +36,20 @@
 
         & > pre {
             color: white;
-            font-size: 14px;
-            line-height: 17px;
+            font-size: 10pt;
+            line-height: normal;
             user-select: none;
             overflow: hidden;
             padding: 16px;
 
-            @media (max-width: 428px) {
-                font-size: 10px;
-                line-height: 12px;
+            @media (max-width: 500px) {
+                font-size: 8pt;
+            }
+            @media (max-width: 400px) {
+                font-size: 7pt;
             }
             @media (max-width: 360px) {
-                font-size: 8px;
-                line-height: 9px;
+                font-size: 6pt;
             }
 
             @media (prefers-color-scheme: dark) {

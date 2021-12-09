@@ -1,4 +1,4 @@
-@use '../variables';
+@use "../variables";
 
 div#credits {
     user-select: none;
@@ -6,6 +6,6 @@ div#credits {
 
 pre#credits-0-0 {
     color: white;
-    filter: drop-shadow(0px 0px 4px variables.$awcy-red)
-        drop-shadow(0px 0px 16px variables.$awcy-red);
+    filter: drop-shadow(0px 0px 8px variables.$awcy-red)
+        drop-shadow(0px 0px 8px variables.$awcy-red);
 }

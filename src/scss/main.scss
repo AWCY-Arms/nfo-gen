@@ -1,13 +1,13 @@
 /*! purgecss start ignore */
 
-@use "variables";
+@import "variables";
 
-@use "fonts/liberation-mono";
+@import "fonts/liberation-mono";
 
-@use "components/nfo";
+@import "components/nfo";
 
-@use "pages/splash";
-@use "pages/main";
-@use "pages/credits";
+@import "pages/splash";
+@import "pages/main";
+@import "pages/credits";
 
 /*! purgecss end ignore */

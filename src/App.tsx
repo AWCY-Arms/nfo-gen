@@ -80,7 +80,7 @@ function App() {
                     </Row>
                 </div>
             </Col>
-            <Col sm="12" xl="6" className="d-none d-xl-block" style={{ height: "100vh", overflowY: "scroll" }}>
+            <Col sm="12" xl="6" className="d-none d-xl-block border-start" style={{ height: "100vh", overflowY: "scroll" }}>
                 <div id={rightColId} className="mx-auto pt-3" style={{ width: "fit-content" }}>
                     <CopyNfo />
                     <Nfo id={rightNfoId} />
