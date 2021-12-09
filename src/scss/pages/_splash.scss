@@ -1,0 +1,66 @@
+@use "../variables";
+
+#splash {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 69420;
+    width: 100%;
+    height: 100%;
+    background-color: variables.$awcy-red;
+
+    @media (prefers-color-scheme: dark) {
+        /* prettier-ignore */
+        background-color: mix(mix(variables.$awcy-red, #222222, 33.3%), #ff0000, 75%);
+    }
+
+    @if (not variables.$debug-splash) {
+        @keyframes splashFadeOut {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+        animation: 0.5s splashFadeOut 0.75s forwards;
+    }
+
+    & > div {
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        & > pre {
+            color: white;
+            font-size: 14px;
+            line-height: 17px;
+            user-select: none;
+            overflow: hidden;
+            padding: 16px;
+
+            @media (max-width: 428px) {
+                font-size: 10px;
+                line-height: 12px;
+            }
+            @media (max-width: 360px) {
+                font-size: 8px;
+                line-height: 9px;
+            }
+
+            @media (prefers-color-scheme: dark) {
+                filter: drop-shadow(0px 0px 8px variables.$awcy-red)
+                    drop-shadow(0px 0px 8px variables.$awcy-red);
+            }
+        }
+    }
+
+    &.off {
+        @if (not variables.$debug-splash) {
+            display: none;
+        }
+    }
+}

@@ -1,0 +1,23 @@
+@use "../variables";
+
+@keyframes highlight1 {
+    0% {
+        background-color: none;
+    }
+    50% {
+        background-color: rgba(variables.$highlight-color, 0.25);
+        box-shadow: 0px 0px 10px rgba(variables.$highlight-color, 0.5);
+    }
+    100% {
+        background-color: none;
+    }
+}
+
+.highlight {
+    border-radius: 0.25rem;
+    animation: 2s highlight1 0s ease;
+
+    &.off {
+        animation-name: none;
+    }
+}

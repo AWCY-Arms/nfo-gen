@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { Badge, Col, Container, Row, Stack, Tab, Tabs } from 'react-bootstrap';
 import packageJson from '../package.json';
 import About from './components/About';
-import './scss/App.scss';
 import store from './app/store';
 import CopyNfo from './components/CopyNfo';
 import { setIsRightNfo, updateDarkMode } from './features/app/appSlice';

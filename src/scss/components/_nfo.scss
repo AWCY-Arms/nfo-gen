@@ -1,0 +1,59 @@
+@use "../variables";
+
+pre.nfo {
+    color: black;
+    user-select: none;
+    margin-bottom: 0;
+    line-height: 17px;
+    font-size: 14px;
+    border-radius: 0.25rem;
+    padding: 0 0.1rem;
+    overflow: hidden;
+
+    @media (max-width: 640px) {
+        font-size: 8px;
+        line-height: 9px;
+    }
+    @media (max-width: 428px) {
+        font-size: 7px;
+        line-height: 8px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        color: white;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    @keyframes fadeIn {
+        0% {
+            filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0));
+        }
+        100% {
+            filter: drop-shadow(0px 0px 10px #33aaccbb);
+        }
+    }
+
+    @keyframes darkCool {
+        0% {
+            filter: drop-shadow(0px 0px 10px rgba(221, 160, 46, 0.7));
+        }
+        33% {
+            filter: drop-shadow(0px 0px 10px #33aaccbb);
+        }
+        67% {
+            filter: drop-shadow(0px 0px 10px variables.$awcy-red);
+        }
+        100% {
+            filter: drop-shadow(0px 0px 10px rgba(221, 160, 46, 0.7));
+        }
+    }
+
+    /* prettier-ignore */
+    div#p-content0-0-0,
+    div#p-content1-0-0 {
+        animation:
+            variables.$darkCoolDuration darkCool variables.$darkCoolDelay forwards infinite,
+            calc(variables.$darkCoolDuration / 3) fadeIn variables.$darkCoolDelay;
+    }
+}
