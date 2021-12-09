@@ -172,7 +172,7 @@ function borderText(textRows: string[], borderStart: string = defaultBorderChar,
 }
 
 function centerHeader(text: string, borderStart = headerBorderStart, borderEnd = headerBorderEnd, length?: number): string[] {
-    return borderText([text], borderStart, borderEnd, 1).flatMap(l => centerText(l, true, length));
+    return borderText([text], borderStart, borderEnd, 1).flatMap(line => centerText(line, true, length));
 }
 
 const lMax = 30;
@@ -478,9 +478,3 @@ export function formatJson(obj: any): string {
 export const exportedForTesting = {
     formatText,
 }
-
-const defaultExports = {
-    renderNfo,
-};
-
-export default defaultExports;
