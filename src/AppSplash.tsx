@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import headers from "./headers";
+import wordmark from "./images/awcy_wordmark_hwite.svg";
 
 
 export const AppSplash = () => {
@@ -10,7 +10,7 @@ export const AppSplash = () => {
     });
     return <div id="splash">
         <div>
-            <pre>{headers['Delta']}</pre>
+            <img src={wordmark} alt="AWCY? Wordmark"></img>
         </div>
     </div>
 };
