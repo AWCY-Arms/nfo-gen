@@ -12,8 +12,10 @@ import {
     headerBorderEnd,
     headerBorderStart,
     lineBlank,
+    lineBottom,
     lineEmpty,
     lineSep,
+    lineTop,
     subSectionHeaderL,
     subSectionHeaderR
 } from "./NfoWriterSettings";
@@ -22,7 +24,7 @@ import defaultNfoData from "../templates/examples/default";
 
 export type TextAlign = "left" | "center" | "right";
 
-export type TextStyle = "left" | "center" | "right" | "twoCol" | "numList" | "credits1" | "credits2" | "credits3" | "credits4" | "none";
+export type TextStyle = "left" | "center" | "right" | "twoCol" | "numList" | "credits1" | "credits2" | "credits3" | "credits4" | "none" | "warning";
 
 interface TextStyleObj {
     name: string,
@@ -64,7 +66,10 @@ export const textStyles: IMap<TextStyleObj> = {
     none: {
         name: "None",
         hidden: true,
-    }
+    },
+    warning: {
+        name: "Warning",
+    },
 }
 
 export interface NfoSection extends IMap {
@@ -292,6 +297,11 @@ function addSection(sections: IMap<string[]>, content: NfoSection, cIndex: numbe
                 case "none":
                     lines.push(...el.text);
                     break;
+                case "warning":
+                    lines.push(...borderText(["!".repeat(defaultNfoWidth - 4)], undefined, undefined, 1));
+                    lines.push(...el.text.flatMap(textRow => borderText(borderText(centerText(textRow, undefined, defaultTextWidth - 8), "!!!", "!!!"), undefined, undefined, 1)));
+                    lines.push(...borderText(["!".repeat(defaultNfoWidth - 4)], undefined, undefined, 1));
+                    break;
                 default:
                     lines.push(...el.text.flatMap((textRow) => {
                         return borderText(horizontalAlign(textRow, el.textStyle as TextAlign))
@@ -368,7 +378,7 @@ export const sectionFooter: NfoSection = {
             {
                 subheader: "",
                 textStyle: "none",
-                text: [lineSep],
+                text: [lineBottom],
             }
         ]
     }
@@ -413,7 +423,7 @@ export function getSepPre(sectionKey: string, hasContent?: boolean): string[] {
         // Title, description, version
         if (i2 === "0") {
             if (h === "h") {
-                return [lineSep]
+                return [lineTop]
             } else {
                 if (hasContent) {
                     return [lineEmpty]
