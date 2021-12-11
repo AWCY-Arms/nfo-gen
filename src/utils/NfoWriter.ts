@@ -263,31 +263,33 @@ function addSection(sections: IMap<string[]>, content: NfoSection, cIndex: numbe
                     lines.push(...borderText(centerText(formatCredits2(credits2.join("\n")), false)));
                     break;
                 case "credits3":
-                    let additionalCreditsText;
+                    const credits3 = [];
                     const credits4 = (content.sectionData.subsections[sIndex + 1]?.textStyle === "credits4");
                     switch (el.text.length) {
                         case 1:
-                            additionalCreditsText = el.text[0];
+                            credits3.push(...el.text);
                             if (credits4) {
-                                additionalCreditsText += " and";
+                                credits3.push("and");
                             }
                             break;
                         case 2:
                             if (credits4) {
-                                additionalCreditsText = el.text.join(", ") + ", and";
+                                credits3.push(...el.text, "and");
                             } else {
-                                additionalCreditsText = el.text.join(" and ");
+                                credits3.push(el.text[0], "and", el.text[1]);
                             }
                             break;
                         default:
                             if (credits4) {
-                                additionalCreditsText = el.text.join(", ") + ", and";
+                                el.text.slice(0, -1).forEach(t => credits3.push(t + ","));
+                                credits3.push("and", el.text[el.text.length - 1]);
                             } else {
-                                additionalCreditsText = el.text.slice(0, -1).join(", ") + ", and " + el.text.slice(-1);
+                                el.text.forEach(t => credits3.push(t + ","));
+                                credits3.push("and");
                             }
                             break;
                     }
-                    lines.push(...borderText(centerText(additionalCreditsText)));
+                    lines.push(...borderText(centerText(formatCredits2(credits3.join("\n")), false)));
                     break;
                 case "credits4":
                     lines.push(...el.text.flatMap((textRow) => {
