@@ -1,5 +1,23 @@
 @use "../variables";
 
+@keyframes logoFadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes splashFadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
 #splash {
     position: fixed;
     top: 0;
@@ -10,22 +28,10 @@
     width: 100%;
     height: 100%;
     background-color: variables.$awcy-red;
+    animation: 0.5s splashFadeOut 1s forwards;
 
     @media (prefers-color-scheme: dark) {
-        /* prettier-ignore */
-        background-color: mix(mix(variables.$awcy-red, #222222, 33.3%), #ff0000, 75%);
-    }
-
-    @if (not variables.$debug-splash) {
-        @keyframes splashFadeOut {
-            0% {
-                opacity: 1;
-            }
-            100% {
-                opacity: 0;
-            }
-        }
-        animation: 0.5s splashFadeOut 0.75s forwards;
+        background-color: variables.$dark-red;
     }
 
     & > div {
@@ -35,12 +41,14 @@
         justify-content: center;
 
         & > pre {
-            color: white;
+            color: variables.$hwite;
             font-size: 10pt;
             line-height: normal;
             user-select: none;
             overflow: hidden;
             padding: 16px;
+            opacity: 0;
+            animation: 0.4s logoFadeIn 0.1s forwards ease-in;
 
             @media (max-width: 500px) {
                 font-size: 8pt;
@@ -51,17 +59,10 @@
             @media (max-width: 360px) {
                 font-size: 6pt;
             }
-
-            @media (prefers-color-scheme: dark) {
-                filter: drop-shadow(0px 0px 8px variables.$awcy-red)
-                    drop-shadow(0px 0px 8px variables.$awcy-red);
-            }
         }
     }
 
     &.off {
-        @if (not variables.$debug-splash) {
-            display: none;
-        }
+        display: none;
     }
 }

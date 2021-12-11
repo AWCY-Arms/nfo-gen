@@ -5,8 +5,8 @@
         background-color: none;
     }
     50% {
-        background-color: rgba(variables.$highlight-color, 0.25);
-        box-shadow: 0px 0px 10px rgba(variables.$highlight-color, 0.5);
+        background-color: rgba(variables.$blue, 0.5);
+        box-shadow: 0px 0px 10px rgba(variables.$blue, 1);
     }
     100% {
         background-color: none;

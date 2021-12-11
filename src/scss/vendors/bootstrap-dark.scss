@@ -18,7 +18,7 @@
 $font-family-sans-serif: "Readex Pro", system-ui, -apple-system, sans-serif;
 $font-family-monospace: "Courier New", "Liberation Mono", monospace;
 
-$card-bg: #f8f9fa;
+$card-bg: #f8f9fa; /* $gray-100 */
 
 @import "variables";  // defaults are here
 
@@ -42,7 +42,7 @@ $input-disabled-bg-alt: mix(#3b3b3b /* $gray-800-alt */, #222 /* $gray-900-alt *
 // @import "tables";
 @import "forms";
 @import "buttons";
-@import "transitions";
+// @import "transitions";
 // @import "dropdown";
 // @import "button-group";
 @import "nav";

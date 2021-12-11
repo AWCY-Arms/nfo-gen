@@ -6,7 +6,7 @@ export const AppSplash = () => {
     useEffect(() => {
         setTimeout(() => {
             document.getElementById("splash")!.classList.add("off");
-        }, 1250);
+        }, 1500);
     });
     return <div id="splash">
         <div>

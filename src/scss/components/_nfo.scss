@@ -1,7 +1,7 @@
 @use "../variables";
 
 pre.nfo {
-    color: black;
+    color: variables.$black;
     user-select: none;
     margin-bottom: 0;
     line-height: normal;
@@ -21,7 +21,7 @@ pre.nfo {
     }
 
     @media (prefers-color-scheme: dark) {
-        color: white;
+        color: variables.$hwite;
     }
 }
 
@@ -31,22 +31,22 @@ pre.nfo {
             filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0));
         }
         100% {
-            filter: drop-shadow(0px 0px 10px #33aaccbb);
+            filter: drop-shadow(0px 0px 10px variables.$blue);
         }
     }
 
     @keyframes darkCool {
         0% {
-            filter: drop-shadow(0px 0px 10px rgba(221, 160, 46, 0.7));
+            filter: drop-shadow(0px 0px 10px variables.$orange);
         }
         33% {
-            filter: drop-shadow(0px 0px 10px #33aaccbb);
+            filter: drop-shadow(0px 0px 10px variables.$blue);
         }
         67% {
             filter: drop-shadow(0px 0px 10px variables.$awcy-red);
         }
         100% {
-            filter: drop-shadow(0px 0px 10px rgba(221, 160, 46, 0.7));
+            filter: drop-shadow(0px 0px 10px variables.$orange);
         }
     }
 
