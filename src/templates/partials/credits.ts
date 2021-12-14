@@ -1,6 +1,8 @@
 import { NfoSection } from "../../utils/NfoWriter";
 
 
+export const defaultCredits4 = "the entire Are We Cool Yet? team";
+
 export const defaultNfoSectionCredits: NfoSection = {
     header: "Credits",
     uiHeaderDisabled: true,
@@ -32,7 +34,7 @@ export const defaultNfoSectionCredits: NfoSection = {
             },
             {
                 subheader: "",
-                text: ["the entire Are We Cool Yet? team"],
+                text: [defaultCredits4],
                 textStyle: "credits4",
                 uiRemoveDisabled: true,
                 uiSubheaderDisabled: true,
@@ -41,7 +43,7 @@ export const defaultNfoSectionCredits: NfoSection = {
             },
         ],
         uiAddSubsectionDisabled: true,
-    }
-}
+    },
+};
 
 export default defaultNfoSectionCredits;

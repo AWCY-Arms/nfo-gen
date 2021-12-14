@@ -2,6 +2,7 @@ import { Button, Col, FloatingLabel, Form, Row } from "react-bootstrap";
 import TextareaAutosize from 'react-textarea-autosize';
 import { useAppSelector } from "../app/hooks";
 import { eDelSubsection, eHandleContentChange, eHandleInputFocus, eMoveSubsection } from "../features/nfo/Nfo";
+import { defaultCredits4 } from "../templates/partials/credits";
 import { nfoSectionOffset, textStyles } from "../utils/NfoWriter";
 
 
@@ -14,8 +15,11 @@ interface NfoFormSubsectionProps {
 const styles = Object.keys(textStyles).filter((x: string) => textStyles[x].hidden !== true).map((key: string, i: number) => <option key={i} value={key}>{textStyles[key]["name"]}</option>);
 
 function getTextStyleHelp(style: string): string {
-    if (style.indexOf("credits") === 0)
+    if (style.indexOf("credits")) {
+        if (style === "credits4")
+            return defaultCredits4;
         return "One name per line. ";
+    }
     if (style === "twoCol")
         return "Text for the left column goes on the first line.\nText for the right column starts on the second line.\n";
     if (style === "numList")
