@@ -13,7 +13,8 @@ export function run() {
 
     const githubTemplate = fs.readFileSync(".github/README.template.svg", { encoding: 'utf8', flag: 'r' });
     const svgText = nfoText.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    const githubSvg = githubTemplate.replace("{{ nfo }}", svgText);
+    const svgHeight = nfoText.split("\n").length * 15 + 48;
+    const githubSvg = githubTemplate.replace("{{ nfo }}", svgText).replace(/{{svgHeight}}/g, svgHeight.toString());
     fs.writeFileSync(
         '.github/README.svg',
         githubSvg
