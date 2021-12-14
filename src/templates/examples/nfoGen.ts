@@ -6,12 +6,21 @@ import defaultNfoSectionReleaseNotes from "../partials/releaseNotes";
 
 
 const credits = deepClone(defaultNfoSectionCredits);
-credits.sectionData.subsections[0].textStyle = "center"
-credits.sectionData.subsections[0].text = ["dimmadong"]
-credits.sectionData.subsections[1].text = ["recce"]
-credits.sectionData.subsections[2].text = ["Mom", "Darren", "Ferus", "Edison"]
+credits.sectionData.subsections[0].textStyle = "center";
+credits.sectionData.subsections[0].text = ["dimmadong"];
+credits.sectionData.subsections[1].textStyle = "center";
+credits.sectionData.subsections[1].text = [
+    "recce",
+    "v8vtwin",
+    "capekoviroboti",
+    "Ferus",
+    "Protouniverse",
+    "bakasama113",
+    "InvaderZip_",
+];
+credits.sectionData.subsections[2].text = ["Mom", "Darren", "Edison"];
 
-const releaseNotes = deepClone(defaultNfoSectionReleaseNotes)
+const releaseNotes = deepClone(defaultNfoSectionReleaseNotes);
 releaseNotes.sectionData.subsections[0].text[0] = "Hello World!";
 releaseNotes.uiRemoveDisabled = true;
 
@@ -20,12 +29,10 @@ export const nfoGen: NfoData = {
     headerArt: "Delta",
     headerAlign: "center",
     title: "AWCY? Readme Generator",
-    description: "The Premium Triple-Distilled Enterprise-Grade NFO Generator for the Sweaty and Moist Yet Sophisticated Artist who needed their README done yesterday",
+    description:
+        "The Premium Triple-Distilled Enterprise-Grade NFO Generator for the Sweaty and Moist Yet Sophisticated Artist who needed their README done yesterday",
     version: packageJson.version,
-    content: [
-        releaseNotes,
-        credits,
-    ],
-}
+    content: [releaseNotes, credits],
+};
 
 export default nfoGen;

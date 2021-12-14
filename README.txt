@@ -18,7 +18,7 @@
 #     The Premium Triple-Distilled Enterprise-Grade NFO Generator for the      #
 #    Sweaty and Moist Yet Sophisticated Artist who needed their README done    #
 #                                  yesterday                                   #
-#                                    0.15.0                                    #
+#                                    0.16.0                                    #
 #                                                                              #
 ################################################################################
 #                            /X> Release Notes <X\                             #
@@ -37,10 +37,16 @@
 #                           [-+ With the help of +-]                           #
 #                                                                              #
 #                                    recce                                     #
+#                                   v8vtwin                                    #
+#                                capekoviroboti                                #
+#                                    Ferus                                     #
+#                                Protouniverse                                 #
+#                                 bakasama113                                  #
+#                                 InvaderZip_                                  #
 #                                                                              #
 #                         [-+ Additional thanks to +-]                         #
 #                                                                              #
-#                       Mom, Darren, Ferus, Edison, and                        #
+#                           Mom, Darren, and Edison                            #
 #                                                                              #
 #                       the entire Are We Cool Yet? team                       #
 #                                                                              #

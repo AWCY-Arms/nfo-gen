@@ -26,51 +26,23 @@ export type TextAlign = "left" | "center" | "right";
 
 export type TextStyle = "left" | "center" | "right" | "twoCol" | "numList" | "credits1" | "credits2" | "credits3" | "credits4" | "none" | "warning";
 
-interface TextStyleObj {
-    name: string,
-    hidden?: boolean,
-}
-
-export const textStyles: IMap<TextStyleObj> = {
-    left: {
-        name: "Left",
+export const textStyles: IMap<IMap> = {
+    Regular: {
+        left: "Left",
+        center: "Center",
+        right: "Right",
+        twoCol: "Q & A",
+        numList: "Numbered List",
+        warning: "Warning",
     },
-    center: {
-        name: "Center",
+    "Internal Use": {
+        credits1: "Credits 1",
+        credits2: "Credits 2",
+        credits3: "Credits 3",
+        credits4: "Credits 4",
+        none: "None",
     },
-    right: {
-        name: "Right",
-    },
-    twoCol: {
-        name: "Q & A",
-    },
-    numList: {
-        name: "Numbered List",
-    },
-    credits1: {
-        name: "Credits 1",
-        hidden: true,
-    },
-    credits2: {
-        name: "Credits 2",
-        hidden: true,
-    },
-    credits3: {
-        name: "Credits 3",
-        hidden: true,
-    },
-    credits4: {
-        name: "Credits 4",
-        hidden: true,
-    },
-    none: {
-        name: "None",
-        hidden: true,
-    },
-    warning: {
-        name: "Warning",
-    },
-}
+};
 
 export interface NfoSection extends IMap {
     header: string,

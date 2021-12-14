@@ -12,10 +12,18 @@ interface NfoFormSubsectionProps {
     maxSubindex: number,
 }
 
-const styles = Object.keys(textStyles).filter((x: string) => textStyles[x].hidden !== true).map((key: string, i: number) => <option key={i} value={key}>{textStyles[key]["name"]}</option>);
+const styles = Object.keys(textStyles).map((optgroupLabel) => (
+    <optgroup label={optgroupLabel}>
+        {Object.keys(textStyles[optgroupLabel]).map((optname, j) => (
+            <option key={j} value={optname}>
+                {textStyles[optgroupLabel][optname]}
+            </option>
+        ))}
+    </optgroup>
+));
 
 function getTextStyleHelp(style: string): string {
-    if (style.indexOf("credits")) {
+    if (style.indexOf("credits") === 0) {
         if (style === "credits4")
             return defaultCredits4;
         return "One name per line. ";

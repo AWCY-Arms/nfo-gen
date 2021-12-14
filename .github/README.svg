@@ -1,4 +1,4 @@
-<svg fill="none" viewBox="0 0 700 960" width="700" height="960" xmlns="http://www.w3.org/2000/svg">
+<svg fill="none" viewBox="0 0 700 870" width="700" height="870" xmlns="http://www.w3.org/2000/svg">
 <foreignObject width="100%" height="100%">
 <div xmlns="http://www.w3.org/1999/xhtml">
 <style>
@@ -19,7 +19,7 @@
 					align-items: center;
 					margin: 0;
 					width: 100%;
-					height: 960px;
+					height: 870px;
 					background: linear-gradient(45deg, #510044, #4a0000, #006865, #009750);
 					background-size: 600% 100%;
 					animation: gradientBackground 30s ease infinite;
@@ -29,9 +29,9 @@
 				}
 
 				pre {
-					font-size: 14px;
-					font-family: "Courier New", monospace;
-					line-height: 17px;
+					font-size: 10pt;
+					font-family: "Courier New", "Liberation Mono", monospace;
+					line-height: normal;
 					animation: 1s ease 0s normal forwards 1 fadeIn;
 					filter: drop-shadow(0px 0px 10px #0000007F);
 				}
@@ -58,7 +58,7 @@
 #     The Premium Triple-Distilled Enterprise-Grade NFO Generator for the      #
 #    Sweaty and Moist Yet Sophisticated Artist who needed their README done    #
 #                                  yesterday                                   #
-#                                    0.15.0                                    #
+#                                    0.16.0                                    #
 #                                                                              #
 ################################################################################
 #                            /X&gt; Release Notes &lt;X\                             #
@@ -77,10 +77,16 @@
 #                           [-+ With the help of +-]                           #
 #                                                                              #
 #                                    recce                                     #
+#                                   v8vtwin                                    #
+#                                capekoviroboti                                #
+#                                    Ferus                                     #
+#                                Protouniverse                                 #
+#                                 bakasama113                                  #
+#                                 InvaderZip_                                  #
 #                                                                              #
 #                         [-+ Additional thanks to +-]                         #
 #                                                                              #
-#                       Mom, Darren, Ferus, Edison, and                        #
+#                           Mom, Darren, and Edison                            #
 #                                                                              #
 #                       the entire Are We Cool Yet? team                       #
 #                                                                              #
