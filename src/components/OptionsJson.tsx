@@ -1,6 +1,6 @@
 import Editor, { Monaco } from "@monaco-editor/react";
 import FileSaver from 'file-saver';
-import { Alert, Button, Card, Col, Form, Row } from 'react-bootstrap';
+import { Alert, Button, Card, Col, Form, Row, Stack } from 'react-bootstrap';
 import { useAppSelector } from '../app/hooks';
 import { eHandleJsonChange, eHandleUpload, eLoadTemplate } from '../features/nfo/Nfo';
 import sampleTemplates from '../templates/examples';
@@ -47,52 +47,52 @@ const onMount = (editor: editor.IStandaloneCodeEditor, monaco: Monaco) => {
 function OptionsJson() {
     const nfoJson = useAppSelector((state) => state.nfoConfig.nfoJson);
     const editorTheme = useAppSelector((state) => state.app.darkMode === "dark" ? "vs-dark" : "light");
-    return <div>
-        <Row>
-            <Col>
-                <Alert variant="info">Upload or paste a valid <code>readme.json</code>, or select a sample template.</Alert>
-            </Col>
-        </Row>
-        <Row>
-            <Col xs="12" sm="6">
-                <Form.Group className="mb-3">
-                    <Form.Label>Sample Templates</Form.Label>
-                    <Form.Select name="loadTemplate" size="sm" onChange={eLoadTemplate} value="">
-                        <option value="" />
-                        {templates}
-                    </Form.Select>
-                </Form.Group>
-            </Col>
-            <Col>
-                <Form.Group controlId="formFile" className="mb-3">
-                    <Form.Label>Upload</Form.Label>
-                    <Form.Control type="file" size="sm" accept=".json" onChange={eHandleUpload} />
-                </Form.Group>
-            </Col>
-        </Row>
-        <Row className="mb-3">
-            <Col>
-                <Card>
-                    <Card.Body style={{ padding: 0 }}>
-                        <Editor
-                            language="json"
-                            value={nfoJson}
-                            onChange={eHandleJsonChange}
-                            beforeMount={beforeMount}
-                            onMount={onMount}
-                            height="60vh"
-                            theme={editorTheme}
-                        />
-                    </Card.Body>
-                </Card>
-            </Col>
-        </Row>
-        <Row>
-            <Col>
-                <Button id="save_nfo" variant="primary" onClick={() => { save(nfoJson) }}>Download</Button>
-            </Col>
-        </Row>
-    </div>;
+    return <Stack gap={3}>
+        <Alert variant="info" className="mb-0">Upload or paste a valid <code>readme.json</code>, or select a sample template.</Alert>
+        <Card>
+            <Card.Header>Load JSON</Card.Header>
+            <Card.Body>
+                <Row>
+                    <Col xs="12" sm="6">
+                        <Form.Group className="mb-3">
+                            <Form.Label>Sample Templates</Form.Label>
+                            <Form.Select name="loadTemplate" size="sm" onChange={eLoadTemplate} value="">
+                                <option value="" />
+                                {templates}
+                            </Form.Select>
+                        </Form.Group>
+                    </Col>
+                    <Col>
+                        <Form.Group controlId="formFile" className="mb-3">
+                            <Form.Label>Upload</Form.Label>
+                            <Form.Control type="file" size="sm" accept=".json" onChange={eHandleUpload} />
+                        </Form.Group>
+                    </Col>
+                </Row>
+            </Card.Body>
+        </Card>
+        <Card>
+            <Card.Header>
+                <Stack direction="horizontal" gap={3}>
+                    <div>Edit JSON</div>
+                    <div className="ms-auto">
+                        <Button id="save_nfo" variant="primary" size="sm" className="pull-right" onClick={() => { save(nfoJson) }}>Save JSON</Button>
+                    </div>
+                </Stack>
+            </Card.Header>
+            <Card.Body style={{ padding: 0 }}>
+                <Editor
+                    language="json"
+                    value={nfoJson}
+                    onChange={eHandleJsonChange}
+                    beforeMount={beforeMount}
+                    onMount={onMount}
+                    height="50vh"
+                    theme={editorTheme}
+                />
+            </Card.Body>
+        </Card>
+    </Stack>;
 }
 
 export default OptionsJson;

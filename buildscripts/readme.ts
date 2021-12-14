@@ -11,13 +11,21 @@ export function run() {
         { encoding: "utf8" }
     );
 
-    const githubTemplate = fs.readFileSync(".github/README.template.svg", { encoding: 'utf8', flag: 'r' });
     const svgText = nfoText.replace(/</g, "&lt;").replace(/>/g, "&gt;");
     const svgHeight = nfoText.split("\n").length * 15 + 48;
-    const githubSvg = githubTemplate.replace("{{ nfo }}", svgText).replace(/{{svgHeight}}/g, svgHeight.toString());
+    
+    const svgTemplate = fs.readFileSync(".github/README.template.svg", { encoding: 'utf8', flag: 'r' });
+    const svgContent = svgTemplate.replace("{{ nfo }}", svgText).replace(/{{svgHeight}}/g, svgHeight.toString());
     fs.writeFileSync(
         '.github/README.svg',
-        githubSvg
+        svgContent
+    );
+
+    const mdTemplate = fs.readFileSync(".github/README.template.md", { encoding: 'utf8', flag: 'r' });
+    const mdContent = mdTemplate.replace(/{{svgHeight}}/g, svgHeight.toString());
+    fs.writeFileSync(
+        '.github/README.md',
+        mdContent
     );
 }
 

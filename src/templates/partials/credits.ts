@@ -28,7 +28,6 @@ export const defaultNfoSectionCredits: NfoSection = {
                 textStyle: "credits4",
             },
         ],
-        uiAddSubsectionDisabled: true,
     },
 };
 

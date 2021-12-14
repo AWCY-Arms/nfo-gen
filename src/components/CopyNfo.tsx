@@ -1,7 +1,7 @@
 import ClipboardJS from "clipboard";
 import FileSaver from 'file-saver';
 import React from 'react';
-import { Button } from "react-bootstrap";
+import { Button, Stack } from "react-bootstrap";
 import store from "../app/store";
 import { renderNfo } from "../utils/NfoWriter";
 
@@ -61,10 +61,10 @@ class CopyNfo extends React.Component<CopyNfoProps, CopyNfoState> {
         if (this.state.clipboard) this.state.clipboard.destroy();
     }
     render() {
-        return <div className="mb-3">
-            <Button id="copy_nfo" variant="primary" data-action="copy" className="me-1">{this.state.text}</Button>
-            <Button variant="primary" onClick={this.save}>Download</Button>
-        </div>
+        return <Stack direction="horizontal" gap={3} className="mb-3">
+            <Button className="col-6" id="copy_nfo" variant="primary" data-action="copy">{this.state.text}</Button>
+            <Button className="col-6" variant="primary" onClick={this.save}>Save NFO</Button>
+        </Stack>
     }
 }
 

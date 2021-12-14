@@ -16,8 +16,8 @@ export function NfoFormSection(props: NfoFormSectionProps) {
     const sectionData = section.sectionData;
     if (!section || !sectionData) return <div />;
     return <Card className="mb-3">
+        <Card.Header>Section {props.index + 1 - nfoSectionOffset}</Card.Header>
         <Card.Body>
-            <h5 className="h5">Section {props.index + 1 - nfoSectionOffset}</h5>
             <Row className="mb-3">
                 <Col>
                     <FloatingLabel label="Header">

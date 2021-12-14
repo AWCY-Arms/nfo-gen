@@ -57,7 +57,7 @@ function App() {
                     <Row>
                         <Col>
                             <Tabs defaultActiveKey="form" id={tabsId} className="mb-3">
-                                <Tab eventKey="form" title="Form">
+                                <Tab eventKey="form" title="Edit">
                                     <NfoForm />
                                     <ReturnToTop id={leftColId} />
                                 </Tab>

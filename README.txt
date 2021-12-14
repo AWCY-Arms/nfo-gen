@@ -46,7 +46,7 @@
 #                                                                              #
 #                         [-+ Additional thanks to +-]                         #
 #                                                                              #
-#                           Mom, Darren, and Edison                            #
+#                           Mom, Darren, Edison, and                           #
 #                                                                              #
 #                       the entire Are We Cool Yet? team                       #
 #                                                                              #
