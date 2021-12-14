@@ -236,7 +236,10 @@ function addSection(sections: IMap<string[]>, content: NfoSection, cIndex: numbe
                     break;
                 case "credits3":
                     const credits3 = [];
-                    const credits4 = (content.sectionData.subsections[sIndex + 1]?.textStyle === "credits4");
+                    const credits4 = (
+                        content.sectionData.subsections[sIndex + 1]?.textStyle === "credits4" &&
+                        content.sectionData.subsections[sIndex + 1]?.text.join("") !== ""
+                    );
                     switch (el.text.length) {
                         case 1:
                             credits3.push(...el.text);
@@ -246,18 +249,16 @@ function addSection(sections: IMap<string[]>, content: NfoSection, cIndex: numbe
                             break;
                         case 2:
                             if (credits4) {
-                                credits3.push(...el.text, "and");
+                                credits3.push(...el.text.map(name => name + ","), "and");
                             } else {
                                 credits3.push(el.text[0], "and", el.text[1]);
                             }
                             break;
                         default:
                             if (credits4) {
-                                el.text.slice(0, -1).forEach(t => credits3.push(t + ","));
-                                credits3.push("and", el.text[el.text.length - 1]);
+                                credits3.push(...el.text.map(name => name + ","), "and");
                             } else {
-                                el.text.forEach(t => credits3.push(t + ","));
-                                credits3.push("and");
+                                credits3.push(el.text.slice(0, -1).map(name => name + ","), "and", el.text[el.text.length - 1]);
                             }
                             break;
                     }
