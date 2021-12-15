@@ -119,14 +119,17 @@ function NfoForm() {
                 <Card.Header as="h5">Sections</Card.Header>
                 <Card.Body>
                     {
-                        nfoData.content?.map((_: NfoSection, i: number) => {
-                            return <Row><Col><NfoFormSection
-                                key={i}
-                                index={i + nfoSectionOffset}
-                                minIndex={nfoSectionOffset}
-                                maxIndex={nfoData.content.length - 1 + nfoSectionOffset}
-                            /></Col></Row>
-                        })
+                        nfoData.content?.map((_: NfoSection, i: number) => (
+                            <Row key={i}>
+                                <Col>
+                                    <NfoFormSection
+                                        index={i + nfoSectionOffset}
+                                        minIndex={nfoSectionOffset}
+                                        maxIndex={nfoData.content.length - 1 + nfoSectionOffset}
+                                    />
+                                </Col>
+                            </Row>
+                        ))
                     }
                     <Row>
                         <Col>

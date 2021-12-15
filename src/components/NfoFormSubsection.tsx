@@ -12,8 +12,8 @@ interface NfoFormSubsectionProps {
     maxSubindex: number,
 }
 
-const styles = Object.keys(textStyles).map((optgroupLabel) => (
-    <optgroup label={optgroupLabel}>
+const styles = Object.keys(textStyles).map((optgroupLabel, i) => (
+    <optgroup label={optgroupLabel} key={i}>
         {Object.keys(textStyles[optgroupLabel]).map((optname, j) => (
             <option key={j} value={optname}>
                 {textStyles[optgroupLabel][optname]}

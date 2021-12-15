@@ -1,9 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
-import deepClone from '../../utils/helpers';
-import { formatJson, NfoData, NfoSection, nfoSectionOffset, NfoSubsection, readConfig, TextAlign } from '../../utils/NfoWriter';
+import Ajv from "ajv";
+import schemaNfo from "../../NfoSchema.json";
 import sampleTemplates from '../../templates/examples';
 import defaultNfoData from '../../templates/examples/default';
 import { blankNfoSectionData, blankNfoSubsectionData } from '../../templates/partials/blank';
+import deepClone from '../../utils/helpers';
+import { formatJson, NfoData, NfoSection, nfoSectionOffset, NfoSubsection, readConfig, TextAlign } from '../../utils/NfoWriter';
 
 
 interface NfoState {
@@ -19,6 +21,9 @@ const initialState: NfoState = {
 function clean(text: string) {
     return text.replace(/\t/g, "    ");
 }
+
+const ajv = new Ajv();
+const validate = ajv.compile(schemaNfo);
 
 export const nfoSlice = createSlice({
     name: 'nfo',
@@ -69,19 +74,23 @@ export const nfoSlice = createSlice({
         handleUpload: (state, action) => {
             const jsonText = action.payload.jsonText;
             try {
-                state.nfoData = readConfig(JSON.parse(clean(jsonText)));
+                const config = readConfig(JSON.parse(clean(jsonText)));
+                if (!validate(config)) throw validate.errors;
+                state.nfoData = config;
                 state.nfoJson = formatJson(state.nfoData);
                 // TODO If right column is visible, scroll it to the top.
             } catch (e) {
-                console.error('Invalid JSON');
+                console.error(e);
                 // TODO Show an error.
             }
         },
         handleJsonChange: (state, action) => {
             try {
-                const config: NfoData = JSON.parse(clean(action.payload.value));
-                state.nfoData = config;
-            } catch {
+                const config = JSON.parse(clean(action.payload.value));
+                if (!validate(config)) throw validate.errors;
+                state.nfoData = config as NfoData;
+            } catch (e) {
+                console.error(e);
             }
             state.nfoJson = action.payload.value;
         },
