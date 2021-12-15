@@ -16,20 +16,24 @@ const initialState: NfoState = {
     nfoJson: formatJson(defaultNfoData),
 }
 
+function clean(text: string) {
+    return text.replace(/\t/g, "    ");
+}
+
 export const nfoSlice = createSlice({
     name: 'nfo',
     initialState,
     reducers: {
         handleInputChange: (state, action) => {
             const { targetName, targetValue } = action.payload;
-            state.nfoData[targetName] = targetValue;
+            state.nfoData[targetName] = clean(targetValue);
             state.nfoJson = formatJson(state.nfoData);
         },
         handleContentChange: (state, action) => {
             const index: number = action.payload.index - nfoSectionOffset;
             const subindex: number = action.payload.subindex;
             const targetName: string = action.payload.targetName;
-            const targetValue: string = action.payload.targetValue;
+            const targetValue = clean(action.payload.targetValue);
             let section;
             switch (targetName) {
                 case "subheader":
@@ -65,7 +69,7 @@ export const nfoSlice = createSlice({
         handleUpload: (state, action) => {
             const jsonText = action.payload.jsonText;
             try {
-                state.nfoData = readConfig(JSON.parse(jsonText));
+                state.nfoData = readConfig(JSON.parse(clean(jsonText)));
                 state.nfoJson = formatJson(state.nfoData);
                 // TODO If right column is visible, scroll it to the top.
             } catch (e) {
@@ -75,7 +79,7 @@ export const nfoSlice = createSlice({
         },
         handleJsonChange: (state, action) => {
             try {
-                const config: NfoData = JSON.parse(action.payload.value);
+                const config: NfoData = JSON.parse(clean(action.payload.value));
                 state.nfoData = config;
             } catch {
             }

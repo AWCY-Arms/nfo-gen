@@ -45,7 +45,7 @@ function App() {
     return <Container fluid>
         <Row>
             <Col sm="12" xl="6" style={{ height: "100vh", overflowY: "scroll" }}>
-                <div id={leftColId} className="px-3 py-3">
+                <div id={leftColId} className="px-3 pt-3">
                     <Row className="mb-3">
                         <Col>
                             <Stack direction="horizontal" style={{ alignItems: 'baseline' }} gap={3}>

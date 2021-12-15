@@ -90,7 +90,7 @@ export function readConfig(config: any): NfoData {
 export function formatText(text: string, lineLength: number): string[] {
     let outputRowIndex = 0;
     const outputRows: string[][] = [];
-    const inputRows = text.replace(/\t/g, "    ").split("\n");
+    const inputRows = text.split("\n");
     inputRows.forEach((rowtext) => {
         outputRows.push([]);
         // Split into words, rejoin up to lineLength
@@ -364,12 +364,16 @@ export const sectionFooter: NfoSection = {
  */
 export const nfoSectionOffset = 2;
 export function getNfoSections(options: NfoData): NfoSection[] {
-    return [
-        getSection0(options.headerArt, options.headerAlign),
-        getSection1(options.title, options.description, options.version),
-        ...options.content,
-        sectionFooter,
-    ];
+    try {
+        return [
+            getSection0(options.headerArt, options.headerAlign),
+            getSection1(options.title, options.description, options.version),
+            ...options.content,
+            sectionFooter,
+        ];
+    } catch {
+        return [];
+    }
 }
 
 export function convertToSectionMap(nfoData: NfoData): IMap<string[]> {
