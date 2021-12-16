@@ -44,7 +44,7 @@ function App() {
     });
     return <Container fluid>
         <Row>
-            <Col sm="12" xl="6" style={{ height: "100vh", overflowY: "scroll" }}>
+            <Col sm="12" xl="6" className="main-col">
                 <div id={leftColId} className="px-3 pt-3">
                     <Row className="mb-3">
                         <Col>
@@ -65,7 +65,7 @@ function App() {
                                     <OptionsJson />
                                 </Tab>
                                 <Tab eventKey="nfo" title="NFO" tabClassName="d-xl-none">
-                                    <div className="d-xl-none mx-auto" style={{ width: "fit-content" }}>
+                                    <div className="d-xl-none mx-auto nfo-container">
                                         <CopyNfo />
                                         <Nfo id={leftNfoId} />
                                         <ReturnToTop id={leftColId} />
@@ -80,8 +80,8 @@ function App() {
                     </Row>
                 </div>
             </Col>
-            <Col sm="12" xl="6" className="d-none d-xl-block border-start" style={{ height: "100vh", overflowY: "scroll" }}>
-                <div id={rightColId} className="mx-auto pt-3" style={{ width: "fit-content" }}>
+            <Col sm="12" xl="6" className="d-none d-xl-block border-start main-col">
+                <div id={rightColId} className="mx-auto pt-3 nfo-container">
                     <CopyNfo />
                     <Nfo id={rightNfoId} />
                     <ReturnToTop id={rightColId} />

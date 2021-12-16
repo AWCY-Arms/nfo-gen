@@ -18,7 +18,7 @@
 #     The Premium Triple-Distilled Enterprise-Grade NFO Generator for the      #
 #    Sweaty and Moist Yet Sophisticated Artist who needed their README done    #
 #                                  yesterday                                   #
-#                                    0.16.0                                    #
+#                                    0.16.5                                    #
 #                                                                              #
 ################################################################################
 #                            /X> Release Notes <X\                             #
@@ -40,6 +40,7 @@
 #                                   v8vtwin                                    #
 #                                capekoviroboti                                #
 #                                    Ferus                                     #
+#                                     Matt                                     #
 #                                Protouniverse                                 #
 #                                 bakasama113                                  #
 #                                 InvaderZip_                                  #
