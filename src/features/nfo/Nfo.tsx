@@ -49,16 +49,32 @@ export const eLoadTemplate = (e: React.ChangeEvent<HTMLSelectElement>) => {
 
 export const eHandleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
-    const reader = new FileReader();
-    reader.onload = (event) => {
-        const result = event?.target?.result?.toString();
-        if (!result) return;
-        store.dispatch(handleUpload({
-            jsonText: result,
-        }));
-    };
     if (selectedFile) {
-        reader.readAsText(selectedFile);
+        // Yeah, it takes glock mags.
+        if (
+            selectedFile.name.indexOf("glock") !== -1 &&
+            selectedFile.name.indexOf("mag") !== -1 &&
+            selectedFile.name.indexOf(".stl") !== -1
+        ) {
+            store.dispatch(
+                handleInputChange({
+                    targetName: "headerArt",
+                    targetValue: "Glawk",
+                })
+            );
+        } else {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const result = event?.target?.result?.toString();
+                if (!result) return;
+                store.dispatch(
+                    handleUpload({
+                        jsonText: result,
+                    })
+                );
+            };
+            reader.readAsText(selectedFile);
+        }
     }
     e.target.value = '';
 }
