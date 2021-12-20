@@ -258,7 +258,7 @@ function addSection(sections: IMap<string[]>, content: NfoSection, cIndex: numbe
                             if (credits4) {
                                 credits3.push(...el.text.map(name => name + ","), "and");
                             } else {
-                                credits3.push(el.text.slice(0, -1).map(name => name + ","), "and", el.text[el.text.length - 1]);
+                                credits3.push(...el.text.slice(0, -1).map(name => name + ","), "and", el.text[el.text.length - 1]);
                             }
                             break;
                     }
