@@ -5,10 +5,14 @@ pre.nfo {
     user-select: none;
     margin-bottom: 0;
     line-height: normal;
-    font-size: 0.9vmax;
+    font-size: 1.8vw;
     border-radius: 0.25rem;
     padding: 0 0.1rem;
     overflow: hidden;
+
+    @media (min-width: 1200px) {
+        font-size: 0.9vmax;
+    }
 
     @media (prefers-color-scheme: dark) {
         color: variables.$hwite;

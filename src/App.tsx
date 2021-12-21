@@ -48,9 +48,11 @@ function App() {
                 <div id={leftColId} className="px-3 pt-3">
                     <Row className="mb-3">
                         <Col>
-                            <Stack direction="horizontal" style={{ alignItems: 'baseline' }} gap={3}>
+                            <Stack direction="horizontal" gap={3}>
                                 <h1>AWCY? Readme Generator</h1>
-                                <Badge bg="light" text="dark">v{packageJson.version}</Badge>
+                                <div className="ms-auto">
+                                    <Badge bg="light" text="dark">v{packageJson.version}</Badge>
+                                </div>
                             </Stack>
                         </Col>
                     </Row>

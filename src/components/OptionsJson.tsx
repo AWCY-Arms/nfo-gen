@@ -31,15 +31,15 @@ const beforeMount = (monaco: Monaco) => {
 
 let position: Position | null;
 
-const onMount = (editor: editor.IStandaloneCodeEditor, monaco: Monaco) => {
+const onMount = (editor: editor.IStandaloneCodeEditor, _monaco: Monaco) => {
     editor.updateOptions({
         fontSize: 12,
     });
     // Set position to previous position
-    editor.onDidChangeModelContent((e) => {
+    editor.onDidChangeModelContent(_ => {
         if (position) editor.setPosition(position);
     });
-    editor.onDidChangeCursorPosition(e => {
+    editor.onDidChangeCursorPosition(_ => {
         position = editor.getPosition();
     });
 }
@@ -48,10 +48,10 @@ function OptionsJson() {
     const nfoJson = useAppSelector((state) => state.nfoConfig.nfoJson);
     const editorTheme = useAppSelector((state) => state.app.darkMode === "dark" ? "vs-dark" : "light");
     return <Stack gap={3}>
-        <Alert variant="info" className="mb-0">Upload or paste a valid <code>readme.json</code>, or select a sample template.</Alert>
         <Card>
             <Card.Header>Load JSON</Card.Header>
             <Card.Body>
+                <Alert variant="info">Import or paste a valid <code>readme.json</code>, or select a sample template.</Alert>
                 <Row>
                     <Col xs="12" sm="6">
                         <Form.Group className="mb-3">
@@ -64,7 +64,7 @@ function OptionsJson() {
                     </Col>
                     <Col>
                         <Form.Group controlId="formFile" className="mb-3">
-                            <Form.Label>Upload</Form.Label>
+                            <Form.Label>Import</Form.Label>
                             <Form.Control type="file" size="sm" accept=".json" onChange={eHandleUpload} />
                         </Form.Group>
                     </Col>
