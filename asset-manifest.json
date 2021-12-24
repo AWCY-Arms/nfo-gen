@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/awcy-nfo/static/css/main.3c659299.css",
-    "main.js": "/awcy-nfo/static/js/main.6a0d24e9.js",
-    "static/media/liberationmono-regular-webfont.woff": "/awcy-nfo/static/media/liberationmono-regular-webfont.34f3d43cd1f9f8bb3737.woff",
-    "static/media/liberationmono-regular-webfont.woff2": "/awcy-nfo/static/media/liberationmono-regular-webfont.d798517df46ee0a568a0.woff2",
-    "static/media/awcy_wordmark_hwite.svg": "/awcy-nfo/static/media/awcy_wordmark_hwite.a6606a375ce09d119216c2f24d170e92.svg",
-    "index.html": "/awcy-nfo/index.html",
-    "main.3c659299.css.map": "/awcy-nfo/static/css/main.3c659299.css.map",
-    "main.6a0d24e9.js.map": "/awcy-nfo/static/js/main.6a0d24e9.js.map"
+    "main.css": "/nfo-gen/static/css/main.81de6061.css",
+    "main.js": "/nfo-gen/static/js/main.ebb85955.js",
+    "static/media/liberationmono-regular-webfont.woff": "/nfo-gen/static/media/liberationmono-regular-webfont.34f3d43cd1f9f8bb3737.woff",
+    "static/media/liberationmono-regular-webfont.woff2": "/nfo-gen/static/media/liberationmono-regular-webfont.d798517df46ee0a568a0.woff2",
+    "static/media/awcy_wordmark_hwite.svg": "/nfo-gen/static/media/awcy_wordmark_hwite.a6606a375ce09d119216c2f24d170e92.svg",
+    "index.html": "/nfo-gen/index.html",
+    "main.81de6061.css.map": "/nfo-gen/static/css/main.81de6061.css.map",
+    "main.ebb85955.js.map": "/nfo-gen/static/js/main.ebb85955.js.map"
   },
   "entrypoints": [
-    "static/css/main.3c659299.css",
-    "static/js/main.6a0d24e9.js"
+    "static/css/main.81de6061.css",
+    "static/js/main.ebb85955.js"
   ]
 }
