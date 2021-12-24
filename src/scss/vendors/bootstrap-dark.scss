@@ -11,8 +11,8 @@
  */
 
 // Configuration
-@import "functions";
-@import "dark/functions";
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap-dark-5/scss/dark/functions";
 
 @import url("https://fonts.googleapis.com/css2?family=Readex+Pro:wght@400;500;700&display=swap");
 $font-family-sans-serif: "Readex Pro", system-ui, -apple-system, sans-serif;
@@ -20,56 +20,56 @@ $font-family-monospace: "Courier New", "Liberation Mono", monospace;
 
 $card-bg: #f8f9fa; /* $gray-100 */
 
-@import "variables";  // defaults are here
+@import "node_modules/bootstrap/scss/variables";  // defaults are here
 
 $input-disabled-bg-alt: mix(#3b3b3b /* $gray-800-alt */, #222 /* $gray-900-alt */, 50%);
 
-@import "variables-alt";  // dark color set is here
-@import "mixins";
-@import "dark/mixins";
-@import "utilities";
-@import "dark/utilities";
-@import "dark/patch";  // missing from BS, unsupported patch/hack
+@import "node_modules/bootstrap-dark-5/scss/variables-alt";  // dark color set is here
+@import "node_modules/bootstrap/scss/mixins";
+@import "node_modules/bootstrap-dark-5/scss/dark/mixins";
+@import "node_modules/bootstrap/scss/utilities";
+@import "node_modules/bootstrap-dark-5/scss/dark/utilities";
+@import "node_modules/bootstrap-dark-5/scss/dark/patch";  // missing from BS, unsupported patch/hack
 
 // Layout & components
-@import "dark/color-scheme";
-@import "root";
-@import "reboot";
-@import "type";
-// @import "images";
-@import "containers";
-@import "grid";
-// @import "tables";
-@import "forms";
-@import "buttons";
-// @import "transitions";
-// @import "dropdown";
-// @import "button-group";
-@import "nav";
-// @import "navbar";
-@import "card";
-// @import "accordion";
-// @import "breadcrumb";
-// @import "pagination";
-@import "badge";
-@import "alert";
-// @import "progress";
-// @import "list-group";
-// @import "close";
-// @import "toasts";
-// @import "modal";
-// @import "tooltip";
-// @import "popover";
-// @import "carousel";
-// @import "spinners";
-// @import "offcanvas";
-// @import "placeholders";
+@import "node_modules/bootstrap-dark-5/scss/dark/color-scheme";
+@import "node_modules/bootstrap/scss/root";
+@import "node_modules/bootstrap/scss/reboot";
+@import "node_modules/bootstrap/scss/type";
+// @import "node_modules/bootstrap/scss/images";
+@import "node_modules/bootstrap/scss/containers";
+@import "node_modules/bootstrap/scss/grid";
+// @import "node_modules/bootstrap/scss/tables";
+@import "node_modules/bootstrap/scss/forms";
+@import "node_modules/bootstrap/scss/buttons";
+// @import "node_modules/bootstrap/scss/transitions";
+// @import "node_modules/bootstrap/scss/dropdown";
+// @import "node_modules/bootstrap/scss/button-group";
+@import "node_modules/bootstrap/scss/nav";
+// @import "node_modules/bootstrap/scss/navbar";
+@import "node_modules/bootstrap/scss/card";
+// @import "node_modules/bootstrap/scss/accordion";
+// @import "node_modules/bootstrap/scss/breadcrumb";
+// @import "node_modules/bootstrap/scss/pagination";
+@import "node_modules/bootstrap/scss/badge";
+@import "node_modules/bootstrap/scss/alert";
+// @import "node_modules/bootstrap/scss/progress";
+// @import "node_modules/bootstrap/scss/list-group";
+// @import "node_modules/bootstrap/scss/close";
+// @import "node_modules/bootstrap/scss/toasts";
+// @import "node_modules/bootstrap/scss/modal";
+// @import "node_modules/bootstrap/scss/tooltip";
+// @import "node_modules/bootstrap/scss/popover";
+// @import "node_modules/bootstrap/scss/carousel";
+// @import "node_modules/bootstrap/scss/spinners";
+// @import "node_modules/bootstrap/scss/offcanvas";
+// @import "node_modules/bootstrap/scss/placeholders";
 
 // Helpers
-@import "helpers";
+@import "node_modules/bootstrap/scss/helpers";
 
 // Utilities
-@import "utilities/api";
+@import "node_modules/bootstrap/scss/utilities/api";
 
 .form-control-lg + label {
   font-size: 18px;
@@ -83,46 +83,46 @@ $input-disabled-bg-alt: mix(#3b3b3b /* $gray-800-alt */, #222 /* $gray-900-alt *
 @include color-scheme-alt(alternative-color-scheme($default-color-scheme)) {
 
   // Layout & components
-  @import "dark/root";
-  @import "dark/reboot";
-  // @import "dark/type";
-  // @import "dark/images";
+  @import "node_modules/bootstrap-dark-5/scss/dark/root";
+  @import "node_modules/bootstrap-dark-5/scss/dark/reboot";
+  // @import "node_modules/bootstrap-dark-5/scss/dark/type";
+  // @import "node_modules/bootstrap-dark-5/scss/dark/images";
   // no colors in containers
   // no colors in grid
-  // @import "dark/tables";
-  @import "dark/forms";
-  @import "dark/buttons";
+  // @import "node_modules/bootstrap-dark-5/scss/dark/tables";
+  @import "node_modules/bootstrap-dark-5/scss/dark/forms";
+  @import "node_modules/bootstrap-dark-5/scss/dark/buttons";
   // no colors in transitions
-  // @import "dark/dropdown";
-  // @import "dark/button-group";
-  @import "dark/nav";
-  // @import "dark/navbar";
-  @import "dark/card";
-  // @import "dark/accordion";
-  // @import "dark/breadcrumb";
-  // @import "dark/pagination";
-  @import "dark/badge";
-  @import "dark/alert";
-  // @import "dark/progress";
-  // @import "dark/list-group";
-  // @import "dark/close";
-  // @import "dark/toasts";
-  // @import "dark/modal";
-  // @import "dark/tooltip";
-  // @import "dark/popover";
-  // @import "dark/carousel";
+  // @import "node_modules/bootstrap-dark-5/scss/dark/dropdown";
+  // @import "node_modules/bootstrap-dark-5/scss/dark/button-group";
+  @import "node_modules/bootstrap-dark-5/scss/dark/nav";
+  // @import "node_modules/bootstrap-dark-5/scss/dark/navbar";
+  @import "node_modules/bootstrap-dark-5/scss/dark/card";
+  // @import "node_modules/bootstrap-dark-5/scss/dark/accordion";
+  // @import "node_modules/bootstrap-dark-5/scss/dark/breadcrumb";
+  // @import "node_modules/bootstrap-dark-5/scss/dark/pagination";
+  @import "node_modules/bootstrap-dark-5/scss/dark/badge";
+  @import "node_modules/bootstrap-dark-5/scss/dark/alert";
+  // @import "node_modules/bootstrap-dark-5/scss/dark/progress";
+  // @import "node_modules/bootstrap-dark-5/scss/dark/list-group";
+  // @import "node_modules/bootstrap-dark-5/scss/dark/close";
+  // @import "node_modules/bootstrap-dark-5/scss/dark/toasts";
+  // @import "node_modules/bootstrap-dark-5/scss/dark/modal";
+  // @import "node_modules/bootstrap-dark-5/scss/dark/tooltip";
+  // @import "node_modules/bootstrap-dark-5/scss/dark/popover";
+  // @import "node_modules/bootstrap-dark-5/scss/dark/carousel";
   // no colors in spinners
-  // @import "dark/offcanvas";
-  // @import "dark/placeholders";
+  // @import "node_modules/bootstrap-dark-5/scss/dark/offcanvas";
+  // @import "node_modules/bootstrap-dark-5/scss/dark/placeholders";
 
   // Helpers
-  @import "dark/helpers";
+  @import "node_modules/bootstrap-dark-5/scss/dark/helpers";
 
   // Utilities
-  @import "dark/utilities/api";
+  @import "node_modules/bootstrap-dark-5/scss/dark/utilities/api";
 
   // Unique to dark-mode
-  @import "dark/dark";
+  @import "node_modules/bootstrap-dark-5/scss/dark/dark";
 
   .alert-info > code {
     color: #00bc8c /* $green-alt */;
@@ -130,4 +130,4 @@ $input-disabled-bg-alt: mix(#3b3b3b /* $gray-800-alt */, #222 /* $gray-900-alt *
 }
 
 // Additional Global Utilities
-@import "dark/utilities/api-all";
+@import "node_modules/bootstrap-dark-5/scss/dark/utilities/api-all";

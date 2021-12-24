@@ -22,7 +22,14 @@ credits.sectionData.subsections[1].text = [
 credits.sectionData.subsections[2].text = ["Mom", "Darren", "Edison"];
 
 const releaseNotes = deepClone(defaultNfoSectionReleaseNotes);
-releaseNotes.sectionData.subsections[0].text[0] = "Hello World!";
+releaseNotes.sectionData.subsections[0].text = [
+    "Introducing the all-new fully-electric 2022 AWCY? Readme Generator",
+    "",
+    "Available Winter 2021, experience writing readmes like never before.",
+    "Featuring no wheel drive, best-in-class user experience, and worst-in-class performance, test drive yours today!",
+    "",
+    "And yeah, it takes Glock mags.",
+];
 releaseNotes.uiRemoveDisabled = true;
 
 export const nfoGen: NfoData = {

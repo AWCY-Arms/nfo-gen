@@ -21,11 +21,9 @@ jobs:
 
       - name: Build
         run: npm run build
-        env:
-          SASS_PATH: node_modules/bootstrap/scss/:node_modules/bootstrap-dark-5/scss/
 
       - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@4.1.6
+        uses: JamesIves/github-pages-deploy-action@4.1.8
         with:
           branch: gh-pages
           folder: build

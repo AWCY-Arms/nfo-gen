@@ -200,7 +200,7 @@ function addSection(sections: IMap<string[]>, content: NfoSection, cIndex: numbe
     // Header
     sections[cIndex + "-h"] = content.header ? [...borderText(centerHeader(content.header))] : [];
     // Subsections
-    content.sectionData.subsections?.forEach((el, sIndex) => {
+    content.sectionData?.subsections?.forEach((el, sIndex) => {
         // Subheader
         sections[cIndex + "-" + sIndex + "-h"] = (el.subheader && typeof el.subheader === "string") ? [...borderText(centerHeader(el.subheader, subSectionHeaderL, subSectionHeaderR))] : [];
         // Text
@@ -407,6 +407,10 @@ export function getSepPre(sectionKey: string, hasContent?: boolean): string[] {
                 if (hasContent) {
                     return [lineEmpty]
                 }
+            }
+        } else {
+            if (h !== "h" && i2 !== "h") {
+                return [lineEmpty]
             }
         }
     } else {
