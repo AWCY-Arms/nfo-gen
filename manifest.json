@@ -1,0 +1,9 @@
+{
+  "short_name": "AWCY? Readme Generator",
+  "name": "AWCY? Readme Generator",
+  "icons": [],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#960018"
+}
