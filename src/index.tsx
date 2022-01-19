@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import store from './app/store';
 import AppSplash from './AppSplash';
-import App from './App';
-import store from './app/store'
-import { Provider } from 'react-redux'
-import "./scss/vendors/bootstrap-dark.scss";
+import App from './components/App';
 import "./scss/main.scss";
+import "./scss/vendors/bootstrap-dark.scss";
 
 
 ReactDOM.render(

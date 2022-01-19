@@ -1,5 +1,5 @@
 import headers, { Header } from "../headers";
-import deepClone, { IMap } from "./helpers";
+import { cleanText, deepClone, IMap } from "./helpers";
 import {
     creditsAdjustedWidth,
     creditsNameLeft,
@@ -19,64 +19,56 @@ import {
     subSectionHeaderL,
     subSectionHeaderR
 } from "./NfoWriterSettings";
-import defaultNfoData from "../templates/examples/default";
+import Ajv from "ajv";
+import schemaNfo from "../NfoSchema.json";
+import { nanoid } from "@reduxjs/toolkit";
+import { NfoContentSection, NfoData, NfoSection, NfoSubsection, TextAlign } from "./NfoDefs";
 
 
-export type TextAlign = "left" | "center" | "right";
+const ajv = new Ajv();
+const validate = ajv.compile(schemaNfo);
 
-export type TextStyle = "left" | "center" | "right" | "twoCol" | "numList" | "credits1" | "credits2" | "credits3" | "credits4" | "none" | "warning";
-
-export const textStyles: IMap<IMap> = {
-    Regular: {
-        left: "Left",
-        center: "Center",
-        right: "Right",
-        twoCol: "Q & A",
-        numList: "Numbered List",
-        warning: "Warning",
-    },
-    "Internal Use": {
-        credits1: "Credits 1",
-        credits2: "Credits 2",
-        credits3: "Credits 3",
-        credits4: "Credits 4",
-        none: "None",
-    },
-};
-
-export interface NfoSection extends IMap {
-    header: string,
-    sectionData: NfoSectionData,
-    uiRemoveDisabled?: boolean,
-    uiHeaderDisabled?: boolean,
+export const importJson = (nfoData: string | NfoData): NfoData => {
+    const nfoDataObj: NfoData = readConfig(typeof nfoData === "string" ? JSON.parse(cleanText(nfoData)) : deepClone(nfoData));
+    if (!validate(nfoDataObj)) throw validate.errors;
+    // Set viewDataOrder ids
+    nfoDataObj.content.forEach(section => {
+        section.oId = nanoid();
+        section.sectionData.subsections.forEach(subsection => {
+            subsection.oId1 = nanoid();
+            subsection.oId2 = nanoid();
+        });
+    });
+    const content = [
+        getSection0(nfoDataObj.headerArt, nfoDataObj.headerAlign),
+        getSection1(nfoDataObj.title, nfoDataObj.description, nfoDataObj.version),
+        ...nfoDataObj.content,
+        sectionFooter,
+    ];
+    return {
+        dataVersion: currentDataVersion,
+        headerArt: nfoDataObj.headerArt,
+        headerAlign: nfoDataObj.headerAlign,
+        title: nfoDataObj.title,
+        description: nfoDataObj.description,
+        version: nfoDataObj.version,
+        content: content,
+    }
 }
 
-export interface NfoSubsection {
-    subheader: string,
-    text: string[],
-    textStyle: TextStyle,
-    uiRemoveDisabled?: boolean,
-    uiSubheaderDisabled?: boolean,
-    uiSubheaderHide?: boolean,
-    uiTextStyleDisabled?: boolean,
-    uiTextStyleHide?: boolean,
+export const exportJson = (nfoData: NfoData): string => {
+    const exportData = deepClone(nfoData);
+    const content = exportData.content.slice(nfoSectionOffset, -1);
+    content.forEach(section => {
+        delete section.oId;
+        section.sectionData.subsections.forEach(subsection => {
+            delete subsection.oId1;
+            delete subsection.oId2;
+        })
+    });
+    exportData.content = content;
+    return formatJson(exportData);
 }
-
-export interface NfoSectionData {
-    subsections: NfoSubsection[],
-    uiAddSubsectionDisabled?: boolean,
-}
-
-export interface NfoData extends IMap {
-    dataVersion: number,
-    headerArt: Header,
-    headerAlign: TextAlign,
-    title: string,
-    description: string,
-    version: string,
-    content: NfoSection[],
-}
-
 
 export function readConfig(config: any): NfoData {
     switch (config.dataVersion) {
@@ -84,7 +76,7 @@ export function readConfig(config: any): NfoData {
             break;
     }
     config.dataVersion = currentDataVersion;
-    return Object.assign(deepClone(defaultNfoData), config);
+    return config;
 }
 
 export function formatText(text: string, lineLength: number): string[] {
@@ -129,7 +121,7 @@ function rightText(text: string, format = true, length = defaultTextWidth): stri
     });
 }
 
-function horizontalAlign(text: string, align: TextAlign = "center", length?: number, format?: boolean): string[] {
+export function horizontalAlign(text: string, align: TextAlign = "center", length?: number, format?: boolean): string[] {
     switch (align) {
         case "center":
             return centerText(text, format, length);
@@ -153,11 +145,11 @@ function centerHeader(text: string, borderStart = headerBorderStart, borderEnd =
 }
 
 const lMax = 30;
-function renderTwoCol(lines: string[], sec: NfoSubsection): void {
-    const lColText = sec.text[0] + ":";
+function renderTwoCol(lines: string[], subsection: NfoSubsection): void {
+    const lColText = subsection.text[0] + ":";
     const lColWidth = Math.min(lColText.length, lMax);
     const lCol = leftText(lColText, true, lColWidth);
-    const rCol = leftText(sec.text.slice(1).join("\n"), true, defaultTextWidth - 1 - lColWidth);
+    const rCol = leftText(subsection.text.slice(1).join("\n"), true, defaultTextWidth - 1 - lColWidth);
     const rowCount = Math.max(lCol.length, rCol.length);
     for (let i = 0; i < rowCount; i++) {
         const row = (lCol[i] || " ".repeat(lColWidth)) + " " + (rCol[i] || " ".repeat(defaultTextWidth - 1 - lColWidth));
@@ -165,17 +157,17 @@ function renderTwoCol(lines: string[], sec: NfoSubsection): void {
     }
 }
 
-function renderList(lines: string[], sec: NfoSubsection): void {
-    const lColWidth = Math.floor(Math.log10(sec.text.length)) + 1;
-    for (let listCounter = 1; listCounter <= sec.text.length; listCounter++) {
+function renderList(lines: string[], subsection: NfoSubsection): void {
+    const lColWidth = Math.floor(Math.log10(subsection.text.length)) + 1;
+    for (let listCounter = 1; listCounter <= subsection.text.length; listCounter++) {
         const lColText = listCounter.toString().padStart(lColWidth, " ");
         const lCol = leftText(lColText, false, lColWidth);
-        const rCol = leftText(sec.text[listCounter - 1], true, defaultTextWidth - 2 - lColWidth);
+        const rCol = leftText(subsection.text[listCounter - 1], true, defaultTextWidth - 2 - lColWidth);
         rCol.forEach((_, rColIndex) => {
             const row = (rColIndex ? " ".repeat(lColWidth + 2) : (lCol[rColIndex] + ": ")) + rCol[rColIndex];
             lines.push(...borderText([row]));
         });
-        if (listCounter < sec.text.length) lines.push(lineEmpty);
+        if (listCounter < subsection.text.length) lines.push(lineEmpty);
     }
 }
 
@@ -196,109 +188,162 @@ export function formatCredits2(text: string, lineLength: number = defaultTextWid
     return textLines.join("\n");
 }
 
-function addSection(sections: IMap<string[]>, content: NfoSection, cIndex: number): void {
-    // Header
-    sections[cIndex + "-h"] = content.header ? [...borderText(centerHeader(content.header))] : [];
-    // Subsections
-    content.sectionData?.subsections?.forEach((el, sIndex) => {
-        // Subheader
-        sections[cIndex + "-" + sIndex + "-h"] = (el.subheader && typeof el.subheader === "string") ? [...borderText(centerHeader(el.subheader, subSectionHeaderL, subSectionHeaderR))] : [];
-        // Text
-        const lines: string[] = [];
-        if (el.text && typeof el.text === "object" && el.text.join() !== "") {
-            switch (el.textStyle) {
-                case "twoCol":
-                    renderTwoCol(lines, el);
+export function renderHeader(text: string) {
+    return borderText(centerHeader(text)).join("\n")
+}
+
+export function renderSubheader(text: string) {
+    return borderText(centerHeader(text, subSectionHeaderL, subSectionHeaderR)).join("\n");
+}
+
+export function renderText(el: NfoSubsection, section: NfoSection, i2: number) {
+    const lines: string[] = [];
+    if (el.text && typeof el.text === "object" && el.text.join() !== "") {
+        switch (el.textStyle) {
+            case "twoCol":
+                renderTwoCol(lines, el);
+                break;
+            case "numList":
+                renderList(lines, el);
+                break;
+            case "credits1":
+                el.text.forEach((name) => {
+                    lines.push(...borderText(centerText(centerHeader(name, creditsNameLeft, creditsNameRight, creditsAdjustedWidth).join(""), undefined, creditsAdjustedWidth)));
+                });
+                break;
+            case "credits2":
+                const credits2 = [];
+                switch (el.text.length) {
+                    case 1:
+                        credits2.push(...el.text);
+                        break;
+                    case 2:
+                        credits2.push(el.text[0], "and", el.text[1]);
+                        break;
+                    default:
+                        el.text.slice(0, -1).forEach(t => credits2.push(t + ","));
+                        credits2.push("and", el.text[el.text.length - 1]);
+                        break;
+                }
+                lines.push(...borderText(centerText(formatCredits2(credits2.join("\n")), false)));
+                break;
+            case "credits3":
+                const credits3 = [];
+                if (section === undefined || i2 === undefined)
                     break;
-                case "numList":
-                    renderList(lines, el);
-                    break;
-                case "credits1":
-                    el.text.forEach((name) => {
-                        lines.push(...borderText(centerText(centerHeader(name, creditsNameLeft, creditsNameRight, creditsAdjustedWidth).join(""), undefined, creditsAdjustedWidth)));
-                    });
-                    break;
-                case "credits2":
-                    const credits2 = [];
-                    switch (el.text.length) {
-                        case 1:
-                            credits2.push(...el.text);
-                            break;
-                        case 2:
-                            credits2.push(el.text[0], "and", el.text[1]);
-                            break;
-                        default:
-                            el.text.slice(0, -1).forEach(t => credits2.push(t + ","));
-                            credits2.push("and", el.text[el.text.length - 1]);
-                            break;
-                    }
-                    lines.push(...borderText(centerText(formatCredits2(credits2.join("\n")), false)));
-                    break;
-                case "credits3":
-                    const credits3 = [];
-                    const credits4 = (
-                        content.sectionData.subsections[sIndex + 1]?.textStyle === "credits4" &&
-                        content.sectionData.subsections[sIndex + 1]?.text.join("") !== ""
-                    );
-                    switch (el.text.length) {
-                        case 1:
-                            credits3.push(...el.text);
-                            if (credits4) {
-                                credits3.push("and");
-                            }
-                            break;
-                        case 2:
-                            if (credits4) {
-                                credits3.push(...el.text.map(name => name + ","), "and");
-                            } else {
-                                credits3.push(el.text[0], "and", el.text[1]);
-                            }
-                            break;
-                        default:
-                            if (credits4) {
-                                credits3.push(...el.text.map(name => name + ","), "and");
-                            } else {
-                                credits3.push(...el.text.slice(0, -1).map(name => name + ","), "and", el.text[el.text.length - 1]);
-                            }
-                            break;
-                    }
-                    lines.push(...borderText(centerText(formatCredits2(credits3.join("\n")), false)));
-                    break;
-                case "credits4":
-                    lines.push(...el.text.flatMap((textRow) => {
-                        return borderText(centerText(textRow))
-                    }));
-                    break;
-                case "none":
-                    lines.push(...el.text);
-                    break;
-                case "warning":
-                    lines.push(...borderText(["!".repeat(defaultNfoWidth - 4)], undefined, undefined, 1));
-                    lines.push(...el.text.flatMap(textRow => borderText(borderText(centerText(textRow, undefined, defaultTextWidth - 8), "!!!", "!!!"), undefined, undefined, 1)));
-                    lines.push(...borderText(["!".repeat(defaultNfoWidth - 4)], undefined, undefined, 1));
-                    break;
-                default:
-                    lines.push(...el.text.flatMap((textRow) => {
-                        return borderText(horizontalAlign(textRow, el.textStyle as TextAlign))
-                    }));
-                    break;
-            }
+                const credits4 = (
+                    section.sectionData.subsections[i2 + 1]?.textStyle === "credits4" &&
+                    section.sectionData.subsections[i2 + 1]?.text.join("") !== ""
+                );
+                switch (el.text.length) {
+                    case 1:
+                        credits3.push(...el.text);
+                        if (credits4) {
+                            credits3.push("and");
+                        }
+                        break;
+                    case 2:
+                        if (credits4) {
+                            credits3.push(...el.text.map(name => name + ","), "and");
+                        } else {
+                            credits3.push(el.text[0], "and", el.text[1]);
+                        }
+                        break;
+                    default:
+                        if (credits4) {
+                            credits3.push(...el.text.map(name => name + ","), "and");
+                        } else {
+                            credits3.push(...el.text.slice(0, -1).map(name => name + ","), "and", el.text[el.text.length - 1]);
+                        }
+                        break;
+                }
+                lines.push(...borderText(centerText(formatCredits2(credits3.join("\n")), false)));
+                break;
+            case "credits4":
+                lines.push(...el.text.flatMap((textRow) => {
+                    return borderText(centerText(textRow))
+                }));
+                break;
+            case "none":
+                lines.push(...el.text);
+                break;
+            case "warning":
+                lines.push(...borderText(["!".repeat(defaultNfoWidth - 4)], undefined, undefined, 1));
+                lines.push(...el.text.flatMap(textRow => borderText(borderText(centerText(textRow, undefined, defaultTextWidth - 8), "!!!", "!!!"), undefined, undefined, 1)));
+                lines.push(...borderText(["!".repeat(defaultNfoWidth - 4)], undefined, undefined, 1));
+                break;
+            default:
+                lines.push(...el.text.flatMap((textRow) => {
+                    return borderText(horizontalAlign(textRow, el.textStyle as TextAlign))
+                }));
+                break;
         }
-        sections[cIndex + "-" + sIndex] = lines;
+    }
+    return lines;
+}
+
+export function getSubsectionNCS(subsection: NfoSubsection, i1: number, i2: number, text: string): NfoContentSection[] {
+    return [
+        {
+            oId: subsection.oId1!,
+            id: i1 + "-" + i2 + "-h",
+            i1: i1,
+            i2: i2,
+            h: true,
+            sepPre: getSepPre(i1 + "-" + i2 + "-h", subsection.subheader?.length > 0).join("\n"),
+            text: (subsection.subheader && typeof subsection.subheader === "string") ? renderSubheader(subsection.subheader) : ''
+        },
+        {
+            oId: subsection.oId2!,
+            id: i1 + "-" + i2,
+            i1: i1,
+            i2: i2,
+            h: false,
+            sepPre: getSepPre(i1 + "-" + i2, text.length > 0).join("\n"),
+            text: text
+        }
+    ]
+}
+
+export function getSectionNCS(section: NfoSection, i1: number): NfoContentSection[] {
+    // Header
+    const viewData: NfoContentSection[] = [
+        {
+            oId: section.oId!,
+            id: i1 + "-h",
+            i1: i1,
+            i2: null,
+            h: true,
+            sepPre: getSepPre(i1 + "-h", section.header?.length > 0).join("\n"),
+            text: section.header ? renderHeader(section.header) : ''
+        }
+    ];
+    // Subsections
+    section.sectionData?.subsections?.forEach((subsec, i2) => {
+        // Subheader
+        // Text
+        const text = renderText(subsec, section, i2).join("\n");
+        viewData.push(...getSubsectionNCS(subsec, i1, i2, text));
     });
+    return viewData;
 }
 
 export const getSection0 = (headerArt: Header, headerAlign: TextAlign): NfoSection => {
     return {
+        oId: nanoid(),
         header: "",
         sectionData: {
             subsections: [
                 {
+                    oId1: nanoid(),
+                    oId2: nanoid(),
                     subheader: "",
                     text: horizontalAlign((headers)[headerArt] || "", headerAlign, defaultNfoWidth, false),
                     textStyle: "none",
                 },
                 {
+                    oId1: nanoid(),
+                    oId2: nanoid(),
                     subheader: "",
                     text: [
                         lineBlank,
@@ -314,20 +359,27 @@ export const getSection0 = (headerArt: Header, headerAlign: TextAlign): NfoSecti
 
 export const getSection1 = (title: string, description: string, version: string): NfoSection => {
     return {
+        oId: nanoid(),
         header: "",
         sectionData: {
             subsections: [
                 {
+                    oId1: nanoid(),
+                    oId2: nanoid(),
                     subheader: "",
                     text: [title || " "],
                     textStyle: "center",
                 },
                 {
+                    oId1: nanoid(),
+                    oId2: nanoid(),
                     subheader: "",
                     text: [description],
                     textStyle: "center",
                 },
                 {
+                    oId1: nanoid(),
+                    oId2: nanoid(),
                     subheader: "",
                     text: [version],
                     textStyle: "center",
@@ -338,10 +390,13 @@ export const getSection1 = (title: string, description: string, version: string)
 }
 
 export const sectionFooter: NfoSection = {
+    oId: nanoid(),
     header: "",
     sectionData: {
         subsections: [
             {
+                oId1: nanoid(),
+                oId2: nanoid(),
                 subheader: "",
                 textStyle: "center",
                 text: [
@@ -351,6 +406,8 @@ export const sectionFooter: NfoSection = {
                 ],
             },
             {
+                oId1: nanoid(),
+                oId2: nanoid(),
                 subheader: "",
                 textStyle: "none",
                 text: [lineBottom],
@@ -360,29 +417,20 @@ export const sectionFooter: NfoSection = {
 }
 
 /**
- *  Number of sections before `options.content` in `getNfoSections()`.
+ *  Number of sections before `options.content`.
  */
 export const nfoSectionOffset = 2;
-export function getNfoSections(options: NfoData): NfoSection[] {
-    try {
-        return [
-            getSection0(options.headerArt, options.headerAlign),
-            getSection1(options.title, options.description, options.version),
-            ...options.content,
-            sectionFooter,
-        ];
-    } catch {
-        return [];
-    }
-}
 
-export function convertToSectionMap(nfoData: NfoData): IMap<string[]> {
-    const content = getNfoSections(nfoData);
-    const sections: IMap<string[]> = {};
-    content?.forEach((content, index) => {
-        addSection(sections, content, index);
+export function getNCS(nfoData: NfoData): [IMap<NfoContentSection>, string[]] {
+    const viewData: IMap<NfoContentSection> = {};
+    const viewDataOrder: string[] = [];
+    nfoData.content?.forEach((content, index) => {
+        getSectionNCS(content, index).forEach(ncs => {
+            viewData[ncs.oId] = ncs;
+            viewDataOrder.push(ncs.oId);
+        });
     });
-    return sections;
+    return [viewData, viewDataOrder];
 }
 
 export function getSepPre(sectionKey: string, hasContent?: boolean): string[] {
@@ -448,20 +496,17 @@ export function getSepPre(sectionKey: string, hasContent?: boolean): string[] {
     return [];
 }
 
-export function renderToLines(textSection: string[], k: string): string[] {
-    const hasContent = textSection.join("\n") !== "";
-    return [
-        ...getSepPre(k, hasContent),
-        ...textSection
-    ];
-}
-
-export function renderAllToLines(textSections: IMap<string[]>): string[] {
-    return Object.keys(textSections).flatMap(k => renderToLines(textSections[k], k));
+export function renderViewData(viewData: IMap<NfoContentSection>, viewDataOrder: string[]) {
+    return viewDataOrder.flatMap(key => {
+        const text = [];
+        if (viewData[key].sepPre) text.push(viewData[key].sepPre);
+        if (viewData[key].text) text.push(viewData[key].text);
+        return text;
+    }).join("\n");
 }
 
 export function renderNfo(nfoData: NfoData): string {
-    return renderAllToLines(convertToSectionMap(nfoData)).join("\n");
+    return renderViewData(...getNCS(nfoData));
 }
 
 export function formatJson(obj: any): string {

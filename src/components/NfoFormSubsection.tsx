@@ -3,7 +3,8 @@ import TextareaAutosize from 'react-textarea-autosize';
 import { useAppSelector } from "../app/hooks";
 import { eDelSubsection, eHandleContentChange, eHandleInputFocus, eMoveSubsection } from "../features/nfo/Nfo";
 import { defaultCredits4 } from "../templates/partials/credits";
-import { nfoSectionOffset, textStyles } from "../utils/NfoWriter";
+import { textStyles } from "../utils/NfoDefs";
+import { nfoSectionOffset } from "../utils/NfoWriter";
 
 
 interface NfoFormSubsectionProps {
@@ -36,8 +37,8 @@ function getTextStyleHelp(style: string): string {
 }
 
 export function NfoFormSubsection(props: NfoFormSubsectionProps) {
-    const subsection = useAppSelector(state => state.nfoConfig.nfoData.content[props.index - nfoSectionOffset].sectionData.subsections[props.subindex]);
-    return <div key={props.subindex}>
+    const subsection = useAppSelector(state => state.nfoConfig.nfoData.content[props.index].sectionData.subsections[props.subindex]);
+    return <div key={subsection.oId1!}>
         <h6 className="h6">Section {(props.index + 1 - nfoSectionOffset) + "." + (props.subindex + 1)}</h6>
         {subsection.uiSubheaderHide ? "" :
             <Row className="mb-3">
@@ -102,7 +103,7 @@ export function NfoFormSubsection(props: NfoFormSubsectionProps) {
                     data-index={props.index}
                     data-index2={props.subindex}
                     onClick={eDelSubsection}
-                    disabled={subsection.uiRemoveDisabled || props.subindex === 0}
+                    disabled={subsection.uiRemoveDisabled || (0 === props.subindex && props.subindex === props.maxSubindex)}
                 >Remove Subsection</Button>
                 &nbsp;
                 <Button

@@ -1,4 +1,4 @@
-import { NfoSection } from "../../utils/NfoWriter";
+import { NfoSection } from "../../utils/NfoDefs";
 
 
 export const defaultCredits4 = "the entire Are We Cool Yet? team";

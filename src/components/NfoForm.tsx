@@ -2,9 +2,10 @@ import { Button, Card, Col, Form, Row, Stack } from 'react-bootstrap';
 import { useAppSelector } from '../app/hooks';
 import { eAddSection, eHandleInputChange, eHandleInputFocus } from '../features/nfo/Nfo';
 import { headerKeys } from '../headers';
-import { NfoFormSection } from './NfoFormSection';
-import { NfoSection, nfoSectionOffset } from '../utils/NfoWriter';
+import { NfoSection } from '../utils/NfoDefs';
+import { nfoSectionOffset } from '../utils/NfoWriter';
 import { defaultTextWidth } from '../utils/NfoWriterSettings';
+import { NfoFormSection } from './NfoFormSection';
 
 
 const headerOptions = headerKeys.map((e, i) => {
@@ -119,13 +120,13 @@ function NfoForm() {
                 <Card.Header as="h5">Sections</Card.Header>
                 <Card.Body>
                     {
-                        nfoData.content?.map((_: NfoSection, i: number) => (
-                            <Row key={i}>
+                        nfoData.content?.slice(nfoSectionOffset, -1).map((section: NfoSection, i: number) => (
+                            <Row key={section.oId}>
                                 <Col>
                                     <NfoFormSection
-                                        index={i + nfoSectionOffset}
+                                        index={nfoSectionOffset + i}
                                         minIndex={nfoSectionOffset}
-                                        maxIndex={nfoData.content.length - 1 + nfoSectionOffset}
+                                        maxIndex={nfoData.content.length - 2} // nfoSectionOffset + (nfoData.content.length - 3) - 1
                                     />
                                 </Col>
                             </Row>

@@ -1,4 +1,4 @@
-import { NfoSection } from "../../utils/NfoWriter";
+import { NfoSection } from "../../utils/NfoDefs";
 
 
 export const defaultNfoSectionReleaseNotes: NfoSection = {

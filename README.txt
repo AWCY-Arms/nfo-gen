@@ -20,7 +20,7 @@
 #    Sweaty and Moist Yet Sophisticated Artist who needed their README done    #
 #                                  yesterday                                   #
 #                                                                              #
-#                                    1.0.0                                     #
+#                                    1.1.0                                     #
 #                                                                              #
 ################################################################################
 #                            /X> Release Notes <X\                             #
@@ -30,7 +30,7 @@
 #                                                                              #
 #     Available Winter 2021, experience writing readmes like never before.     #
 #         Featuring no wheel drive, best-in-class user experience, and         #
-#             worst-in-class performance, test drive yours today!              #
+#            bestest-in-class performance, test drive yours today!             #
 #                                                                              #
 #                        And yeah, it takes Glock mags.                        #
 #                                                                              #

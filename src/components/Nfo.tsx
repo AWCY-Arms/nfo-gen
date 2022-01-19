@@ -1,6 +1,5 @@
 import { useAppSelector } from '../app/hooks';
 import NfoContent from './NfoContent';
-import { convertToSectionMap } from "../utils/NfoWriter";
 
 
 interface NfoProps {
@@ -8,9 +7,10 @@ interface NfoProps {
 }
 
 export function Nfo(props: NfoProps) {
-    const sections = useAppSelector(state => convertToSectionMap(state.nfoConfig.nfoData));
+    const viewData = useAppSelector(state => state.nfoConfig.viewData);
+    const dataOrder = useAppSelector(state => state.nfoConfig.viewDataOrder);
     const isRightNfo = useAppSelector(state => state.app.isRightNfo);
-    return <NfoContent id={props.id} sections={sections} isRightNfo={isRightNfo} />
+    return <NfoContent id={props.id} data={viewData} dataOrder={dataOrder} isRightNfo={isRightNfo} />
 }
 
 export default Nfo;

@@ -3,7 +3,7 @@ import FileSaver from 'file-saver';
 import React from 'react';
 import { Button, Stack } from "react-bootstrap";
 import store from "../app/store";
-import { renderNfo } from "../utils/NfoWriter";
+import { renderViewData } from "../utils/NfoWriter";
 
 
 interface CopyNfoProps {
@@ -17,7 +17,8 @@ interface CopyNfoState {
 }
 
 function getNfoText(): string {
-    return renderNfo(store.getState().nfoConfig.nfoData);
+    const nfoConfig = store.getState().nfoConfig;
+    return renderViewData(nfoConfig.viewData, nfoConfig.viewDataOrder);
 }
 
 class CopyNfo extends React.Component<CopyNfoProps, CopyNfoState> {

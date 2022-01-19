@@ -1,6 +1,6 @@
 {
   "name": "awcy-readme-generator",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "dependencies": {
     "@monaco-editor/react": "^4.3.1",
@@ -27,7 +27,7 @@
     "typescript-json-schema": "^0.52.0"
   },
   "scripts": {
-    "schema": "typescript-json-schema ./src/utils/NfoWriter.ts NfoData > src/NfoSchema.json",
+    "schema": "typescript-json-schema ./src/utils/NfoDefs.ts NfoData > src/NfoSchema.json",
     "prestart": "npm run schema",
     "start": "react-scripts start",
     "prebuild": "npm run schema",

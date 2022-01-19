@@ -1,7 +1,7 @@
 import { editor } from "monaco-editor";
 import React from "react";
-import { rightNfoId } from "../../App";
 import store from "../../app/store";
+import { rightNfoId } from "../../components/App";
 import { setLastInput } from "../app/appSlice";
 import {
     addSection,
@@ -11,10 +11,9 @@ import {
     handleContentChange,
     handleInputChange,
     handleJsonChange,
-    handleUpload,
     loadTemplate,
     moveSection,
-    moveSubsection,
+    moveSubsection
 } from "./nfoSlice";
 
 
@@ -68,8 +67,8 @@ export const eHandleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
                 const result = event?.target?.result?.toString();
                 if (!result) return;
                 store.dispatch(
-                    handleUpload({
-                        jsonText: result,
+                    handleJsonChange({
+                        value: result,
                     })
                 );
             };

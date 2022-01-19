@@ -1,11 +1,12 @@
 import Editor, { Monaco } from "@monaco-editor/react";
 import FileSaver from 'file-saver';
+import { editor, Position } from "monaco-editor";
 import { Alert, Button, Card, Col, Form, Row, Stack } from 'react-bootstrap';
 import { useAppSelector } from '../app/hooks';
 import { eHandleJsonChange, eHandleUpload, eLoadTemplate } from '../features/nfo/Nfo';
-import sampleTemplates from '../templates/examples';
 import NfoSchema from '../NfoSchema.json';
-import { editor, Position } from "monaco-editor";
+import sampleTemplates from '../templates/examples';
+import { exportJson } from "../utils/NfoWriter";
 
 
 const templates = Object.keys(sampleTemplates).map((templateId, i) => {
@@ -45,7 +46,7 @@ const onMount = (editor: editor.IStandaloneCodeEditor, _monaco: Monaco) => {
 }
 
 function OptionsJson() {
-    const nfoJson = useAppSelector((state) => state.nfoConfig.nfoJson);
+    const nfoJson = useAppSelector((state) => exportJson(state.nfoConfig.nfoData));
     const editorTheme = useAppSelector((state) => state.app.darkMode === "dark" ? "vs-dark" : "light");
     return <Stack gap={3}>
         <Card>
