@@ -26,7 +26,7 @@ export const eHandleInputChange = (e: React.ChangeEvent<Element>) => {
 }
 
 export const eHandleContentChange = (e: React.ChangeEvent<Element>) => {
-    const target = (e.target as HTMLInputElement)
+    const target = (e.target as HTMLInputElement);
     const index = Number.parseInt(target.dataset['index']!);
     const _subindex = Number.parseInt(target.dataset['index2']!);
     const subindex = isNaN(_subindex) ? null : _subindex;

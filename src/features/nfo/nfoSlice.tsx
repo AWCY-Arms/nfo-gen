@@ -56,17 +56,19 @@ function setNcsSubheader(state: WritableDraft<NfoState>, i1: number, i2: number,
     state.viewData[vdoId].text = text ? renderSubheader(text) : '';
 }
 
-function setNcsText(state: WritableDraft<NfoState>, i1: number, i2: number, text?: string[]) {
+function setNcsText(state: WritableDraft<NfoState>, i1: number, i2: number | null, text?: string[]) {
     const section = state.nfoData.content[i1];
+    if (i2 === null) return;
     const subsection = section.sectionData.subsections![i2];
     if (text !== undefined) subsection.text = text;
-    const vdoId = state.nfoData.content[i1].sectionData.subsections![i2].oId2!;
+    const vdoId = subsection.oId2!;
     const rText = renderText(subsection, section, i2).join("\n");
     state.viewData[vdoId].sepPre = getSepPre(state.viewData[vdoId].id, rText.length > 0).join("\n");
     state.viewData[vdoId].text = rText;
 
-    // Editing a credits4-styled subsection may affect the credits3-styled subsection before it
-    if (subsection.textStyle === 'credits4') {
+    // Editing a credits4-styled subsection may affect the credits3-styled subsection before it.
+    // Rerender the previous subsection's text if there is one.
+    if (subsection.textStyle === 'credits4' && i2 > 0) {
         setNcsText(state, i1, i2 - 1);
     }
 }
@@ -89,7 +91,7 @@ function createSection(index: number): [NfoSection, NfoContentSection[], string[
     section.sectionData.subsections.forEach(subsection => {
         subsection.oId1 = nanoid();
         subsection.oId2 = nanoid();
-        vdoIds.push(subsection.oId1, subsection.oId2)
+        vdoIds.push(subsection.oId1, subsection.oId2);
     });
     const viewData = getSectionNCS(section, index);
     return [section, viewData, vdoIds];
@@ -105,7 +107,7 @@ function createSubsection(i1: number, i2: number): [NfoSubsection, NfoContentSec
 }
 
 function updateId(ncs: NfoContentSection) {
-    ncs.id = ncs.i1 + "-" + ncs.i2 + (ncs.h ? "-h" : "");
+    ncs.id = ncs.i1 + (ncs.i2 !== null ? "-" + ncs.i2 : '') + (ncs.h ? "-h" : "");
 }
 
 function updateSepPre(ncs: NfoContentSection) {
@@ -183,14 +185,19 @@ export const nfoSlice = createSlice({
             }
             // nfoData
             const footer = state.nfoData.content.splice(-1, 1)[0];
-            const footerOrder = state.viewDataOrder.splice(state.viewDataOrder.indexOf(footer.oId!));
+            const footerOrderIds = state.viewDataOrder.splice(state.viewDataOrder.indexOf(footer.oId!));
             const index = state.nfoData.content.length;
             const [section, viewData, vdoIds] = createSection(index);
             state.nfoData.content.push(section, footer);
             // viewData
             viewData.forEach(vd => state.viewData[vd.oId] = vd);
+            footerOrderIds.forEach(oId => {
+                const ncs = state.viewData[oId];
+                ncs.i1++;
+                updateId(ncs);
+            });
             // viewDataOrder
-            state.viewDataOrder.push(...vdoIds, ...footerOrder);
+            state.viewDataOrder.push(...vdoIds, ...footerOrderIds);
         },
         delSection: (state, action) => {
             const { index } = action.payload;
@@ -202,9 +209,15 @@ export const nfoSlice = createSlice({
                 delete state.viewData[i];
             });
             // viewDataOrder
-            const vdoI1 = state.viewDataOrder.indexOf(vdoIds[0]);
-            if (vdoI1 === -1) return;
-            state.viewDataOrder.splice(vdoI1, vdoIds.length);
+            const vdoIndex = state.viewDataOrder.indexOf(vdoIds[0]);
+            if (vdoIndex === -1) return;
+            state.viewDataOrder.splice(vdoIndex, vdoIds.length);
+            // Decrement index1 on all subsequent NCS
+            state.viewDataOrder.slice(vdoIndex).forEach(oId => {
+                const ncs = state.viewData[oId];
+                ncs.i1--;
+                updateId(ncs);
+            });
         },
         moveSection: (state, action) => {
             const { index, direction } = action.payload;
@@ -212,24 +225,24 @@ export const nfoSlice = createSlice({
             const index1 = direction === 'up' ? index - 1 : index;
             const index2 = direction === 'up' ? index : index + 1;
             // viewData
-            const sec1vdoIds = getOrderIds(content[index1]);
-            sec1vdoIds.forEach(i => {
-                state.viewData[i].i1 = index2;
-                updateId(state.viewData[i]);
+            const section1vdoIds = getOrderIds(content[index1]);
+            section1vdoIds.forEach(oId => {
+                state.viewData[oId].i1 = index2;
+                updateId(state.viewData[oId]);
             });
-            const sec2vdoIds = getOrderIds(content[index2]);
-            sec2vdoIds.forEach(i => {
-                state.viewData[i].i1 = index1;
-                updateId(state.viewData[i]);
+            const section2vdoIds = getOrderIds(content[index2]);
+            section2vdoIds.forEach(oId => {
+                state.viewData[oId].i1 = index1;
+                updateId(state.viewData[oId]);
             });
             // viewDataOrder
             const vdoI1 = state.viewDataOrder.indexOf(content[index1].oId!);
             const vdoI2 = state.viewDataOrder.indexOf(content[index2].oId!);
             state.viewDataOrder = [
                 ...state.viewDataOrder.slice(0, vdoI1),
-                ...state.viewDataOrder.slice(vdoI2, vdoI2 + sec2vdoIds.length),
-                ...state.viewDataOrder.slice(vdoI1, vdoI1 + sec1vdoIds.length),
-                ...state.viewDataOrder.slice(vdoI2 + sec2vdoIds.length),
+                ...state.viewDataOrder.slice(vdoI2, vdoI2 + section2vdoIds.length),
+                ...state.viewDataOrder.slice(vdoI1, vdoI1 + section1vdoIds.length),
+                ...state.viewDataOrder.slice(vdoI2 + section2vdoIds.length),
             ];
             // nfoData
             [content[index1], content[index2]] = [content[index2], content[index1]];
@@ -267,31 +280,31 @@ export const nfoSlice = createSlice({
         },
         moveSubsection: (state, action) => {
             const { index, subindex, direction } = action.payload;
-            const index1 = direction === 'up' ? subindex - 1 : subindex;
-            const index2 = direction === 'up' ? subindex : subindex + 1;
-            const subsecs = state.nfoData.content[index].sectionData.subsections;
+            const subindex1 = direction === 'up' ? subindex - 1 : subindex;
+            const subindex2 = direction === 'up' ? subindex : subindex + 1;
+            const subsections = state.nfoData.content[index].sectionData.subsections;
             // nfoData
-            [subsecs[index1], subsecs[index2]] = [subsecs[index2], subsecs[index1]];
+            [subsections[subindex1], subsections[subindex2]] = [subsections[subindex2], subsections[subindex1]];
             // viewDataOrder
-            const vdoI1 = state.viewDataOrder.indexOf(subsecs[index1].oId1!);
-            const vdoI2 = state.viewDataOrder.indexOf(subsecs[index2].oId1!);
+            const vdoI1 = state.viewDataOrder.indexOf(subsections[subindex1].oId1!);
+            const vdoI2 = state.viewDataOrder.indexOf(subsections[subindex2].oId1!);
             if (vdoI1 !== -1 && vdoI2 !== -1) {
                 // Swap the two content sections
                 [state.viewDataOrder[vdoI1], state.viewDataOrder[vdoI2]] = [state.viewDataOrder[vdoI2], state.viewDataOrder[vdoI1]];
                 [state.viewDataOrder[vdoI1 + 1], state.viewDataOrder[vdoI2 + 1]] = [state.viewDataOrder[vdoI2 + 1], state.viewDataOrder[vdoI1 + 1]];
             }
             // viewData -- Each subsection has two NfoContentSections
-            [index1, index2].forEach(i => {
-                [subsecs[i].oId1!, subsecs[i].oId2!].forEach(j => {
+            [subindex1, subindex2].forEach(i => {
+                [subsections[i].oId1!, subsections[i].oId2!].forEach(j => {
                     state.viewData[j].i2 = i;
                     updateId(state.viewData[j]);
                     updateSepPre(state.viewData[j]);
-                })
+                });
             });
         },
     },
-})
+});
 
 export const { handleInputChange, handleContentChange, loadTemplate, handleJsonChange, addSection, delSection, moveSection, addSubsection, delSubsection, moveSubsection } = nfoSlice.actions
 
-export default nfoSlice.reducer
+export default nfoSlice.reducer;

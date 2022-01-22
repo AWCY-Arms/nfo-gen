@@ -24,16 +24,22 @@ const styles = Object.keys(textStyles).map((optgroupLabel, i) => (
 ));
 
 function getTextStyleHelp(style: string): string {
+    let helpText = "";
     if (style.indexOf("credits") === 0) {
-        if (style === "credits4")
+        if (style === "credits4") {
             return defaultCredits4;
-        return "One name per line. ";
+        }
+        helpText = "One name per line.";
     }
-    if (style === "twoCol")
-        return "Text for the left column goes on the first line.\nText for the right column starts on the second line.\n";
-    if (style === "numList")
-        return "Each list item should go on its own line. ";
-    return "";
+    switch (style) {
+        case "twoCol":
+            helpText = "Text for the left column goes on the first line.\nText for the right column starts on the second line.\n";
+            break;
+        case "numList":
+            helpText = "Each list item should go on its own line.";
+            break;
+    }
+    return (helpText ? helpText + " " : "") + "Press Shift+Enter to start a new line.";
 }
 
 export function NfoFormSubsection(props: NfoFormSubsectionProps) {
@@ -86,7 +92,7 @@ export function NfoFormSubsection(props: NfoFormSubsectionProps) {
                 minRows={2}
                 name="text"
                 size="sm"
-                placeholder={getTextStyleHelp(subsection.textStyle || "") + "Press Shift+Enter to start a new line."}
+                placeholder={getTextStyleHelp(subsection.textStyle || "")}
                 data-index={props.index}
                 data-index2={props.subindex}
                 onChange={eHandleContentChange}

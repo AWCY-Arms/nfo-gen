@@ -64,7 +64,7 @@ export const exportJson = (nfoData: NfoData): string => {
         section.sectionData.subsections.forEach(subsection => {
             delete subsection.oId1;
             delete subsection.oId2;
-        })
+        });
     });
     exportData.content = content;
     return formatJson(exportData);
@@ -99,7 +99,7 @@ export function formatText(text: string, lineLength: number): string[] {
         outputRowIndex++;
     });
     return outputRows.map((textArray) => {
-        return textArray.join(" ")
+        return textArray.join(" ");
     });
 }
 
@@ -111,7 +111,7 @@ function leftText(text: string, format = true, length = defaultTextWidth): strin
 
 function centerText(text: string, format = true, length = defaultTextWidth): string[] {
     return (format ? formatText(text, length) : text.split("\n")).map((rowText) => {
-        return rowText.padStart((length + rowText.length) / 2).padEnd(length)
+        return rowText.padStart((length + rowText.length) / 2).padEnd(length);
     });
 }
 
@@ -184,12 +184,12 @@ export function formatCredits2(text: string, lineLength: number = defaultTextWid
             textLineIndex++;
             textLines.push(word);
         }
-    })
+    });
     return textLines.join("\n");
 }
 
 export function renderHeader(text: string) {
-    return borderText(centerHeader(text)).join("\n")
+    return borderText(centerHeader(text)).join("\n");
 }
 
 export function renderSubheader(text: string) {
@@ -261,7 +261,7 @@ export function renderText(el: NfoSubsection, section: NfoSection, i2: number) {
                 break;
             case "credits4":
                 lines.push(...el.text.flatMap((textRow) => {
-                    return borderText(centerText(textRow))
+                    return borderText(centerText(textRow));
                 }));
                 break;
             case "none":
@@ -274,7 +274,7 @@ export function renderText(el: NfoSubsection, section: NfoSection, i2: number) {
                 break;
             default:
                 lines.push(...el.text.flatMap((textRow) => {
-                    return borderText(horizontalAlign(textRow, el.textStyle as TextAlign))
+                    return borderText(horizontalAlign(textRow, el.textStyle as TextAlign));
                 }));
                 break;
         }
@@ -282,7 +282,7 @@ export function renderText(el: NfoSubsection, section: NfoSection, i2: number) {
     return lines;
 }
 
-export function getSubsectionNCS(subsection: NfoSubsection, i1: number, i2: number, text: string): NfoContentSection[] {
+export function getSubsectionNCS(subsection: NfoSubsection, i1: number, i2: number, renderedText: string): NfoContentSection[] {
     return [
         {
             oId: subsection.oId1!,
@@ -299,8 +299,8 @@ export function getSubsectionNCS(subsection: NfoSubsection, i1: number, i2: numb
             i1: i1,
             i2: i2,
             h: false,
-            sepPre: getSepPre(i1 + "-" + i2, text.length > 0).join("\n"),
-            text: text
+            sepPre: getSepPre(i1 + "-" + i2, renderedText.length > 0).join("\n"),
+            text: renderedText
         }
     ]
 }
@@ -319,11 +319,11 @@ export function getSectionNCS(section: NfoSection, i1: number): NfoContentSectio
         }
     ];
     // Subsections
-    section.sectionData?.subsections?.forEach((subsec, i2) => {
+    section.sectionData?.subsections?.forEach((subsection, i2) => {
         // Subheader
         // Text
-        const text = renderText(subsec, section, i2).join("\n");
-        viewData.push(...getSubsectionNCS(subsec, i1, i2, text));
+        const text = renderText(subsection, section, i2).join("\n");
+        viewData.push(...getSubsectionNCS(subsection, i1, i2, text));
     });
     return viewData;
 }
