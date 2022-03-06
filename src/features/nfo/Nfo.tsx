@@ -1,7 +1,7 @@
 import { editor } from "monaco-editor";
 import React from "react";
-import { rightNfoId } from "../../App";
 import store from "../../app/store";
+import { rightNfoId } from "../../components/App";
 import { setLastInput } from "../app/appSlice";
 import {
     addSection,
@@ -11,10 +11,9 @@ import {
     handleContentChange,
     handleInputChange,
     handleJsonChange,
-    handleUpload,
     loadTemplate,
     moveSection,
-    moveSubsection,
+    moveSubsection
 } from "./nfoSlice";
 
 
@@ -27,7 +26,7 @@ export const eHandleInputChange = (e: React.ChangeEvent<Element>) => {
 }
 
 export const eHandleContentChange = (e: React.ChangeEvent<Element>) => {
-    const target = (e.target as HTMLInputElement)
+    const target = (e.target as HTMLInputElement);
     const index = Number.parseInt(target.dataset['index']!);
     const _subindex = Number.parseInt(target.dataset['index2']!);
     const subindex = isNaN(_subindex) ? null : _subindex;
@@ -68,8 +67,8 @@ export const eHandleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
                 const result = event?.target?.result?.toString();
                 if (!result) return;
                 store.dispatch(
-                    handleUpload({
-                        jsonText: result,
+                    handleJsonChange({
+                        value: result,
                     })
                 );
             };

@@ -1,32 +1,26 @@
-import { eHandleClickNfo } from "../features/nfo/Nfo";
-import { IMap } from "../utils/helpers";
-import { getSepPre } from "../utils/NfoWriter";
+import { NfoContentSection } from "./NfoContentSection";
 
 
 interface NfoContentProps {
-    id: string,
-    sections: IMap<string[]>,
-    isRightNfo: boolean,
+    id: string;
+    data: any,
+    dataOrder: any,
+    isRightNfo: boolean;
 }
 
 const NfoContent = (props: NfoContentProps) => {
-    return <div id={props.id}>
-        {
-            Object.keys(props.sections).map((k, i) => {
-                const content = props.sections[k].join("\n");
-                return <div key={i} id={"p-" + props.id + "-" + k}>
-                    {getSepPre(k, content !== "").map((sep, j) => <pre className="nfo" key={j}>{sep}</pre>)}
-                    <pre
-                        className="nfo highlight off"
-                        id={props.id + "-" + k}
-                        onClick={props.isRightNfo ? eHandleClickNfo : undefined}
-                    >
-                        {content}
-                    </pre>
-                </div>
-            })
-        }
-    </div>
-}
+    return (
+        <div id={props.id}>
+            {props.dataOrder.map((vdoId: string) => {
+                return <NfoContentSection
+                    key={vdoId}
+                    id={props.id}
+                    isRightNfo={props.isRightNfo}
+                    content={props.data[vdoId]}
+                />
+            })}
+        </div>
+    );
+};
 
 export default NfoContent;

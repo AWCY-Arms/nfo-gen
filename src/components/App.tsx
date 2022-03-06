@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
 import { Badge, Col, Container, Row, Stack, Tab, Tabs } from 'react-bootstrap';
-import packageJson from '../package.json';
-import About from './components/About';
-import store from './app/store';
-import CopyNfo from './components/CopyNfo';
-import { setIsRightNfo, updateDarkMode } from './features/app/appSlice';
-import Nfo from './components/Nfo';
-import NfoForm from './components/NfoForm';
-import OptionsJson from './components/OptionsJson';
-import ReturnToTop from './components/ReturnToTop';
+import packageJson from '../../package.json';
+import store from '../app/store';
+import { setIsRightNfo, updateDarkMode } from '../features/app/appSlice';
+import About from './About';
+import CopyNfo from './CopyNfo';
+import Nfo from './Nfo';
+import NfoForm from './NfoForm';
+import OptionsJson from './OptionsJson';
+import ReturnToTop from './ReturnToTop';
 
 
 function updateDarkColorScheme() {
@@ -58,7 +58,7 @@ function App() {
                     </Row>
                     <Row>
                         <Col>
-                            <Tabs defaultActiveKey="form" id={tabsId} className="mb-3">
+                            <Tabs defaultActiveKey="form" id={tabsId} className="mb-3" mountOnEnter={true} unmountOnExit={true}>
                                 <Tab eventKey="form" title="Edit">
                                     <NfoForm />
                                     <ReturnToTop id={leftColId} />

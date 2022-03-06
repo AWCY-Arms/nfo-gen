@@ -1,10 +1,10 @@
 import fs from "fs";
 
-import { renderNfo } from '../src/utils/NfoWriter';
+import { importJson, renderNfo } from '../src/utils/NfoWriter';
 import nfoGen from '../src/templates/examples/nfoGen';
 
 export function run() {
-    const nfoText = renderNfo(nfoGen);
+    const nfoText = renderNfo(importJson(nfoGen));
     fs.writeFileSync(
         'README.txt',
         nfoText,

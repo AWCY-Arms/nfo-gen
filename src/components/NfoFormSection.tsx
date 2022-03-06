@@ -1,8 +1,9 @@
 import { Button, Card, Col, FloatingLabel, Form, Row } from 'react-bootstrap';
 import { useAppSelector } from '../app/hooks';
 import { eAddSubsection, eDelSection, eHandleContentChange, eHandleInputFocus, eMoveSection } from '../features/nfo/Nfo';
+import { NfoSubsection } from '../utils/NfoDefs';
+import { nfoSectionOffset } from "../utils/NfoWriter";
 import { NfoFormSubsection } from './NfoFormSubsection';
-import { NfoSubsection, nfoSectionOffset } from "../utils/NfoWriter";
 
 
 interface NfoFormSectionProps {
@@ -12,7 +13,7 @@ interface NfoFormSectionProps {
 }
 
 export function NfoFormSection(props: NfoFormSectionProps) {
-    const section = useAppSelector(state => state.nfoConfig.nfoData.content[props.index - nfoSectionOffset]);
+    const section = useAppSelector(state => state.nfoConfig.nfoData.content[props.index]);
     const sectionData = section.sectionData;
     if (!section || !sectionData) return <div />;
     return <Card className="mb-3">
@@ -67,9 +68,14 @@ export function NfoFormSection(props: NfoFormSectionProps) {
             </Row>
             <hr />
             {
-                sectionData.subsections?.map((_: NfoSubsection, i: number) => {
-                    return <NfoFormSubsection key={i} index={props.index} subindex={i} maxSubindex={sectionData.subsections.length - 1} />
-                })
+                sectionData.subsections?.map(
+                    (subsection: NfoSubsection, i: number) => <NfoFormSubsection
+                        key={subsection.oId1}
+                        index={props.index}
+                        subindex={i}
+                        maxSubindex={sectionData.subsections.length - 1}
+                    />
+                )
             }
             {sectionData.uiAddSubsectionDisabled ? "" :
                 <Row className={sectionData.subsections?.length || 0 ? "mt-3" : ""}>

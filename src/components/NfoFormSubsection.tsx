@@ -3,7 +3,8 @@ import TextareaAutosize from 'react-textarea-autosize';
 import { useAppSelector } from "../app/hooks";
 import { eDelSubsection, eHandleContentChange, eHandleInputFocus, eMoveSubsection } from "../features/nfo/Nfo";
 import { defaultCredits4 } from "../templates/partials/credits";
-import { nfoSectionOffset, textStyles } from "../utils/NfoWriter";
+import { textStyles } from "../utils/NfoDefs";
+import { nfoSectionOffset } from "../utils/NfoWriter";
 
 
 interface NfoFormSubsectionProps {
@@ -23,21 +24,27 @@ const styles = Object.keys(textStyles).map((optgroupLabel, i) => (
 ));
 
 function getTextStyleHelp(style: string): string {
+    let helpText = "";
     if (style.indexOf("credits") === 0) {
-        if (style === "credits4")
+        if (style === "credits4") {
             return defaultCredits4;
-        return "One name per line. ";
+        }
+        helpText = "One name per line.";
     }
-    if (style === "twoCol")
-        return "Text for the left column goes on the first line.\nText for the right column starts on the second line.\n";
-    if (style === "numList")
-        return "Each list item should go on its own line. ";
-    return "";
+    switch (style) {
+        case "twoCol":
+            helpText = "Text for the left column goes on the first line.\nText for the right column starts on the second line.\n";
+            break;
+        case "numList":
+            helpText = "Each list item should go on its own line.";
+            break;
+    }
+    return (helpText ? helpText + " " : "") + "Press Shift+Enter to start a new line.";
 }
 
 export function NfoFormSubsection(props: NfoFormSubsectionProps) {
-    const subsection = useAppSelector(state => state.nfoConfig.nfoData.content[props.index - nfoSectionOffset].sectionData.subsections[props.subindex]);
-    return <div key={props.subindex}>
+    const subsection = useAppSelector(state => state.nfoConfig.nfoData.content[props.index].sectionData.subsections[props.subindex]);
+    return <div key={subsection.oId1!}>
         <h6 className="h6">Section {(props.index + 1 - nfoSectionOffset) + "." + (props.subindex + 1)}</h6>
         {subsection.uiSubheaderHide ? "" :
             <Row className="mb-3">
@@ -85,7 +92,7 @@ export function NfoFormSubsection(props: NfoFormSubsectionProps) {
                 minRows={2}
                 name="text"
                 size="sm"
-                placeholder={getTextStyleHelp(subsection.textStyle || "") + "Press Shift+Enter to start a new line."}
+                placeholder={getTextStyleHelp(subsection.textStyle || "")}
                 data-index={props.index}
                 data-index2={props.subindex}
                 onChange={eHandleContentChange}
@@ -102,7 +109,7 @@ export function NfoFormSubsection(props: NfoFormSubsectionProps) {
                     data-index={props.index}
                     data-index2={props.subindex}
                     onClick={eDelSubsection}
-                    disabled={subsection.uiRemoveDisabled || props.subindex === 0}
+                    disabled={subsection.uiRemoveDisabled || (0 === props.subindex && props.subindex === props.maxSubindex)}
                 >Remove Subsection</Button>
                 &nbsp;
                 <Button

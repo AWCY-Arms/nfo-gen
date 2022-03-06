@@ -1,6 +1,6 @@
 import packageJson from "../../../package.json";
-import deepClone from "../../utils/helpers";
-import { NfoData } from "../../utils/NfoWriter";
+import { deepClone } from "../../utils/helpers";
+import { NfoData } from "../../utils/NfoDefs";
 import defaultNfoSectionCredits from "../partials/credits";
 import defaultNfoSectionReleaseNotes from "../partials/releaseNotes";
 
@@ -26,7 +26,7 @@ releaseNotes.sectionData.subsections[0].text = [
     "Introducing the all-new fully-electric 2022 AWCY? Readme Generator",
     "",
     "Available Winter 2021, experience writing readmes like never before.",
-    "Featuring no wheel drive, best-in-class user experience, and worst-in-class performance, test drive yours today!",
+    "Featuring no wheel drive, best-in-class user experience, and bestest-in-class performance, test drive yours today!",
     "",
     "And yeah, it takes Glock mags.",
 ];
