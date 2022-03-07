@@ -1,28 +1,15 @@
-import headers, { Header } from "../headers";
-import { cleanText, deepClone, IMap } from "./helpers";
-import {
-    creditsAdjustedWidth,
-    creditsNameLeft,
-    creditsNameRight,
-    currentDataVersion,
-    defaultBorderChar,
-    defaultBorderPaddingWidth,
-    defaultNfoWidth,
-    defaultTextWidth,
-    headerBorderEnd,
-    headerBorderStart,
-    lineBlank,
-    lineBottom,
-    lineEmpty,
-    lineSep,
-    lineTop,
-    subSectionHeaderL,
-    subSectionHeaderR
-} from "./NfoWriterSettings";
-import Ajv from "ajv";
-import schemaNfo from "../NfoSchema.json";
 import { nanoid } from "@reduxjs/toolkit";
-import { NfoContentSection, NfoData, NfoSection, NfoSubsection, TextAlign } from "./NfoDefs";
+import Ajv from "ajv";
+import headers, { Header } from "../headers";
+import schemaNfo from "../NfoSchema.json";
+import { cleanText, deepClone, IMap } from "./helpers";
+import { Border, borderStyles, NfoContentSection, NfoData, NfoSection, NfoSubsection, TextAlign } from "./NfoDefs";
+import {
+    creditsAdjustedWidth, creditsNameEnd, creditsNameStart, currentDataVersion,
+    defaultBorderPaddingWidth, defaultBorderStyle, defaultNfoWidth,
+    defaultTextWidth, lineBlank, sectionheaderEnd,
+    sectionheaderStart, subSectionHeaderEnd, subSectionHeaderStart
+} from "./NfoWriterSettings";
 
 
 const ajv = new Ajv();
@@ -39,6 +26,8 @@ export const importJson = (nfoData: string | NfoData): NfoData => {
             subsection.oId2 = nanoid();
         });
     });
+    const borderStyle = nfoDataObj.borderStyle || defaultBorderStyle;
+    const borders = getBorders(borderStyle);
     const content = [
         getSection0(nfoDataObj.headerArt, nfoDataObj.headerAlign),
         getSection1(nfoDataObj.title, nfoDataObj.description, nfoDataObj.version),
@@ -52,6 +41,8 @@ export const importJson = (nfoData: string | NfoData): NfoData => {
         title: nfoDataObj.title,
         description: nfoDataObj.description,
         version: nfoDataObj.version,
+        borderStyle: borderStyle,
+        _borders: borders,
         content: content,
     }
 }
@@ -67,6 +58,7 @@ export const exportJson = (nfoData: NfoData): string => {
         });
     });
     exportData.content = content;
+    delete exportData._borders;
     return formatJson(exportData);
 }
 
@@ -77,6 +69,17 @@ export function readConfig(config: any): NfoData {
     }
     config.dataVersion = currentDataVersion;
     return config;
+}
+
+export function getBorders(borderStyle: string): Border {
+    const chars = borderStyles[borderStyle];
+    return {
+        lineSep: chars.vhl + chars.h.repeat(defaultNfoWidth - 2) + chars.vhr,
+        lineEmpty: chars.v + " ".repeat(defaultTextWidth + (defaultBorderPaddingWidth * 2)) + chars.v,
+        lineTop: chars.ctl + chars.h.repeat(defaultNfoWidth - 2) + chars.ctr,
+        lineBottom: chars.cbl + chars.h.repeat(defaultNfoWidth - 2) + chars.cbr,
+        borderChar: chars.v,
+    }
 }
 
 export function formatText(text: string, lineLength: number): string[] {
@@ -132,20 +135,21 @@ export function horizontalAlign(text: string, align: TextAlign = "center", lengt
     }
 }
 
-function borderText(textRows: string[], borderStart: string = defaultBorderChar, borderEnd: string | undefined = undefined, borderPaddingWidth: number = defaultBorderPaddingWidth): string[] {
-    borderEnd = borderEnd ? borderEnd : defaultBorderChar;
+function borderText(textRows: string[], borderStart?: string, borderEnd?: string, border?: Border, borderPaddingWidth: number = defaultBorderPaddingWidth): string[] {
+    borderStart = (borderStart && borderEnd) ? borderStart : (border ? border.borderChar : "");
+    borderEnd = (borderStart && borderEnd) ? borderEnd : (border ? border.borderChar : "");
     const padding = " ".repeat(borderPaddingWidth);
     return textRows.map((text) => {
         return borderStart + padding + text + padding + borderEnd;
     });
 }
 
-function centerHeader(text: string, borderStart = headerBorderStart, borderEnd = headerBorderEnd, length?: number): string[] {
-    return borderText([text], borderStart, borderEnd, 1).flatMap(line => centerText(line, true, length));
+function centerHeader(text: string, borderStart = sectionheaderStart, borderEnd = sectionheaderEnd, length?: number): string[] {
+    return borderText([text], borderStart, borderEnd, undefined, 1).flatMap(line => centerText(line, true, length));
 }
 
 const lMax = 30;
-function renderTwoCol(lines: string[], subsection: NfoSubsection): void {
+function renderTwoCol(border: Border, lines: string[], subsection: NfoSubsection): void {
     const lColText = subsection.text[0] + ":";
     const lColWidth = Math.min(lColText.length, lMax);
     const lCol = leftText(lColText, true, lColWidth);
@@ -153,11 +157,11 @@ function renderTwoCol(lines: string[], subsection: NfoSubsection): void {
     const rowCount = Math.max(lCol.length, rCol.length);
     for (let i = 0; i < rowCount; i++) {
         const row = (lCol[i] || " ".repeat(lColWidth)) + " " + (rCol[i] || " ".repeat(defaultTextWidth - 1 - lColWidth));
-        lines.push(...borderText([row]));
+        lines.push(...borderText([row], undefined, undefined, border));
     }
 }
 
-function renderList(lines: string[], subsection: NfoSubsection): void {
+function renderList(border: Border, lines: string[], subsection: NfoSubsection): void {
     const lColWidth = Math.floor(Math.log10(subsection.text.length)) + 1;
     for (let listCounter = 1; listCounter <= subsection.text.length; listCounter++) {
         const lColText = listCounter.toString().padStart(lColWidth, " ");
@@ -165,9 +169,9 @@ function renderList(lines: string[], subsection: NfoSubsection): void {
         const rCol = leftText(subsection.text[listCounter - 1], true, defaultTextWidth - 2 - lColWidth);
         rCol.forEach((_, rColIndex) => {
             const row = (rColIndex ? " ".repeat(lColWidth + 2) : (lCol[rColIndex] + ": ")) + rCol[rColIndex];
-            lines.push(...borderText([row]));
+            lines.push(...borderText([row], undefined, undefined, border));
         });
-        if (listCounter < subsection.text.length) lines.push(lineEmpty);
+        if (listCounter < subsection.text.length) lines.push(border.lineEmpty);
     }
 }
 
@@ -188,27 +192,32 @@ export function formatCredits2(text: string, lineLength: number = defaultTextWid
     return textLines.join("\n");
 }
 
-export function renderHeader(text: string) {
-    return borderText(centerHeader(text)).join("\n");
+export function renderHeader(border: Border, text: string) {
+    return borderText(centerHeader(text), undefined, undefined, border).join("\n");
 }
 
-export function renderSubheader(text: string) {
-    return borderText(centerHeader(text, subSectionHeaderL, subSectionHeaderR)).join("\n");
+export function renderSubheader(border: Border, text: string) {
+    return borderText(centerHeader(text, subSectionHeaderStart, subSectionHeaderEnd), undefined, undefined, border).join("\n");
 }
 
-export function renderText(el: NfoSubsection, section: NfoSection, i2: number) {
+export function renderText(border: Border, el: NfoSubsection, section: NfoSection, i2: number) {
     const lines: string[] = [];
     if (el.text && typeof el.text === "object" && el.text.join() !== "") {
         switch (el.textStyle) {
             case "twoCol":
-                renderTwoCol(lines, el);
+                renderTwoCol(border, lines, el);
                 break;
             case "numList":
-                renderList(lines, el);
+                renderList(border, lines, el);
                 break;
             case "credits1":
                 el.text.forEach((name) => {
-                    lines.push(...borderText(centerText(centerHeader(name, creditsNameLeft, creditsNameRight, creditsAdjustedWidth).join(""), undefined, creditsAdjustedWidth)));
+                    lines.push(...borderText(
+                        centerText(centerHeader(name, creditsNameStart, creditsNameEnd, creditsAdjustedWidth).join(""), undefined, creditsAdjustedWidth),
+                        undefined,
+                        undefined,
+                        border,
+                    ));
                 });
                 break;
             case "credits2":
@@ -225,7 +234,12 @@ export function renderText(el: NfoSubsection, section: NfoSection, i2: number) {
                         credits2.push("and", el.text[el.text.length - 1]);
                         break;
                 }
-                lines.push(...borderText(centerText(formatCredits2(credits2.join("\n")), false)));
+                lines.push(...borderText(
+                    centerText(formatCredits2(credits2.join("\n")), false),
+                    undefined,
+                    undefined,
+                    border,
+                ));
                 break;
             case "credits3":
                 const credits3 = [];
@@ -257,24 +271,49 @@ export function renderText(el: NfoSubsection, section: NfoSection, i2: number) {
                         }
                         break;
                 }
-                lines.push(...borderText(centerText(formatCredits2(credits3.join("\n")), false)));
+                lines.push(...borderText(
+                    centerText(formatCredits2(credits3.join("\n")), false),
+                    undefined,
+                    undefined,
+                    border,
+                ));
                 break;
             case "credits4":
                 lines.push(...el.text.flatMap((textRow) => {
-                    return borderText(centerText(textRow));
+                    return borderText(centerText(textRow), undefined, undefined, border);
                 }));
                 break;
             case "none":
                 lines.push(...el.text);
                 break;
             case "warning":
-                lines.push(...borderText(["!".repeat(defaultNfoWidth - 4)], undefined, undefined, 1));
-                lines.push(...el.text.flatMap(textRow => borderText(borderText(centerText(textRow, undefined, defaultTextWidth - 8), "!!!", "!!!"), undefined, undefined, 1)));
-                lines.push(...borderText(["!".repeat(defaultNfoWidth - 4)], undefined, undefined, 1));
+                lines.push(...borderText(["!".repeat(defaultNfoWidth - 4)], undefined, undefined, border, 1));
+                lines.push(...el.text.flatMap(
+                    textRow => borderText(
+                        borderText(
+                            centerText(textRow, undefined, defaultTextWidth - 8),
+                            "!!!",
+                            "!!!",
+                        ),
+                        undefined,
+                        undefined,
+                        border,
+                        1
+                    )
+                ));
+                lines.push(...borderText(["!".repeat(defaultNfoWidth - 4)], undefined, undefined, border, 1));
+                break;
+            case "end":
+                lines.push(border.lineBottom);
                 break;
             default:
                 lines.push(...el.text.flatMap((textRow) => {
-                    return borderText(horizontalAlign(textRow, el.textStyle as TextAlign));
+                    return borderText(
+                        horizontalAlign(textRow, el.textStyle as TextAlign),
+                        undefined,
+                        undefined,
+                        border,
+                    );
                 }));
                 break;
         }
@@ -282,7 +321,7 @@ export function renderText(el: NfoSubsection, section: NfoSection, i2: number) {
     return lines;
 }
 
-export function getSubsectionNCS(subsection: NfoSubsection, i1: number, i2: number, renderedText: string): NfoContentSection[] {
+export function getSubsectionNCS(border: Border, subsection: NfoSubsection, i1: number, i2: number, renderedText: string): NfoContentSection[] {
     return [
         {
             oId: subsection.oId1!,
@@ -290,8 +329,8 @@ export function getSubsectionNCS(subsection: NfoSubsection, i1: number, i2: numb
             i1: i1,
             i2: i2,
             h: true,
-            sepPre: getSepPre(i1 + "-" + i2 + "-h", subsection.subheader?.length > 0).join("\n"),
-            text: (subsection.subheader && typeof subsection.subheader === "string") ? renderSubheader(subsection.subheader) : ''
+            sepPre: getSepPre(border, i1 + "-" + i2 + "-h", subsection.subheader?.length > 0).join("\n"),
+            text: (subsection.subheader && typeof subsection.subheader === "string") ? renderSubheader(border, subsection.subheader) : ''
         },
         {
             oId: subsection.oId2!,
@@ -299,13 +338,13 @@ export function getSubsectionNCS(subsection: NfoSubsection, i1: number, i2: numb
             i1: i1,
             i2: i2,
             h: false,
-            sepPre: getSepPre(i1 + "-" + i2, renderedText.length > 0).join("\n"),
+            sepPre: getSepPre(border, i1 + "-" + i2, renderedText.length > 0).join("\n"),
             text: renderedText
         }
     ]
 }
 
-export function getSectionNCS(section: NfoSection, i1: number): NfoContentSection[] {
+export function getSectionNCS(border: Border, section: NfoSection, i1: number): NfoContentSection[] {
     // Header
     const viewData: NfoContentSection[] = [
         {
@@ -314,16 +353,16 @@ export function getSectionNCS(section: NfoSection, i1: number): NfoContentSectio
             i1: i1,
             i2: null,
             h: true,
-            sepPre: getSepPre(i1 + "-h", section.header?.length > 0).join("\n"),
-            text: section.header ? renderHeader(section.header) : ''
+            sepPre: getSepPre(border, i1 + "-h", section.header?.length > 0).join("\n"),
+            text: section.header ? renderHeader(border, section.header) : ''
         }
     ];
     // Subsections
     section.sectionData?.subsections?.forEach((subsection, i2) => {
         // Subheader
         // Text
-        const text = renderText(subsection, section, i2).join("\n");
-        viewData.push(...getSubsectionNCS(subsection, i1, i2, text));
+        const text = renderText(border, subsection, section, i2).join("\n");
+        viewData.push(...getSubsectionNCS(border, subsection, i1, i2, text));
     });
     return viewData;
 }
@@ -409,8 +448,8 @@ export const sectionFooter: NfoSection = {
                 oId1: nanoid(),
                 oId2: nanoid(),
                 subheader: "",
-                textStyle: "none",
-                text: [lineBottom],
+                textStyle: "end",
+                text: ["_"],
             }
         ]
     }
@@ -425,7 +464,7 @@ export function getNCS(nfoData: NfoData): [IMap<NfoContentSection>, string[]] {
     const viewData: IMap<NfoContentSection> = {};
     const viewDataOrder: string[] = [];
     nfoData.content?.forEach((content, index) => {
-        getSectionNCS(content, index).forEach(ncs => {
+        getSectionNCS(nfoData._borders!, content, index).forEach(ncs => {
             viewData[ncs.oId] = ncs;
             viewDataOrder.push(ncs.oId);
         });
@@ -433,7 +472,7 @@ export function getNCS(nfoData: NfoData): [IMap<NfoContentSection>, string[]] {
     return [viewData, viewDataOrder];
 }
 
-export function getSepPre(sectionKey: string, hasContent?: boolean): string[] {
+export function getSepPre(border: Border, sectionKey: string, hasContent?: boolean): string[] {
     const [i1, i2, h] = sectionKey.split("-");
     if (i1 === "0") {
         // Header image
@@ -450,44 +489,44 @@ export function getSepPre(sectionKey: string, hasContent?: boolean): string[] {
         // Title, description, version
         if (i2 === "0") {
             if (h === "h") {
-                return [lineTop]
+                return [border.lineTop]
             } else {
                 if (hasContent) {
-                    return [lineEmpty]
+                    return [border.lineEmpty]
                 }
             }
         } else {
             if (h !== "h" && i2 !== "h") {
-                return [lineEmpty]
+                return [border.lineEmpty]
             }
         }
     } else {
         if (i2 === "0") {
             if (h === "h") {
                 if (hasContent) {
-                    return [lineSep, lineEmpty]
+                    return [border.lineSep, border.lineEmpty]
                 }
-                return [lineSep]
+                return [border.lineSep]
             } else {
                 if (hasContent) {
-                    return [lineEmpty]
+                    return [border.lineEmpty]
                 }
                 return []
             }
         } else if (i2 === "h") {
             if (hasContent) {
-                return [lineEmpty, lineSep]
+                return [border.lineEmpty, border.lineSep]
             }
-            return [lineEmpty]
+            return [border.lineEmpty]
         } else {
             if (h === "h") {
                 if (hasContent) {
-                    return [lineEmpty]
+                    return [border.lineEmpty]
                 }
                 return []
             } else {
                 if (hasContent) {
-                    return [lineEmpty]
+                    return [border.lineEmpty]
                 }
                 return []
             }

@@ -1,8 +1,8 @@
 import { Button, Card, Col, Form, Row, Stack } from 'react-bootstrap';
 import { useAppSelector } from '../app/hooks';
-import { eAddSection, eHandleInputChange, eHandleInputFocus } from '../features/nfo/Nfo';
+import { eAddSection, eHandleBorderChange, eHandleInputChange, eHandleInputFocus } from '../features/nfo/Nfo';
 import { headerKeys } from '../headers';
-import { NfoSection } from '../utils/NfoDefs';
+import { borderStyles, NfoSection } from '../utils/NfoDefs';
 import { nfoSectionOffset } from '../utils/NfoWriter';
 import { defaultTextWidth } from '../utils/NfoWriterSettings';
 import { NfoFormSection } from './NfoFormSection';
@@ -10,7 +10,11 @@ import { NfoFormSection } from './NfoFormSection';
 
 const headerOptions = headerKeys.map((e, i) => {
     return <option key={i} value={e}>{e}</option>
-})
+});
+
+const borderOptions = Object.keys(borderStyles).map((e, i) => {
+    return <option key={i} value={e}>{borderStyles[e].name}</option>
+});
 
 function NfoForm() {
     const nfoData = useAppSelector((state) => state.nfoConfig.nfoData);
@@ -96,7 +100,7 @@ function NfoForm() {
                             />
                         </Col>
                     </Row>
-                    <Row>
+                    <Row className="mb-3">
                         <Form.Label column="sm" lg={2}>Version</Form.Label>
                         <Col>
                             <Form.Control
@@ -112,6 +116,19 @@ function NfoForm() {
                                 maxLength={defaultTextWidth}
                                 className="nfo highlight off"
                             />
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Form.Label column="sm" lg={2}>Border Style</Form.Label>
+                        <Col>
+                            <Form.Select
+                                name="borderStyle"
+                                size="sm"
+                                onChange={eHandleBorderChange}
+                                value={nfoData.borderStyle}
+                            >
+                                {borderOptions}
+                            </Form.Select>
                         </Col>
                     </Row>
                 </Card.Body>

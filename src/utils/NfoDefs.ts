@@ -14,12 +14,76 @@ export type TextStyle =
     | "right"
     | "twoCol"
     | "numList"
+    | "warning"
+
     | "credits1"
     | "credits2"
     | "credits3"
     | "credits4"
     | "none"
-    | "warning"
+    | "end"
+;
+
+export interface BorderStyleDef {
+    name: string,
+    v: string,
+    h: string,
+    vhl: string,
+    vhr: string,
+    ctl: string,
+    ctr: string,
+    cbl: string,
+    cbr: string,
+}
+
+export const borderStyles: IMap<BorderStyleDef> = { 
+    classic: {
+        name: "Classic",
+        v: "#",
+        h: "#",
+        vhl: "#",
+        vhr: "#",
+        ctl: "#",
+        ctr: "#",
+        cbl: "#",
+        cbr: "#",
+    },
+    box1: {
+        name: "Box Drawings 1",
+        v: "│",
+        h: "─",
+        vhl: "├",
+        vhr: "┤",
+        ctl: "┌",
+        ctr: "┐",
+        cbl: "└",
+        cbr: "┘",
+    },
+    box2: {
+        name: "Box Drawings 2",
+        v: "║",
+        h: "═",
+        vhl: "╠",
+        vhr: "╣",
+        ctl: "╔",
+        ctr: "╗",
+        cbl: "╚",
+        cbr: "╝",
+    },
+}
+
+export interface Border {
+    lineSep: string;
+    lineEmpty: string;
+    lineTop: string;
+    lineBottom: string;
+    borderChar: string;
+}
+
+export type BorderStyle =
+    | "classic"
+    | "box1"
+    | "box2"
 ;
 
 export interface NfoSection extends IMap {
@@ -56,6 +120,8 @@ export interface NfoData extends IMap {
     description: string;
     version: string;
     content: NfoSection[];
+    borderStyle?: BorderStyle,
+    _borders?: Border;
 }
 
 export interface NfoContentSection extends IMap {
@@ -83,5 +149,6 @@ export const textStyles: IMap<IMap> = {
         credits3: "Credits 3",
         credits4: "Credits 4",
         none: "None",
+        end: "End",
     },
 };
