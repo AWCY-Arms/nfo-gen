@@ -19,7 +19,7 @@ credits.sectionData.subsections[1].text = [
     "bakasama113",
     "InvaderZip_",
 ];
-credits.sectionData.subsections[2].text = ["Mom", "Darren", "Edison"];
+credits.sectionData.subsections[2].text = ["Mom", "Darren", "Edison", "EWW"];
 
 const releaseNotes = deepClone(defaultNfoSectionReleaseNotes);
 releaseNotes.sectionData.subsections[0].text = [
@@ -41,6 +41,7 @@ export const nfoGen: NfoData = {
         "The Premium Triple-Distilled Enterprise-Grade NFO Generator for the Sweaty and Moist Yet Sophisticated Artist who needed their README done yesterday",
     version: packageJson.version,
     content: [releaseNotes, credits],
+    borderStyle: "box1",
 };
 
 export default nfoGen;

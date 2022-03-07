@@ -1,7 +1,7 @@
 import { loremIpsum } from "lorem-ipsum";
 import { headerKeys } from "../../headers";
 import { deepClone } from "../../utils/helpers";
-import { NfoData } from "../../utils/NfoDefs";
+import { BorderStyle, borderStyles, NfoData } from "../../utils/NfoDefs";
 import { currentDataVersion } from "../../utils/NfoWriterSettings";
 import { blankNfoSectionData } from "../partials/blank";
 import defaultNfoSectionCredits from "../partials/credits";
@@ -48,6 +48,11 @@ export const loremIpsumNfo = (): NfoData => {
         text: Array.from(Array(10).keys()).map(() => loremIpsum({ count: 2, units: "sentences" })),
         textStyle: "numList"
     });
+    sampleSection.sectionData.subsections.push({
+        subheader: loremIpsum({ count: 4, units: "words" }),
+        text: Array.from(Array(2).keys()).map(() => loremIpsum({ count: 1, units: "sentences" })),
+        textStyle: "warning"
+    });
 
     const credits = deepClone(defaultNfoSectionCredits);
     credits.sectionData.subsections[0].text = loremIpsum({ count: 3, units: "words" }).split(" ");
@@ -61,6 +66,7 @@ export const loremIpsumNfo = (): NfoData => {
         title: loremIpsum({ count: randInt(5), units: "words" }),
         description: loremIpsum({ count: 1, units: "sentences", sentenceLowerBound: 10, sentenceUpperBound: 12 }),
         version: randInt(10) + "." + randInt(50) + "." + randInt(100),
+        borderStyle: Object.keys(borderStyles)[randInt(3)] as BorderStyle,
         content: [
             releaseNotes,
             sampleSection,

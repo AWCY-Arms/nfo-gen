@@ -8,6 +8,7 @@ import {
     addSubsection,
     delSection,
     delSubsection,
+    handleBorderChange,
     handleContentChange,
     handleInputChange,
     handleJsonChange,
@@ -78,9 +79,15 @@ export const eHandleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.target.value = '';
 }
 
-export const eHandleJsonChange = (value: string | undefined, ev: editor.IModelContentChangedEvent) => {
+export const eHandleJsonChange = (value: string | undefined, _ev: editor.IModelContentChangedEvent) => {
     store.dispatch(handleJsonChange({
         value: value,
+    }));
+}
+
+export const eHandleBorderChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    store.dispatch(handleBorderChange({
+        value: e.target.value,
     }));
 }
 

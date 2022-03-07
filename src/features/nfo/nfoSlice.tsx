@@ -5,8 +5,9 @@ import sampleTemplates from '../../templates/examples';
 import defaultNfoData from '../../templates/examples/default';
 import { blankNfoSectionData, blankNfoSubsectionData } from '../../templates/partials/blank';
 import { cleanText, deepClone, IMap } from '../../utils/helpers';
-import { NfoContentSection, NfoData, NfoSection, NfoSubsection, TextAlign } from '../../utils/NfoDefs';
+import { Border, NfoContentSection, NfoData, NfoSection, NfoSubsection, TextAlign } from '../../utils/NfoDefs';
 import {
+    getBorders,
     getNCS,
     getSectionNCS,
     getSepPre,
@@ -45,15 +46,15 @@ function getOrderIds(section: NfoSection): string[] {
 function setNcsHeader(state: WritableDraft<NfoState>, index: number, text: string) {
     state.nfoData.content[index].header = text;
     const vdoId = state.nfoData.content[index].oId!;
-    state.viewData[vdoId].sepPre = getSepPre(state.viewData[vdoId].id, true).join("\n");
-    state.viewData[vdoId].text = renderHeader(text);
+    state.viewData[vdoId].sepPre = getSepPre(state.nfoData._borders!, state.viewData[vdoId].id, true).join("\n");
+    state.viewData[vdoId].text = renderHeader(state.nfoData._borders!, text);
 }
 
 function setNcsSubheader(state: WritableDraft<NfoState>, i1: number, i2: number, text: string) {
     state.nfoData.content[i1].sectionData.subsections![i2].subheader = text;
     const vdoId = state.nfoData.content[i1].sectionData.subsections![i2].oId1!;
-    state.viewData[vdoId].sepPre = getSepPre(state.viewData[vdoId].id, text.length > 0).join("\n");
-    state.viewData[vdoId].text = text ? renderSubheader(text) : '';
+    state.viewData[vdoId].sepPre = getSepPre(state.nfoData._borders!, state.viewData[vdoId].id, text.length > 0).join("\n");
+    state.viewData[vdoId].text = text ? renderSubheader(state.nfoData._borders!, text) : '';
 }
 
 function setNcsText(state: WritableDraft<NfoState>, i1: number, i2: number | null, text?: string[]) {
@@ -62,8 +63,8 @@ function setNcsText(state: WritableDraft<NfoState>, i1: number, i2: number | nul
     const subsection = section.sectionData.subsections![i2];
     if (text !== undefined) subsection.text = text;
     const vdoId = subsection.oId2!;
-    const rText = renderText(subsection, section, i2).join("\n");
-    state.viewData[vdoId].sepPre = getSepPre(state.viewData[vdoId].id, rText.length > 0).join("\n");
+    const rText = renderText(state.nfoData._borders!, subsection, section, i2).join("\n");
+    state.viewData[vdoId].sepPre = getSepPre(state.nfoData._borders!, state.viewData[vdoId].id, rText.length > 0).join("\n");
     state.viewData[vdoId].text = rText;
 
     // Editing a credits4-styled subsection may affect the credits3-styled subsection before it.
@@ -78,12 +79,12 @@ function setNcsTextStyle(state: WritableDraft<NfoState>, i1: number, i2: number,
     const subsection = section.sectionData.subsections![i2];
     subsection.textStyle = text as TextAlign;
     const vdoId = state.nfoData.content[i1].sectionData.subsections![i2].oId2!;
-    const rText = renderText(subsection, section, i2).join("\n");
-    state.viewData[vdoId].sepPre = getSepPre(state.viewData[vdoId].id, rText.length > 0).join("\n");
+    const rText = renderText(state.nfoData._borders!, subsection, section, i2).join("\n");
+    state.viewData[vdoId].sepPre = getSepPre(state.nfoData._borders!, state.viewData[vdoId].id, rText.length > 0).join("\n");
     state.viewData[vdoId].text = rText;
 }
 
-function createSection(index: number): [NfoSection, NfoContentSection[], string[]] {
+function createSection(border: Border, index: number): [NfoSection, NfoContentSection[], string[]] {
     const vdoIds = [];
     const section = deepClone(blankNfoSectionData);
     section.oId = nanoid();
@@ -93,16 +94,16 @@ function createSection(index: number): [NfoSection, NfoContentSection[], string[
         subsection.oId2 = nanoid();
         vdoIds.push(subsection.oId1, subsection.oId2);
     });
-    const viewData = getSectionNCS(section, index);
+    const viewData = getSectionNCS(border, section, index);
     return [section, viewData, vdoIds];
 }
 
-function createSubsection(i1: number, i2: number): [NfoSubsection, NfoContentSection[], string[]] {
+function createSubsection(border: Border, i1: number, i2: number): [NfoSubsection, NfoContentSection[], string[]] {
     const subsection = deepClone(blankNfoSubsectionData);
     subsection.oId1 = nanoid();
     subsection.oId2 = nanoid();
     const vdoIds = [subsection.oId1, subsection.oId2];
-    const viewData = getSubsectionNCS(subsection, i1, i2, '');
+    const viewData = getSubsectionNCS(border, subsection, i1, i2, '');
     return [subsection, viewData, vdoIds];
 }
 
@@ -110,8 +111,8 @@ function updateId(ncs: NfoContentSection) {
     ncs.id = ncs.i1 + (ncs.i2 !== null ? "-" + ncs.i2 : '') + (ncs.h ? "-h" : "");
 }
 
-function updateSepPre(ncs: NfoContentSection) {
-    ncs.sepPre = getSepPre(ncs.id, ncs.text.length > 0).join("\n");
+function updateSepPre(border: Border, ncs: NfoContentSection) {
+    ncs.sepPre = getSepPre(border, ncs.id, ncs.text.length > 0).join("\n");
 }
 
 function _loadTemplate(state: WritableDraft<NfoState>, action: { payload: any, type: string }) {
@@ -133,7 +134,7 @@ export const nfoSlice = createSlice({
                     const text = horizontalAlign((headers)[state.nfoData.headerArt] || "", state.nfoData.headerAlign, defaultNfoWidth, false);
                     state.nfoData.content[0].sectionData.subsections[0].text = text;
                     const vdoId = state.nfoData.content[0].sectionData.subsections![0].oId2!;
-                    state.viewData[vdoId].sepPre = getSepPre(state.viewData[vdoId].id, true).join("\n");
+                    state.viewData[vdoId].sepPre = getSepPre(state.nfoData._borders!, state.viewData[vdoId].id, true).join("\n");
                     state.viewData[vdoId].text = text.join("\n");
                     break;
                 case "title":
@@ -179,6 +180,11 @@ export const nfoSlice = createSlice({
                 console.error(e);
             }
         },
+        handleBorderChange: (state, action) => {
+            state.nfoData.borderStyle = action.payload.value;
+            state.nfoData._borders = getBorders(action.payload.value);
+            [state.viewData, state.viewDataOrder] = getNCS(state.nfoData);
+        },
         addSection: (state) => {
             if (!state.nfoData.content) {
                 _loadTemplate(state, { payload: { value: "default" }, type: "nfo/addSection" });
@@ -187,7 +193,7 @@ export const nfoSlice = createSlice({
             const footer = state.nfoData.content.splice(-1, 1)[0];
             const footerOrderIds = state.viewDataOrder.splice(state.viewDataOrder.indexOf(footer.oId!));
             const index = state.nfoData.content.length;
-            const [section, viewData, vdoIds] = createSection(index);
+            const [section, viewData, vdoIds] = createSection(state.nfoData._borders!, index);
             state.nfoData.content.push(section, footer);
             // viewData
             viewData.forEach(vd => state.viewData[vd.oId] = vd);
@@ -251,7 +257,7 @@ export const nfoSlice = createSlice({
             const { index } = action.payload;
             // Get next subindex
             const i2 = state.nfoData.content[index].sectionData.subsections.length;
-            const [subsection, viewData, vdoIds] = createSubsection(index, i2);
+            const [subsection, viewData, vdoIds] = createSubsection(state.nfoData._borders!, index, i2);
             // nfoData
             state.nfoData.content[index]!.sectionData!.subsections!.push(subsection);
             // viewData
@@ -298,13 +304,13 @@ export const nfoSlice = createSlice({
                 [subsections[i].oId1!, subsections[i].oId2!].forEach(j => {
                     state.viewData[j].i2 = i;
                     updateId(state.viewData[j]);
-                    updateSepPre(state.viewData[j]);
+                    updateSepPre(state.nfoData._borders!, state.viewData[j]);
                 });
             });
         },
     },
 });
 
-export const { handleInputChange, handleContentChange, loadTemplate, handleJsonChange, addSection, delSection, moveSection, addSubsection, delSubsection, moveSubsection } = nfoSlice.actions
+export const { handleInputChange, handleContentChange, loadTemplate, handleJsonChange, handleBorderChange, addSection, delSection, moveSection, addSubsection, delSubsection, moveSubsection } = nfoSlice.actions
 
 export default nfoSlice.reducer;
