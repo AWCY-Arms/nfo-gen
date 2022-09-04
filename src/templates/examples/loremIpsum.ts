@@ -49,6 +49,11 @@ export const loremIpsumNfo = (): NfoData => {
         textStyle: "numList"
     });
     sampleSection.sectionData.subsections.push({
+        subheader: loremIpsum({ count: 3, units: "words" }),
+        text: Array.from(Array(10).keys()).map(() => loremIpsum({ count: 2, units: "sentences" })),
+        textStyle: "ul"
+    });
+    sampleSection.sectionData.subsections.push({
         subheader: loremIpsum({ count: 4, units: "words" }),
         text: Array.from(Array(2).keys()).map(() => loremIpsum({ count: 1, units: "sentences" })),
         textStyle: "warning"

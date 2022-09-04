@@ -29,17 +29,18 @@ function getTextStyleHelp(style: string): string {
         if (style === "credits4") {
             return defaultCredits4;
         }
-        helpText = "One name per line.";
+        helpText = "One name per line. ";
     }
     switch (style) {
         case "twoCol":
             helpText = "Text for the left column goes on the first line.\nText for the right column starts on the second line.\n";
             break;
         case "numList":
-            helpText = "Each list item should go on its own line.";
+        case "ul":
+            helpText = "Each list item should go on its own line. ";
             break;
     }
-    return (helpText ? helpText + " " : "") + "Press Shift+Enter to start a new line.";
+    return helpText + "Press Enter or Shift+Enter to start a new line.";
 }
 
 export function NfoFormSubsection(props: NfoFormSubsectionProps) {

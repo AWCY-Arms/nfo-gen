@@ -14,6 +14,7 @@ export type TextStyle =
     | "right"
     | "twoCol"
     | "numList"
+    | "ul"
     | "warning"
 
     | "credits1"
@@ -141,6 +142,7 @@ export const textStyles: IMap<IMap> = {
         right: "Right",
         twoCol: "Q & A",
         numList: "Numbered List",
+        ul: "Unordered List",
         warning: "Warning",
     },
     "Internal Use": {

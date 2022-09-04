@@ -161,7 +161,7 @@ function renderTwoCol(border: Border, lines: string[], subsection: NfoSubsection
     }
 }
 
-function renderList(border: Border, lines: string[], subsection: NfoSubsection): void {
+function renderOrderedList(border: Border, lines: string[], subsection: NfoSubsection): void {
     const lColWidth = Math.floor(Math.log10(subsection.text.length)) + 1;
     for (let listCounter = 1; listCounter <= subsection.text.length; listCounter++) {
         const lColText = listCounter.toString().padStart(lColWidth, " ");
@@ -173,6 +173,17 @@ function renderList(border: Border, lines: string[], subsection: NfoSubsection):
         });
         if (listCounter < subsection.text.length) lines.push(border.lineEmpty);
     }
+}
+
+function renderUnorderedList(border: Border, lines: string[], subsection: NfoSubsection, listStyleType: string = "*"): void {
+    subsection.text.forEach((text, index) => {
+        const rCol = leftText(text, true, defaultTextWidth - 1 - listStyleType.length);
+        rCol.forEach((_, rColIndex) => {
+            const row = (rColIndex ? " ".repeat(listStyleType.length + 1) : (listStyleType + " ")) + rCol[rColIndex];
+            lines.push(...borderText([row], undefined, undefined, border));
+        });
+        if (index + 1 < subsection.text.length) lines.push(border.lineEmpty);
+    });
 }
 
 export function formatCredits2(text: string, lineLength: number = defaultTextWidth): string {
@@ -208,7 +219,10 @@ export function renderText(border: Border, el: NfoSubsection, section: NfoSectio
                 renderTwoCol(border, lines, el);
                 break;
             case "numList":
-                renderList(border, lines, el);
+                renderOrderedList(border, lines, el);
+                break;
+            case "ul":
+                renderUnorderedList(border, lines, el);
                 break;
             case "credits1":
                 el.text.forEach((name) => {
