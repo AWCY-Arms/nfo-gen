@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/nfo-gen/static/css/main.1e2edb5f.css",
-    "main.js": "/nfo-gen/static/js/main.0e1b407c.js",
+    "main.css": "/nfo-gen/static/css/main.1b7ad125.css",
+    "main.js": "/nfo-gen/static/js/main.a6281d40.js",
     "static/media/liberationmono-regular-webfont.woff": "/nfo-gen/static/media/liberationmono-regular-webfont.34f3d43cd1f9f8bb3737.woff",
     "static/media/liberationmono-regular-webfont.woff2": "/nfo-gen/static/media/liberationmono-regular-webfont.d798517df46ee0a568a0.woff2",
     "static/media/awcy_wordmark_hwite.svg": "/nfo-gen/static/media/awcy_wordmark_hwite.a6606a375ce09d119216c2f24d170e92.svg",
     "index.html": "/nfo-gen/index.html",
-    "main.1e2edb5f.css.map": "/nfo-gen/static/css/main.1e2edb5f.css.map",
-    "main.0e1b407c.js.map": "/nfo-gen/static/js/main.0e1b407c.js.map"
+    "main.1b7ad125.css.map": "/nfo-gen/static/css/main.1b7ad125.css.map",
+    "main.a6281d40.js.map": "/nfo-gen/static/js/main.a6281d40.js.map"
   },
   "entrypoints": [
-    "static/css/main.1e2edb5f.css",
-    "static/js/main.0e1b407c.js"
+    "static/css/main.1b7ad125.css",
+    "static/js/main.a6281d40.js"
   ]
 }
