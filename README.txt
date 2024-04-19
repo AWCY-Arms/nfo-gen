@@ -20,7 +20,7 @@
 │    Sweaty and Moist Yet Sophisticated Artist who needed their README done    │
 │                                  yesterday                                   │
 │                                                                              │
-│                                    1.2.0                                     │
+│                                    1.3.1                                     │
 │                                                                              │
 ├──────────────────────────────────────────────────────────────────────────────┤
 │                            /X> Release Notes <X\                             │
