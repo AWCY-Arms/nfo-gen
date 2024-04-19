@@ -1,5 +1,12 @@
 /*! purgecss start ignore */
 
+@import url("https://fonts.googleapis.com/css2?family=Readex+Pro&display=swap");
+
+$font-family-sans-serif: "Readex Pro", system-ui, -apple-system, sans-serif;
+$font-family-monospace: "Courier New", "Liberation Mono", monospace;
+
+@import "vendor/bootstrap";
+
 @import "variables";
 
 @import "fonts/liberation-mono";
