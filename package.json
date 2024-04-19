@@ -1,6 +1,6 @@
 {
   "name": "awcy-readme-generator",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "private": true,
   "dependencies": {
     "@monaco-editor/react": "^4.6.0",
