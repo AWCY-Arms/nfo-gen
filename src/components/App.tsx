@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
-import { Badge, Col, Container, Row, Stack, Tab, Tabs } from 'react-bootstrap';
-import packageJson from '../../package.json';
+import { Col, Container, Row, Tab, Tabs } from 'react-bootstrap';
 import store from '../app/store';
 import { setIsRightNfo, updateDarkMode } from '../features/app/appSlice';
 import About from './About';
@@ -47,16 +46,6 @@ function App() {
         <Row>
             <Col sm="12" xl="6" className="main-col">
                 <div id={leftColId} className="px-3 pt-3">
-                    <Row className="mb-3">
-                        <Col>
-                            <Stack direction="horizontal" gap={3}>
-                                <h1>AWCY? Readme Generator</h1>
-                                <div className="ms-auto">
-                                    <Badge bg="light" text="dark">v{packageJson.version}</Badge>
-                                </div>
-                            </Stack>
-                        </Col>
-                    </Row>
                     <Row>
                         <Col>
                             <Tabs defaultActiveKey="form" id={tabsId} className="mb-3" mountOnEnter={true} unmountOnExit={true}>
