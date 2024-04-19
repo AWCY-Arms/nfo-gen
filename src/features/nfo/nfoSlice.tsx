@@ -25,15 +25,21 @@ interface NfoState {
     nfoData: NfoData,
     viewData: IMap<NfoContentSection>,
     viewDataOrder: string[],
+    selectedTemplate: string | null,
+    isModalShow: boolean,
 }
 
 function getInitialState(): NfoState {
     const data = importJson(defaultNfoData);
     const [viewData, viewDataOrder] = getNCS(data);
+    const isModalShow = false;
+    const selectedTemplate = null;
     return {
         nfoData: data,
         viewData: viewData,
         viewDataOrder: viewDataOrder,
+        isModalShow: isModalShow,
+        selectedTemplate: selectedTemplate,
     }
 }
 
@@ -168,8 +174,18 @@ export const nfoSlice = createSlice({
                     break;
             }
         },
-        loadTemplate: (state, action) => {
-            _loadTemplate(state, action);
+        showConfirmLoadTemplate: (state, action) => {
+            state.selectedTemplate = action.payload.value;
+            state.isModalShow = true;
+        },
+        cancelLoadTemplate: (state) => {
+            state.selectedTemplate = null;
+            state.isModalShow = false;
+        },
+        confirmLoadTemplate: (state) => {
+            _loadTemplate(state, { payload: { value: state.selectedTemplate }, type: "" });
+            state.selectedTemplate = null;
+            state.isModalShow = false;
         },
         handleJsonChange: (state, action) => {
             try {
@@ -311,6 +327,6 @@ export const nfoSlice = createSlice({
     },
 });
 
-export const { handleInputChange, handleContentChange, loadTemplate, handleJsonChange, handleBorderChange, addSection, delSection, moveSection, addSubsection, delSubsection, moveSubsection } = nfoSlice.actions
+export const { handleInputChange, handleContentChange, showConfirmLoadTemplate, cancelLoadTemplate, confirmLoadTemplate, handleJsonChange, handleBorderChange, addSection, delSection, moveSection, addSubsection, delSubsection, moveSubsection } = nfoSlice.actions
 
 export default nfoSlice.reducer;

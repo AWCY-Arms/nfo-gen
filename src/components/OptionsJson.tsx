@@ -1,12 +1,14 @@
 import Editor, { Monaco } from "@monaco-editor/react";
 import FileSaver from 'file-saver';
 import { editor, Position } from "monaco-editor";
-import { Alert, Button, Card, Col, Form, Row, Stack } from 'react-bootstrap';
+import { Alert, Button, Card, Col, Form, Modal, Row, Stack } from 'react-bootstrap';
 import { useAppSelector } from '../app/hooks';
-import { eHandleJsonChange, eHandleUpload, eLoadTemplate } from '../features/nfo/Nfo';
+import { eHandleJsonChange, eHandleUpload, eShowConfirmLoadTemplate } from '../features/nfo/Nfo';
 import NfoSchema from '../NfoSchema.json';
 import sampleTemplates from '../templates/examples';
 import { exportJson } from "../utils/NfoWriter";
+import store from "../app/store";
+import { cancelLoadTemplate, confirmLoadTemplate } from "../features/nfo/nfoSlice";
 
 
 const templates = Object.keys(sampleTemplates).map((templateId, i) => {
@@ -48,6 +50,9 @@ const onMount = (editor: editor.IStandaloneCodeEditor, _monaco: Monaco) => {
 function OptionsJson() {
     const nfoJson = useAppSelector((state) => exportJson(state.nfoConfig.nfoData));
     const editorTheme = useAppSelector((state) => state.app.darkMode === "dark" ? "vs-dark" : "light");
+    const isModalShow = useAppSelector(state => state.nfoConfig.isModalShow);
+    const handleCancel = () => { store.dispatch(cancelLoadTemplate()) };
+    const handleConfirm = () => { store.dispatch(confirmLoadTemplate()) };
     return <Stack gap={3}>
         <Card>
             <Card.Header>Load JSON</Card.Header>
@@ -57,7 +62,7 @@ function OptionsJson() {
                     <Col xs="12" sm="6">
                         <Form.Group className="mb-3">
                             <Form.Label>Sample Templates</Form.Label>
-                            <Form.Select name="loadTemplate" size="sm" onChange={eLoadTemplate} value="">
+                            <Form.Select name="loadTemplate" size="sm" onChange={eShowConfirmLoadTemplate} value="">
                                 <option value="" />
                                 {templates}
                             </Form.Select>
@@ -93,6 +98,16 @@ function OptionsJson() {
                 />
             </Card.Body>
         </Card>
+        <Modal show={isModalShow} backdrop="static" keyboard={true} onHide={handleCancel}>
+            <Modal.Header closeButton>
+                <Modal.Title>Confirm</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>Any unsaved changes will be lost!</Modal.Body>
+            <Modal.Footer>
+                <Button size="sm" variant="secondary" onClick={handleCancel}>Close</Button>
+                <Button size="sm" variant="danger" onClick={handleConfirm}>Confirm</Button>
+            </Modal.Footer>
+        </Modal>
     </Stack>;
 }
 

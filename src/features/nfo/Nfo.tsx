@@ -12,9 +12,9 @@ import {
     handleContentChange,
     handleInputChange,
     handleJsonChange,
-    loadTemplate,
     moveSection,
-    moveSubsection
+    moveSubsection,
+    showConfirmLoadTemplate,
 } from "./nfoSlice";
 
 
@@ -39,8 +39,8 @@ export const eHandleContentChange = (e: React.ChangeEvent<Element>) => {
     }));
 }
 
-export const eLoadTemplate = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    store.dispatch(loadTemplate({
+export const eShowConfirmLoadTemplate = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    store.dispatch(showConfirmLoadTemplate({
         value: e.target.value,
     }));
     e.target.value = "";
