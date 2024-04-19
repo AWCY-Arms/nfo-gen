@@ -5,7 +5,7 @@ import store from './app/store';
 import AppSplash from './AppSplash';
 import App from './components/App';
 import "./scss/main.scss";
-import "./scss/vendors/bootstrap-dark.scss";
+import "bootstrap/scss/bootstrap.scss";
 
 
 ReactDOM.render(

@@ -7,7 +7,7 @@ interface ReturnToTopProps {
 
 export function ReturnToTop(props: ReturnToTopProps) {
     return <div className="my-3 text-center">
-        <Button size="sm" variant="link" onClick={() => { document.getElementById(props.id)?.scrollIntoView({ behavior: "smooth" }) }}>Return to Top</Button>
+        <Button size="sm" variant="outline-info" onClick={() => { document.getElementById(props.id)?.scrollIntoView({ behavior: "smooth" }) }}>Return to Top</Button>
     </div>
 }
 
